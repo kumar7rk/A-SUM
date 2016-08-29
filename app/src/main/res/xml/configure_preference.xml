@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Select Scenario(s) to monitor">
+
+        <CheckBoxPreference
+            android:key="@string/restaurant"
+            android:icon="@drawable/ic_restaurants"
+            android:background="@color/accent_material_dark"
+            android:title="@string/restaurant"/>
+        <CheckBoxPreference
+            android:key="@string/religious_place"
+            android:icon="@drawable/church"
+            android:title="@string/religious_place"/>
+        <CheckBoxPreference
+            android:key="@string/movie_theatre"
+            android:icon="@drawable/movies"
+            android:title="@string/movie_theatre"/>
+        <CheckBoxPreference
+            android:key="@string/bed_dark"
+            android:icon="@drawable/bed"
+            android:title="@string/bed_dark"/>
+        <CheckBoxPreference
+            android:key="@string/walking"
+            android:icon="@drawable/walking"
+            android:title="@string/walking"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

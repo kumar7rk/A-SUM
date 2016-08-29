@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bb_menu_monitoring"
+        android:icon="@drawable/ic_favorites"
+        android:title="Monitoring" />
+    <item
+        android:id="@+id/bb_menu_rules"
+        android:icon="@drawable/ic_nearby"
+        android:title="Rules" />
+    <item
+        android:id="@+id/bb_menu_violation"
+        android:icon="@drawable/ic_friends"
+        android:title="Violations" />
+</menu>

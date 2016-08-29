@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <PreferenceCategory
+        android:title="Choose Rule"
+        android:icon="@drawable/ic_nearby">
+
+        <ListPreference
+            android:title="Choose Rule"
+            android:shouldDisableView="true"
+            android:key= "rule"
+            android:defaultValue="4"
+            android:entries="@array/rule"
+            android:entryValues="@array/ruleValues"/>
+        </PreferenceCategory>
+</PreferenceScreen>
