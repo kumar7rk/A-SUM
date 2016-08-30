@@ -1,11 +1,18 @@
 package com.geeky7.rohit.location.service;
 
+import android.app.ActivityManager;
 import android.app.Service;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -38,6 +45,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class BackgroundService extends Service implements GoogleApiClient.OnConnectionFailedListener,
 GoogleApiClient.ConnectionCallbacks,LocationListener{
@@ -90,7 +99,20 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
             startLocationupdates();
 
         mHandler = new Handler();
-        //startRepeatingTask();
+        startRepeatingTask();
+//        isAnyScenarioSelected();
+    }
+
+        //only start fetching place name regularly if any of the scenario is selected
+    private boolean isAnyScenarioSelected() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        boolean restaurant = sharedPrefs.getBoolean(getResources().getString(R.string.restaurant), false);
+        boolean religious_place = sharedPrefs.getBoolean(getResources().getString(R.string.religious_place), false);
+        boolean movie_theatre = sharedPrefs.getBoolean(getResources().getString(R.string.movie_theatre), false);
+        if (restaurant||religious_place||movie_theatre)
+            return true;
+//            startRepeatingTask();
+        return false;
     }
 
     @Override
@@ -100,8 +122,8 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
         stopSelf();
         stopService(new Intent(BackgroundService.this, Automatic.class));
-        stopService(new Intent(BackgroundService.this,SemiAutomatic.class));
-        stopService(new Intent(BackgroundService.this,Manual.class));
+        stopService(new Intent(BackgroundService.this, SemiAutomatic.class));
+        stopService(new Intent(BackgroundService.this, Manual.class));
 
         if (mGoogleApiClient.isConnected())
             stopLocationupdates();
@@ -111,6 +133,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+//        isAnyScenarioSelected();
         return START_STICKY;
     }
 
@@ -195,6 +218,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         String number1 = "AIzaSyCth6KThdK_C9mztGc2dadvK82yCvktO-o";
         String number2 = "AIzaSyCv11nDlFA286ZZVnbM3tedhIgsy93afzg";
         String js = "AIzaSyAByBFmVz2N_7jtk4Zkd2Yv9iL_1vAcr9s";
+
         StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         sb.append("location=" + mLatitude + "," + mLongitude);
         sb.append("&radius="+mRadius);
@@ -260,43 +284,47 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         @Override
         protected void onPostExecute(List<HashMap<String, String>> list) {
             if (list.size()>0){
-            for (int i = 0; i < list.size(); i++) {
-                HashMap<String, String> hmPlace = list.get(0);
-//                double lat = Double.parseDouble(hmPlace.get("lat"));
-//                double lng = Double.parseDouble(hmPlace.get("lng"));
-                final String name = hmPlace.get("place_name");
-                String vicinity = hmPlace.get("vicinity");
-            }
-            HashMap<String, String> hmPlace = new HashMap<>();
-            String name = "Nothing" ;
+                for (int i = 0; i < list.size(); i++) {
+                    HashMap<String, String> hmPlace = list.get(0);
+    //                double lat = Double.parseDouble(hmPlace.get("lat"));
+    //                double lng = Double.parseDouble(hmPlace.get("lng"));
+                    final String name = hmPlace.get("place_name");
+                    String vicinity = hmPlace.get("vicinity");
+                }
+                HashMap<String, String> hmPlace = new HashMap<>();
+                String name = "Nothing" ;
                 hmPlace = list.get(0);
                 name = hmPlace.get("place_name");
+                Main.showToast(getApplicationContext(), name);
+                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                if (!name.equals("Nothing")){
+                    String rule = "AA";
+                    rule = sharedPrefs.getString("ThisIsARule", rule);
+                    Main.showToast(getApplicationContext(), "RuleName: " + rule);
 
-//            Main.showToast(getApplicationContext(), name);
-
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            if (!name.equals("Nothing")){
-                String rule = "AA";
-                rule = sharedPrefs.getString("ThisIsARule", rule);
-//                boolean restaurant = sharedPrefs.getBoolean(getResources().getString(R.string.restaurant), false);
-//                Main.showToast(getApplicationContext(), "Restaurant: " + restaurant);
-                Main.showToast(getApplicationContext(), "RuleName: " + rule);
-
-                if (rule.equalsIgnoreCase("Automatic"))
-                    startService(new Intent(BackgroundService.this,Automatic.class));
-                if (rule.equalsIgnoreCase("SemiAutomatic"))
-                    startService(new Intent(BackgroundService.this,SemiAutomatic.class));
-                if (rule.equalsIgnoreCase("Manual"))
-                    startService(new Intent(BackgroundService.this,Manual.class));
+                    if (rule.equalsIgnoreCase("Automatic")){
+                        startService(new Intent(BackgroundService.this, Automatic.class));
+//                        stopRepeatingTask();
+                    }
+                    if (rule.equalsIgnoreCase("SemiAutomatic")){
+                        startService(new Intent(BackgroundService.this, SemiAutomatic.class));
+//                        stopRepeatingTask();
+                    }
+                    if (rule.equalsIgnoreCase("Manual")){
+                        startService(new Intent(BackgroundService.this, Manual.class));
+//                        stopRepeatingTask();
+                    }
                }
             }
-            /*else
-                stopService(new Intent(BackgroundService.this, Automatic.class));
-                stopService(new Intent(BackgroundService.this,SemiAutomatic.class));
-                stopService(new Intent(BackgroundService.this,Manual.class));*/
+            // that is no place is detected from the selected scenarios- shut down any rule;
+            else if (list.size()==0) {
+                Main.showToast(getApplicationContext(), "NoPlaceDetected");
 
-//            Toast.makeText(getApplicationContext(), name, Toast.LENGTH_SHORT).show();
-        }
+                stopService(new Intent(BackgroundService.this, Automatic.class));
+                stopService(new Intent(BackgroundService.this, SemiAutomatic.class));
+                stopService(new Intent(BackgroundService.this, Manual.class));
+            }
+        }// onPostExecute
     }// end of the parserTask class
 
     public class Place_JSON {
@@ -388,20 +416,21 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
             try {
                 data = downloadUrl(url[0]);
             } catch (Exception e) {
-                Log.d("Background Task", e.toString());
+                Log.i("Background Task", e.toString());
             }
             return data;
         }
         @Override
         protected void onPostExecute(String result) {
             ParserTask parserTask = new ParserTask(context);
-            String temp = "";
-            if (!temp.equals(result)) {
+//            String temp = "";
+//            if (!temp.equals(result)) {
                 parserTask.execute(result);
-                Log.i("PlacesTask", result + "!");
-//                Main.showToast(getApplicationContext(),"Something in the result"+result);
-            }
-//            else
+                Log.i("PlacesTaskOnPostExecute", result + "!");
+//                Main.showToast(getApplicationContext(), "PlacesTaskOnPostExecute" + result);
+//            }
+           /* else
+                stopRepeatingTask();*/
 //                Main.showToast(getApplicationContext(),"result is empty");
         }
     }
@@ -409,8 +438,19 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         @Override
         public void run() {
             try {
-                String sb = sbMethod().toString();
-                new PlacesTask().execute(sb);
+//                foregroundApplication();
+//                printForegroundTask();
+//                foreground();
+//                foregroundApp();
+//                launcher();
+//                method();
+//               String d =  getTopAppName(getApplicationContext());
+                if(isAnyScenarioSelected()){
+                    String sb = sbMethod().toString();
+                    new PlacesTask().execute(sb);
+                }
+                /*else
+                    Main.showToast(getApplicationContext(),"NoScenarioSelected,Try selecting one");*/
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } finally {
@@ -419,11 +459,164 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         }
     };
 
-    void startRepeatingTask() {
+    public void startRepeatingTask() {
         mStatusChecker.run();
     }
 
-    void stopRepeatingTask() {
+    public void stopRepeatingTask() {
         mHandler.removeCallbacks(mStatusChecker);
+    }
+    //A-SUM's activity name with package|| name of launcher with package name
+    public void foregroundApplication(){
+        ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> RunningTask = mActivityManager.getRunningTasks(1);
+        ActivityManager.RunningTaskInfo ar = RunningTask.get(0);
+        String activityOnTop=ar.topActivity.getClassName();
+        Main.showToast(getApplicationContext(),"CurrentForegroundApplication: "+activityOnTop);
+        Log.i("PlacesForegroundApp", activityOnTop);
+    }
+    //NULL
+    private void printForegroundTask() {
+        String currentApp = "NULL";
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+
+            UsageStatsManager usm = (UsageStatsManager) this.getSystemService(Context.USAGE_STATS_SERVICE);
+            long time = System.currentTimeMillis();
+            List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,  time - 1000*1000, time);
+
+            if (appList != null && appList.size() > 0) {
+                SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
+                for (UsageStats usageStats : appList) {
+                    mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
+                }
+                if (mySortedMap != null && !mySortedMap.isEmpty()) {
+                    currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
+                }
+            }
+        } else {
+            ActivityManager am = (ActivityManager)this.getSystemService(Context.ACTIVITY_SERVICE);
+            List<ActivityManager.RunningAppProcessInfo> tasks = am.getRunningAppProcesses();
+            currentApp = tasks.get(0).processName;
+        }
+
+        Main.showToast(getApplicationContext(),"CurrentForegroundApplication: "+currentApp);
+        Log.i("PlacesForegroundApp", currentApp);
+    }
+    //Package name and application name of A_SUM only when it is in foreground, whenany other app open nothing in toast;
+    //http://stackoverflow.com/a/27483601/2900127
+    public void foreground(){
+        ActivityManager activityManager = (ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
+        PackageManager pm = getApplicationContext().getPackageManager();
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        for(ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if(appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND) {
+                CharSequence c = null;
+                try {
+                    c = pm.getApplicationLabel(pm.getApplicationInfo(appProcess.processName, PackageManager.GET_META_DATA));
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+                Main.showToast(getApplicationContext(),appProcess.processName+"\n"+c.toString());
+                Log.i("PlacesForegroundApp", "package: " + appProcess.processName + " App: " + c.toString());
+            }
+        }
+
+    }
+
+    //A_SUM if in foreground, any other app open - launcher;
+    //http://stackoverflow.com/a/12675356/2900127
+    public void foregroundApp(){
+        ActivityManager am = (ActivityManager) BackgroundService.this.getSystemService(ACTIVITY_SERVICE);
+// The first in the list of RunningTasks is always the foreground task.
+        ActivityManager.RunningTaskInfo foregroundTaskInfo = am.getRunningTasks(1).get(0);
+        String foregroundTaskPackageName = foregroundTaskInfo .topActivity.getPackageName();
+        PackageManager pm = BackgroundService.this.getPackageManager();
+        PackageInfo foregroundAppPackageInfo = null;
+        try {
+            foregroundAppPackageInfo = pm.getPackageInfo(foregroundTaskPackageName, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String foregroundTaskAppName = foregroundAppPackageInfo.applicationInfo.loadLabel(pm).toString();
+        Main.showToast(getApplicationContext(),foregroundTaskAppName);
+        Log.i("PlacesForegroundApp",foregroundTaskAppName);
+
+    }
+
+    //package name of the laucher
+    public void launcher(){
+
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        ResolveInfo resolveInfo = getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        String currentHomePackage = resolveInfo.activityInfo.packageName;
+        Main.showToast(getApplicationContext(),currentHomePackage);
+        Log.i("PlacesForegroundApp",currentHomePackage);
+    }
+
+    //package name only for A_SUM
+    public void method(){
+        ActivityManager mActivityManager =(ActivityManager)this.getSystemService(Context.ACTIVITY_SERVICE);
+
+        if(Build.VERSION.SDK_INT > 20){
+            String mPackageName = mActivityManager.getRunningAppProcesses().get(0).processName;
+            Main.showToast(getApplicationContext(),mPackageName);
+            Log.i("PlacesForegroundApp",mPackageName);
+        }
+        else{
+            String mpackageName = mActivityManager.getRunningTasks(1).get(0).topActivity.getPackageName();
+            Main.showToast(getApplicationContext(),mpackageName);
+            Log.i("PlacesForegroundApp",mpackageName);
+        }
+    }
+    //empty string;
+    public String getTopAppName(Context context) {
+        ActivityManager mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        String strName = "";
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                strName = getLollipopFGAppPackageName(context);
+            } else {
+                strName = mActivityManager.getRunningTasks(1).get(0).topActivity.getClassName();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            Main.showToast(getApplicationContext(),strName);
+            Log.i("PlacesForegroundApp",strName);
+        }
+        return strName;
+    }
+
+
+    //null
+    private static String getLollipopFGAppPackageName(Context ctx) {
+
+        try {
+            UsageStatsManager usageStatsManager = (UsageStatsManager) ctx.getSystemService("usagestats");
+            long milliSecs = 60 * 1000;
+            Date date = new Date();
+            List<UsageStats> queryUsageStats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, date.getTime() - milliSecs, date.getTime());
+            if (queryUsageStats.size() > 0) {
+                Log.i("LPU", "queryUsageStats size: " + queryUsageStats.size());
+            }
+            long recentTime = 0;
+            String recentPkg = "";
+            for (int i = 0; i < queryUsageStats.size(); i++) {
+                UsageStats stats = queryUsageStats.get(i);
+                if (i == 0 && !"org.pervacio.pvadiag".equals(stats.getPackageName())) {
+                    Log.i("LPU", "PackageName: " + stats.getPackageName() + " " + stats.getLastTimeStamp());
+                }
+                if (stats.getLastTimeStamp() > recentTime) {
+                    recentTime = stats.getLastTimeStamp();
+                    recentPkg = stats.getPackageName();
+                }
+            }
+            return recentPkg;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }

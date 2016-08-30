@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:allowBackup="true"
@@ -25,21 +26,9 @@
         <activity android:name=".activity.FiveColorChangingTabsActivity" />
         <activity android:name=".activity.ThreeTabsQRActivity" />
         <activity android:name=".activity.BadgeActivity" />
-        <activity
-            android:name=".activity.CustomColorActivity"
-            android:label="@string/title_activity_custom_color"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <service
-            android:name=".service.BackgroundService"
-            android:enabled="true"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="ACTION_SERVICE" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </service>
+        <activity android:name=".activity.CustomColorActivity"
+                  android:label="@string/title_activity_custom_color"
+                  android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activity.Configure"
@@ -58,20 +47,32 @@
         </activity>
 
         <service
+            android:name=".service.BackgroundService"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="ACTION_SERVICE" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </service>
+        <service
             android:name=".service.Automatic"
             android:enabled="true"
             android:exported="true" >
         </service>
+
         <service
             android:name=".service.SemiAutomatic"
             android:enabled="true"
             android:exported="true" >
         </service>
+
         <service
             android:name=".service.Manual"
             android:enabled="true"
             android:exported="true" >
         </service>
-    </application>
 
+    </application>
 </manifest>
