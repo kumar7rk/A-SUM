@@ -90,7 +90,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
             startLocationupdates();
 
         mHandler = new Handler();
-//        startRepeatingTask();
+        //startRepeatingTask();
     }
 
     @Override
@@ -190,15 +190,17 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         int mRadius = 50;
 /*        mLatitude = mCurrentLocation.getLatitude();
         mLongitude = mCurrentLocation.getLongitude();*/
+
+        String old = "AIzaSyC0ZdWHP1aun8cfHq9aXzOOztUaD1Fmw_I";
+        String number1 = "AIzaSyCth6KThdK_C9mztGc2dadvK82yCvktO-o";
+        String number2 = "AIzaSyCv11nDlFA286ZZVnbM3tedhIgsy93afzg";
+        String js = "AIzaSyAByBFmVz2N_7jtk4Zkd2Yv9iL_1vAcr9s";
         StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         sb.append("location=" + mLatitude + "," + mLongitude);
         sb.append("&radius="+mRadius);
         sb.append("&types=" +  URLEncoder.encode(type, "UTF-8"));
         sb.append("&sensor=true");
-        sb.append("&key=AIzaSyCv11nDlFA286ZZVnbM3tedhIgsy93afzg");
-        // old --> AIzaSyC0ZdWHP1aun8cfHq9aXzOOztUaD1Fmw_I
-        //#1--> AIzaSyCth6KThdK_C9mztGc2dadvK82yCvktO-o
-        //#2--> AIzaSyCv11nDlFA286ZZVnbM3tedhIgsy93afzg
+        sb.append("&key=" + number1);
         Log.v("Places", sb.toString());
         return sb;
     }
@@ -257,7 +259,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         // Executed after the complete execution of doInBackground() method
         @Override
         protected void onPostExecute(List<HashMap<String, String>> list) {
-
+            if (list.size()>0){
             for (int i = 0; i < list.size(); i++) {
                 HashMap<String, String> hmPlace = list.get(0);
 //                double lat = Double.parseDouble(hmPlace.get("lat"));
@@ -267,10 +269,9 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
             }
             HashMap<String, String> hmPlace = new HashMap<>();
             String name = "Nothing" ;
-            if (list.size()>0){
                 hmPlace = list.get(0);
                 name = hmPlace.get("place_name");
-            }
+
 //            Main.showToast(getApplicationContext(), name);
 
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -287,6 +288,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                     startService(new Intent(BackgroundService.this,SemiAutomatic.class));
                 if (rule.equalsIgnoreCase("Manual"))
                     startService(new Intent(BackgroundService.this,Manual.class));
+               }
             }
             /*else
                 stopService(new Intent(BackgroundService.this, Automatic.class));
@@ -393,8 +395,14 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         @Override
         protected void onPostExecute(String result) {
             ParserTask parserTask = new ParserTask(context);
-            parserTask.execute(result);
-            Log.i("PlacesTask", result);
+            String temp = "";
+            if (!temp.equals(result)) {
+                parserTask.execute(result);
+                Log.i("PlacesTask", result + "!");
+//                Main.showToast(getApplicationContext(),"Something in the result"+result);
+            }
+//            else
+//                Main.showToast(getApplicationContext(),"result is empty");
         }
     }
     Runnable mStatusChecker = new Runnable() {

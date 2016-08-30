@@ -18,6 +18,7 @@ import com.geeky7.rohit.location.TabMessage;
 import com.geeky7.rohit.location.fragment.MonitoringFragment;
 import com.geeky7.rohit.location.fragment.Rules;
 import com.geeky7.rohit.location.fragment.Violations;
+import com.geeky7.rohit.location.fragment.list_of_rule;
 import com.geeky7.rohit.location.service.BackgroundService;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
@@ -65,7 +66,8 @@ public class ThreeTabsActivity extends AppCompatActivity {
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
                     case R.id.bb_menu_rules:
-                        fragment = new Rules();
+//                        fragment = new Rules();
+                        fragment = new list_of_rule();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
                     case R.id.bb_menu_violation:
@@ -89,7 +91,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
                     case R.id.bb_menu_rules:
-                        fragment = new Rules();
+                        fragment = new list_of_rule();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
                     case R.id.bb_menu_violation:
