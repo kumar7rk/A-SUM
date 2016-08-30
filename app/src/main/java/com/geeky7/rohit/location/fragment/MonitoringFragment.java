@@ -31,8 +31,6 @@ public class MonitoringFragment extends Fragment implements ThreeTabsActivity.On
         View v = inflater.inflate(R.layout.fragment_monitoring, container, false);
         listView = (ListView)v.findViewById(R.id.listView);
 
-//        Main.showToast(getContext(),"onCreateView");
-
         ((ThreeTabsActivity) getActivity()).setOnBackPressedListener(this);
         return v;
     }

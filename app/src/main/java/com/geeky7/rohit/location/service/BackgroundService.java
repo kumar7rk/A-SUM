@@ -29,8 +29,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -88,7 +90,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
             startLocationupdates();
 
         mHandler = new Handler();
-        startRepeatingTask();
+//        startRepeatingTask();
     }
 
     @Override
@@ -170,8 +172,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         updateToast();
     }
     //Code for google places begins here:
-    public StringBuilder sbMethod()
-    {
+    public StringBuilder sbMethod() throws UnsupportedEncodingException {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean restaurant = sharedPrefs.getBoolean(getResources().getString(R.string.restaurant), false);
         boolean religious_place = sharedPrefs.getBoolean(getResources().getString(R.string.religious_place), false);
@@ -192,9 +193,12 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         sb.append("location=" + mLatitude + "," + mLongitude);
         sb.append("&radius="+mRadius);
-        sb.append("&types=" + type);
+        sb.append("&types=" +  URLEncoder.encode(type, "UTF-8"));
         sb.append("&sensor=true");
-        sb.append("&key=AIzaSyC0ZdWHP1aun8cfHq9aXzOOztUaD1Fmw_I");
+        sb.append("&key=AIzaSyCv11nDlFA286ZZVnbM3tedhIgsy93afzg");
+        // old --> AIzaSyC0ZdWHP1aun8cfHq9aXzOOztUaD1Fmw_I
+        //#1--> AIzaSyCth6KThdK_C9mztGc2dadvK82yCvktO-o
+        //#2--> AIzaSyCv11nDlFA286ZZVnbM3tedhIgsy93afzg
         Log.v("Places", sb.toString());
         return sb;
     }
@@ -262,15 +266,15 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 String vicinity = hmPlace.get("vicinity");
             }
             HashMap<String, String> hmPlace = new HashMap<>();
-            String name = "" ;
+            String name = "Nothing" ;
             if (list.size()>0){
                 hmPlace = list.get(0);
                 name = hmPlace.get("place_name");
             }
-            else name = "";
+//            Main.showToast(getApplicationContext(), name);
 
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            if (!name.equals("")){
+            if (!name.equals("Nothing")){
                 String rule = "AA";
                 rule = sharedPrefs.getString("ThisIsARule", rule);
 //                boolean restaurant = sharedPrefs.getBoolean(getResources().getString(R.string.restaurant), false);
@@ -399,6 +403,8 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
             try {
                 String sb = sbMethod().toString();
                 new PlacesTask().execute(sb);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
             } finally {
                 mHandler.postDelayed(mStatusChecker, mInterval);
             }
