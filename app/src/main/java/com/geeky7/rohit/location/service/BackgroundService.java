@@ -2,14 +2,11 @@ package com.geeky7.rohit.location.service;
 
 import android.app.ActivityManager;
 import android.app.Service;
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -45,8 +42,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
+
 
 public class BackgroundService extends Service implements GoogleApiClient.OnConnectionFailedListener,
 GoogleApiClient.ConnectionCallbacks,LocationListener{
@@ -62,6 +58,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     private String mLastUpdateTime;
 
     static Context context;
+    Main m;
 
     // current == 1 minute
     private int mInterval = 5000; // 5 seconds by default, can be changed later
@@ -90,7 +87,8 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     @Override
     public void onCreate() {
         super.onCreate();
-        Main.showToast(getApplicationContext(), "BackgroundService Created");
+       m = new Main(getApplicationContext());
+        Main.showToast("BackgroundService Created");
 //        mRequestingLocationUpdates = false;
         mLastUpdateTime = "";
         buildGoogleApiClient();
@@ -100,7 +98,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
         mHandler = new Handler();
         startRepeatingTask();
-//        isAnyScenarioSelected();
+//        startService(new Intent(this,MyAccessibilityService.class));
     }
 
         //only start fetching place name regularly if any of the scenario is selected
@@ -438,13 +436,23 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         @Override
         public void run() {
             try {
-//                foregroundApplication();
-//                printForegroundTask();
-//                foreground();
-//                foregroundApp();
-//                launcher();
-//                method();
-//               String d =  getTopAppName(getApplicationContext());
+                //get the current foreground app
+                String currentApp = m.getForegroungApp();
+//                Main.showToast("ForegroundApp: " + currentApp);
+                Log.i("ForegroundApp: ",currentApp);
+
+                // static- check if the current app is a app to be blocked
+                if (currentApp.equals("de.dfki.appdetox")){
+                    Main.showToast("Yes!!!!!");
+                    // starting home screen everytime the app is in foreground;
+                    Intent startMain = new Intent(Intent.ACTION_MAIN);
+                    startMain.addCategory(Intent.CATEGORY_HOME);
+                    startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(startMain);
+                }
+                Log.i("PlacesForegroundApp", currentApp);
+
+                //check if any scenarios is selected if yes then call the places code which afterwards every 5 seconds
                 if(isAnyScenarioSelected()){
                     String sb = sbMethod().toString();
                     new PlacesTask().execute(sb);
@@ -466,42 +474,19 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     public void stopRepeatingTask() {
         mHandler.removeCallbacks(mStatusChecker);
     }
+
     //A-SUM's activity name with package|| name of launcher with package name
+    //http://stackoverflow.com/a/19852713/2900127 AmitGupta's
     public void foregroundApplication(){
         ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> RunningTask = mActivityManager.getRunningTasks(1);
         ActivityManager.RunningTaskInfo ar = RunningTask.get(0);
         String activityOnTop=ar.topActivity.getClassName();
-        Main.showToast(getApplicationContext(),"CurrentForegroundApplication: "+activityOnTop);
+        Main.showToast(getApplicationContext(), "CurrentForegroundApplication: " + activityOnTop);
         Log.i("PlacesForegroundApp", activityOnTop);
     }
-    //NULL
-    private void printForegroundTask() {
-        String currentApp = "NULL";
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+    //Working
 
-            UsageStatsManager usm = (UsageStatsManager) this.getSystemService(Context.USAGE_STATS_SERVICE);
-            long time = System.currentTimeMillis();
-            List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,  time - 1000*1000, time);
-
-            if (appList != null && appList.size() > 0) {
-                SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
-                for (UsageStats usageStats : appList) {
-                    mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
-                }
-                if (mySortedMap != null && !mySortedMap.isEmpty()) {
-                    currentApp = mySortedMap.get(mySortedMap.lastKey()).getPackageName();
-                }
-            }
-        } else {
-            ActivityManager am = (ActivityManager)this.getSystemService(Context.ACTIVITY_SERVICE);
-            List<ActivityManager.RunningAppProcessInfo> tasks = am.getRunningAppProcesses();
-            currentApp = tasks.get(0).processName;
-        }
-
-        Main.showToast(getApplicationContext(),"CurrentForegroundApplication: "+currentApp);
-        Log.i("PlacesForegroundApp", currentApp);
-    }
     //Package name and application name of A_SUM only when it is in foreground, whenany other app open nothing in toast;
     //http://stackoverflow.com/a/27483601/2900127
     public void foreground(){
@@ -543,17 +528,6 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
     }
 
-    //package name of the laucher
-    public void launcher(){
-
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        ResolveInfo resolveInfo = getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        String currentHomePackage = resolveInfo.activityInfo.packageName;
-        Main.showToast(getApplicationContext(),currentHomePackage);
-        Log.i("PlacesForegroundApp",currentHomePackage);
-    }
-
     //package name only for A_SUM
     public void method(){
         ActivityManager mActivityManager =(ActivityManager)this.getSystemService(Context.ACTIVITY_SERVICE);
@@ -568,55 +542,5 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
             Main.showToast(getApplicationContext(),mpackageName);
             Log.i("PlacesForegroundApp",mpackageName);
         }
-    }
-    //empty string;
-    public String getTopAppName(Context context) {
-        ActivityManager mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        String strName = "";
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                strName = getLollipopFGAppPackageName(context);
-            } else {
-                strName = mActivityManager.getRunningTasks(1).get(0).topActivity.getClassName();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        finally {
-            Main.showToast(getApplicationContext(),strName);
-            Log.i("PlacesForegroundApp",strName);
-        }
-        return strName;
-    }
-
-
-    //null
-    private static String getLollipopFGAppPackageName(Context ctx) {
-
-        try {
-            UsageStatsManager usageStatsManager = (UsageStatsManager) ctx.getSystemService("usagestats");
-            long milliSecs = 60 * 1000;
-            Date date = new Date();
-            List<UsageStats> queryUsageStats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, date.getTime() - milliSecs, date.getTime());
-            if (queryUsageStats.size() > 0) {
-                Log.i("LPU", "queryUsageStats size: " + queryUsageStats.size());
-            }
-            long recentTime = 0;
-            String recentPkg = "";
-            for (int i = 0; i < queryUsageStats.size(); i++) {
-                UsageStats stats = queryUsageStats.get(i);
-                if (i == 0 && !"org.pervacio.pvadiag".equals(stats.getPackageName())) {
-                    Log.i("LPU", "PackageName: " + stats.getPackageName() + " " + stats.getLastTimeStamp());
-                }
-                if (stats.getLastTimeStamp() > recentTime) {
-                    recentTime = stats.getLastTimeStamp();
-                    recentPkg = stats.getPackageName();
-                }
-            }
-            return recentPkg;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
     }
 }

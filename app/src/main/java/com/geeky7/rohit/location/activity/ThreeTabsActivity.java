@@ -46,12 +46,6 @@ public class ThreeTabsActivity extends AppCompatActivity {
         mBottomBar = BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.main);
 
-//        Fragment fragment = new Monitoring();
-//        Fragment fragment = new Rules();
-//        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//         fragmentTransaction.replace(android.R.id.content, fragment).commit();
-
-
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
 
             @Override

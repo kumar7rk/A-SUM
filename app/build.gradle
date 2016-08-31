@@ -25,6 +25,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:' + rootProject.ext.supportLibraryVersion
     compile 'com.android.support:design:' + rootProject.ext.supportLibraryVersion
     compile 'com.google.android.gms:play-services:8.4.0'
+//    compile project(':fgchecker')
+
+//    compile 'com.rvalerio:fgchecker:1.0'
 
     /*androidTestCompile 'junit:junit:4.12'
 

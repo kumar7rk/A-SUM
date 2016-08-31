@@ -10,4 +10,16 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+
+    <string-array name="AutomaticblockedApps">
+        <item name="com.desarrollodroide.repos"/>
+        <item name = "com.boopathy.raja.tutorial"/>
+      <!--  <item name = ""/>
+        <item name = ""/>
+        <item name = ""/>
+        <item name = ""/>
+        <item name = ""/>
+        <item name = ""/>-->
+    </string-array>
+
 </resources>

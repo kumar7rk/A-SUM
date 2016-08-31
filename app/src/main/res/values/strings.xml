@@ -44,4 +44,5 @@ Vivamus placerat lacus vel vehicula scelerisque, dui enim adipiscing lacus sit a
     <string name="stopService">StopService</string>
     <string name="startService">StartService</string>
     <string name="edit">Edit</string>
+
 </resources>

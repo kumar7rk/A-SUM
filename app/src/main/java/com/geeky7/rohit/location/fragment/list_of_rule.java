@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public class list_of_rule extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Main.showToast(getActivity(), list.get(position)+"");
+//                Main.showToast(getActivity(), list.get(position)+"");
                 if (position==0)
                     getFragmentManager().beginTransaction().replace(android.R.id.content,new AutomaticDetails()).commit();
                 if (position==1)

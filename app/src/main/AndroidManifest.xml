@@ -6,8 +6,10 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -26,10 +28,10 @@
         <activity android:name=".activity.FiveColorChangingTabsActivity" />
         <activity android:name=".activity.ThreeTabsQRActivity" />
         <activity android:name=".activity.BadgeActivity" />
-        <activity android:name=".activity.CustomColorActivity"
-                  android:label="@string/title_activity_custom_color"
-                  android:theme="@style/AppTheme.NoActionBar" />
-
+        <activity
+            android:name=".activity.CustomColorActivity"
+            android:label="@string/title_activity_custom_color"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.Configure"
             android:excludeFromRecents="true"
@@ -61,18 +63,21 @@
             android:enabled="true"
             android:exported="true" >
         </service>
-
         <service
             android:name=".service.SemiAutomatic"
             android:enabled="true"
             android:exported="true" >
         </service>
-
         <service
             android:name=".service.Manual"
             android:enabled="true"
             android:exported="true" >
         </service>
-
+        <service
+            android:name=".service.MyAccessibilityService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
+
 </manifest>
