@@ -11,6 +11,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -19,8 +20,8 @@ import android.widget.Toast;
 
 import com.geeky7.rohit.location.activity.ThreeTabsActivity;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -55,6 +56,9 @@ public class Main {
     private void checkPermission() {
         int permissionCheck = ContextCompat.checkSelfPermission(MyApplication.getAppContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION);
+        ActivityCompat.requestPermissions(new ThreeTabsActivity(),
+                new String[]{Manifest.permission.PACKAGE_USAGE_STATS},
+                permissionVariable);
         ActivityCompat.requestPermissions(new ThreeTabsActivity(),
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 permissionVariable);
@@ -111,7 +115,7 @@ public class Main {
                 appIcon.setBounds(0, 0, 40, 40);
 
                 //holder.apkName.setCompoundDrawables(appIcon, null, null, null);
-                Log.e("App ? " + Integer.toString(i), appName);
+                Log.i("AppName " + Integer.toString(i), appName);
             }
         }
         adapter = new ArrayAdapter<String>(mContext,
@@ -146,5 +150,37 @@ public class Main {
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(startMain);
         return true;
+    }
+    //takes user to app's page in settings from which could be selected permission
+    public void usageAccessSettingsPage(){
+        Intent intent = new Intent();
+//        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+//        Uri uri = Uri.fromParts("package", mContext.getPackageName(), null);
+//        intent.setData(uri);
+        mContext.startActivity(intent);
+    }
+    public ArrayAdapter<String> getInstalledApplicationsv2(){
+        ArrayAdapter<String> adapter;
+        ArrayList<String> list = new ArrayList<String>();
+        HashMap<String,String> listHM = new HashMap<>();
+        final PackageManager pm = MyApplication.getAppContext().getPackageManager();
+        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+
+        for (ApplicationInfo packageInfo : packages) {
+            if((packageInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
+                String packageName = packageInfo.packageName + "";
+                String appName = pm.getApplicationLabel(packageInfo) + "";
+                listHM.put(packageName,appName);
+//                list.add(packageName);
+//                list.add(appName);
+                Log.i("AppName ", packageName);
+                Log.i("AppNamess", appName);
+            }
+        }
+        adapter = new ArrayAdapter<String>(mContext,
+                android.R.layout.select_dialog_multichoice, list);
+        return adapter;
     }
 }

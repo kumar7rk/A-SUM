@@ -1,8 +1,10 @@
 package com.geeky7.rohit.location.activity;
 
 import android.Manifest;
+import android.app.AppOpsManager;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.TabMessage;
 import com.geeky7.rohit.location.fragment.MonitoringFragment;
@@ -32,6 +35,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
     private final int permissionVariable = 0;
     protected OnBackPressedListener onBackPressedListener;
     boolean running,pausedFromActionBar,a;
+    Main m;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
@@ -39,7 +43,13 @@ public class ThreeTabsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_basic);
 //        getWindow().setWindowAnimations(1);
 
+        m = new Main(this);
+
         checkPermission();
+        if(!usageAccessPermission()){
+            Main.showToast("Please grant this permission for app to function properly");
+            m.usageAccessSettingsPage();
+        }
         if (!running)
             startService();
 //        checkValues();
@@ -136,8 +146,9 @@ public class ThreeTabsActivity extends AppCompatActivity {
         int permissionCheck = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                new String[]{Manifest.permission.PACKAGE_USAGE_STATS},
                 permissionVariable);
+
     }
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -188,6 +199,14 @@ public class ThreeTabsActivity extends AppCompatActivity {
         onBackPressedListener = null;
         super.onDestroy();
     }
-
-
+    private boolean usageAccessPermission()
+    {
+/*        int result = getApplicationContext().checkCallingOrSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS);
+        return result == PackageManager.PERMISSION_GRANTED;*/
+        AppOpsManager appOps = (AppOpsManager) getApplicationContext()
+                .getSystemService(Context.APP_OPS_SERVICE);
+        int mode = appOps.checkOpNoThrow("android:get_usage_stats",
+                android.os.Process.myUid(), getApplicationContext().getPackageName());
+        return mode == AppOpsManager.MODE_ALLOWED;
+    }
 }

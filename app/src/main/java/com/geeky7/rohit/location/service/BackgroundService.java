@@ -99,6 +99,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         mHandler = new Handler();
         startRepeatingTask();
 //        startService(new Intent(this,MyAccessibilityService.class));
+//        m.usageAccessSettingsPage();
     }
 
         //only start fetching place name regularly if any of the scenario is selected
@@ -445,10 +446,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 if (currentApp.equals("de.dfki.appdetox")){
                     Main.showToast("Yes!!!!!");
                     // starting home screen everytime the app is in foreground;
-                    Intent startMain = new Intent(Intent.ACTION_MAIN);
-                    startMain.addCategory(Intent.CATEGORY_HOME);
-                    startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(startMain);
+                   m.showHomeScreen();
                 }
                 Log.i("PlacesForegroundApp", currentApp);
 
