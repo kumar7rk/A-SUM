@@ -1,18 +1,19 @@
 package com.geeky7.rohit.location.activity;
 
 import android.Manifest;
-import android.app.AppOpsManager;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.geeky7.rohit.location.Main;
@@ -33,26 +34,25 @@ public class ThreeTabsActivity extends AppCompatActivity {
 
     private BottomBar mBottomBar;
     private final int permissionVariable = 0;
-    protected OnBackPressedListener onBackPressedListener;
     boolean running,pausedFromActionBar,a;
     Main m;
+    public static View view;
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
-//        getWindow().setWindowAnimations(1);
 
         m = new Main(this);
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+//        getWindow().setWindowAnimations(1);
 
+        m.openLocationSettings(manager);
+        m.usageAccessSettingsPage();
         checkPermission();
-        if(!usageAccessPermission()){
-            Main.showToast("Please grant this permission for app to function properly");
-            m.usageAccessSettingsPage();
-        }
+
         if (!running)
             startService();
-//        checkValues();
         mBottomBar = BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.main);
 
@@ -108,7 +108,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
             }
         });
 
-}
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -170,43 +170,12 @@ public class ThreeTabsActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        // Necessary to restore the BottomBar's state, otherwise we would
-        // lose the current tab on orientation change.
         mBottomBar.onSaveInstanceState(outState);
-    }
-
-
-    public interface OnBackPressedListener {
-        void doBack();
-    }
-
-    public void setOnBackPressedListener(OnBackPressedListener onBackPressedListener) {
-        this.onBackPressedListener = onBackPressedListener;
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
-        /*if (onBackPressedListener != null){
-            onBackPressedListener.doBack();
-        }
-        else
-            super.onBackPressed();*/
     }
 
     @Override
     protected void onDestroy() {
-        onBackPressedListener = null;
         super.onDestroy();
     }
-    private boolean usageAccessPermission()
-    {
-/*        int result = getApplicationContext().checkCallingOrSelfPermission(Manifest.permission.PACKAGE_USAGE_STATS);
-        return result == PackageManager.PERMISSION_GRANTED;*/
-        AppOpsManager appOps = (AppOpsManager) getApplicationContext()
-                .getSystemService(Context.APP_OPS_SERVICE);
-        int mode = appOps.checkOpNoThrow("android:get_usage_stats",
-                android.os.Process.myUid(), getApplicationContext().getPackageName());
-        return mode == AppOpsManager.MODE_ALLOWED;
-    }
+
 }

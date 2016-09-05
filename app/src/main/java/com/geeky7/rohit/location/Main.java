@@ -2,6 +2,7 @@ package com.geeky7.rohit.location;
 
 import android.Manifest;
 import android.app.ActivityManager;
+import android.app.AppOpsManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
@@ -10,11 +11,14 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
@@ -51,29 +55,6 @@ public class Main {
 
     public static void showToast(String text) {
         Toast.makeText(MyApplication.getAppContext(), text, Toast.LENGTH_LONG).show();
-    }
-
-    private void checkPermission() {
-        int permissionCheck = ContextCompat.checkSelfPermission(MyApplication.getAppContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION);
-        ActivityCompat.requestPermissions(new ThreeTabsActivity(),
-                new String[]{Manifest.permission.PACKAGE_USAGE_STATS},
-                permissionVariable);
-        ActivityCompat.requestPermissions(new ThreeTabsActivity(),
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                permissionVariable);
-    }
-
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case permissionVariable: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    return;
-            }
-        }
     }
 
     public String getForegroungApp() {
@@ -126,7 +107,6 @@ public class Main {
         @Override
         public void run() {
             try {
-                runThisCode();
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -141,9 +121,6 @@ public class Main {
     public void stopRepeatingTask() {
         mHandler.removeCallbacks(mStatusChecker);
     }
-    public void runThisCode(){
-
-    }
     public boolean showHomeScreen(){
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
@@ -153,13 +130,13 @@ public class Main {
     }
     //takes user to app's page in settings from which could be selected permission
     public void usageAccessSettingsPage(){
-        Intent intent = new Intent();
-//        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setAction(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-//        Uri uri = Uri.fromParts("package", mContext.getPackageName(), null);
-//        intent.setData(uri);
-        mContext.startActivity(intent);
+        if(!usageAccessPermission()){
+            Main.showToast("Please grant this permission for app to function properly");
+            Intent intent = new Intent();
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setAction(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            mContext.startActivity(intent);
+        }
     }
     public ArrayAdapter<String> getInstalledApplicationsv2(){
         ArrayAdapter<String> adapter;
@@ -172,7 +149,7 @@ public class Main {
             if((packageInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
                 String packageName = packageInfo.packageName + "";
                 String appName = pm.getApplicationLabel(packageInfo) + "";
-                listHM.put(packageName,appName);
+                listHM.put(packageName, appName);
 //                list.add(packageName);
 //                list.add(appName);
                 Log.i("AppName ", packageName);
@@ -183,4 +160,23 @@ public class Main {
                 android.R.layout.select_dialog_multichoice, list);
         return adapter;
     }
+    public boolean openLocationSettings(LocationManager service) {
+        boolean enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        if (!enabled) {
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            mContext.startActivity(intent);
+        }
+        return enabled;
+    }
+    public boolean usageAccessPermission()
+    {
+        AppOpsManager appOps = (AppOpsManager) mContext
+                .getSystemService(Context.APP_OPS_SERVICE);
+        int mode = appOps.checkOpNoThrow("android:get_usage_stats",
+                android.os.Process.myUid(), mContext.getPackageName());
+        return mode == AppOpsManager.MODE_ALLOWED;
+    }
+
+
 }

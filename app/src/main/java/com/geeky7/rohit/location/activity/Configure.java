@@ -18,11 +18,10 @@ import android.widget.Button;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 
-public class Configure extends AppCompatActivity implements ThreeTabsActivity.OnBackPressedListener {
+public class Configure extends AppCompatActivity {
     CheckBoxPreference pref;
     Button cancelB,nextB;
     AppCompatDelegate mDelegate;
-    protected ThreeTabsActivity.OnBackPressedListener onBackPressedListener;
 
     @Override
         protected void onCreate(Bundle savedInstanceState)
@@ -36,11 +35,13 @@ public class Configure extends AppCompatActivity implements ThreeTabsActivity.On
             getDelegate().onCreate(savedInstanceState);
             getFragmentManager().beginTransaction().replace(R.id.content, new MyPreferenceFragment())
                     .commit();
+
             nextB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startActivity(new Intent(Configure.this,SelectRule.class));
                     Main.showToast(getApplicationContext(),"Clicked");
+
                     /*getFragmentManager().beginTransaction()
                             .remove(getFragmentManager().findFragmentByTag("tag")).commit();
                     Main.showToast(getApplicationContext(), "Removed");
@@ -59,11 +60,7 @@ public class Configure extends AppCompatActivity implements ThreeTabsActivity.On
             });
         }
 
-    @Override
-    public void doBack() {
-//        new MonitoringFragment().loadItems();
 
-    }
     public static class MyPreferenceFragment extends PreferenceFragment
     {
         @Override
@@ -140,14 +137,6 @@ public class Configure extends AppCompatActivity implements ThreeTabsActivity.On
         getDelegate().onStop();
     }
 
-/*
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        getDelegate().onDestroy();
-    }
-*/
-
     public void invalidateOptionsMenu() {
         getDelegate().invalidateOptionsMenu();
     }
@@ -172,31 +161,9 @@ public class Configure extends AppCompatActivity implements ThreeTabsActivity.On
         return super.onOptionsItemSelected(item);
     }
 
-
-
-/*    public interface OnBackPressedListener {
-        void doBack();
-    }*/
-
-    public void setOnBackPressedListener(ThreeTabsActivity.OnBackPressedListener onBackPressedListener) {
-        this.onBackPressedListener = onBackPressedListener;
-    }
-
-    @Override
-    public void onBackPressed() {
-//        getFragmentManager().beginTransaction().replace(android.R.id.content, new MonitoringFragment()).commit();
-        finish();
-       /* if (onBackPressedListener != null)
-            onBackPressedListener.doBack();
-        else
-            super.onBackPressed();*/
-    }
-
     @Override
     protected void onDestroy() {
-        onBackPressedListener = null;
         getDelegate().onDestroy();
         super.onDestroy();
     }
-
 }
