@@ -11,11 +11,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.geeky7.rohit.location.R;
-import com.geeky7.rohit.location.activity.ThreeTabsActivity;
 
 import java.util.ArrayList;
 
-public class MonitoringFragment extends Fragment implements ThreeTabsActivity.OnBackPressedListener{
+public class MonitoringFragment extends Fragment{
 
     ListView listView;
     private ArrayAdapter<String> adapter;
@@ -31,7 +30,6 @@ public class MonitoringFragment extends Fragment implements ThreeTabsActivity.On
         View v = inflater.inflate(R.layout.fragment_monitoring, container, false);
         listView = (ListView)v.findViewById(R.id.listView);
 
-        ((ThreeTabsActivity) getActivity()).setOnBackPressedListener(this);
         return v;
     }
 
@@ -66,12 +64,6 @@ public class MonitoringFragment extends Fragment implements ThreeTabsActivity.On
             list.add(getResources().getString(R.string.bed_dark));
         if (walking)
             list.add(getResources().getString(R.string.walking));
-//        Main.showToast(getActivity(), restaurant + "");
-    }
-
-    @Override
-    public void doBack() {
-        loadItems();
     }
 
 }

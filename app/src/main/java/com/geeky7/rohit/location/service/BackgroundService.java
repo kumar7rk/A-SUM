@@ -1,6 +1,7 @@
 package com.geeky7.rohit.location.service;
 
 import android.app.ActivityManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.ActivityRecognition;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -57,6 +59,8 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     private boolean mRequestingLocationUpdates;
     private String mLastUpdateTime;
 
+    private boolean walking;
+    private boolean googleApiClientConnected;
     static Context context;
     Main m;
 
@@ -105,12 +109,14 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         //only start fetching place name regularly if any of the scenario is selected
     private boolean isAnyScenarioSelected() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
         boolean restaurant = sharedPrefs.getBoolean(getResources().getString(R.string.restaurant), false);
         boolean religious_place = sharedPrefs.getBoolean(getResources().getString(R.string.religious_place), false);
         boolean movie_theatre = sharedPrefs.getBoolean(getResources().getString(R.string.movie_theatre), false);
+
         if (restaurant||religious_place||movie_theatre)
             return true;
-//            startRepeatingTask();
+
         return false;
     }
 
@@ -141,8 +147,10 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
+                .addApi(ActivityRecognition.API)
                 .build();
         createLocationRequest();
+//        walking();
     }
 
     private void createLocationRequest() {
@@ -153,7 +161,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
     }
     protected void updateToast(){
-        Main.showToast(getApplicationContext(), "New Coordinates: " + mCurrentLocation.getLatitude() + "\n" + mCurrentLocation.getLongitude());
+        Main.showToast("New Coordinates: " + mCurrentLocation.getLatitude() + "\n" + mCurrentLocation.getLongitude());
     }
     protected void startLocationupdates(){
         LocationServices.FusedLocationApi.requestLocationUpdates(
@@ -178,6 +186,26 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         }
         if (mRequestingLocationUpdates)
             startLocationupdates();
+
+        googleApiClientConnected = true;
+        walking();
+    }
+
+    private void walking() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        walking = sharedPrefs.getBoolean(getResources().getString(R.string.walking), false);
+        if (walking) {
+            Intent intent = new Intent(getApplicationContext(), Walking.class);
+            PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(),0,
+                    intent,PendingIntent.FLAG_UPDATE_CURRENT);
+            ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(mGoogleApiClient, 1000
+                    ,pendingIntent);
+//            Main.showToast("Walking is true BGService");
+        }
+        else if (!walking){
+            stopService(new Intent(getApplicationContext(), Walking.class));
+//            Main.showToast("Walking is false BGService");
+        }
     }
 
     @Override
@@ -455,6 +483,8 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                     String sb = sbMethod().toString();
                     new PlacesTask().execute(sb);
                 }
+                if(googleApiClientConnected)
+                    walking();
                 /*else
                     Main.showToast(getApplicationContext(),"NoScenarioSelected,Try selecting one");*/
             } catch (UnsupportedEncodingException e) {
