@@ -49,12 +49,13 @@ public class Manual extends Service {
     private void blockAppLaunched() {
         String currentApp = m.getForegroungApp();
         getListOfBlockedApplications();
+        Main.showToast("currentApp"+currentApp);
         if (listOfBlockedApps.contains(currentApp))
             m.showHomeScreen();
     }
     public void getListOfBlockedApplications(){
         listOfBlockedApps = preferences.getStringSet("manualApps", listOfBlockedApps);
-        /*for (String s : listOfBlockedApps)
-            Main.showToast(s);*/
+        for (String s : listOfBlockedApps)
+            Main.showToast(s);
     }
 }

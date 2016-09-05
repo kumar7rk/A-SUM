@@ -45,6 +45,4 @@ Vivamus placerat lacus vel vehicula scelerisque, dui enim adipiscing lacus sit a
     <string name="startService">StartService</string>
     <string name="edit">Edit</string>
 
-    <string name="device_admin_explanation">For experimentation purposes only</string>
-
 </resources>

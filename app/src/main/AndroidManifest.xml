@@ -9,13 +9,6 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions"/>
-    <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-feature
-        android:name="android.software.device_admin"
-        android:required="true"/>
-
 
     <application
         android:name=".MyApplication"
@@ -84,23 +77,6 @@
         </service>
         <service
             android:name=".service.MyAccessibilityService"
-            android:enabled="true"
-            android:exported="true" >
-        </service>
-
-        <receiver
-        android:name="AdminReceiver"
-        android:permission="android.permission.BIND_DEVICE_ADMIN">
-        <meta-data
-            android:name="android.app.device_admin"
-            android:resource="@xml/device_admin"/>
-
-        <intent-filter>
-            <action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
-        </intent-filter>
-    </receiver>
-        <service
-            android:name=".service.Walking"
             android:enabled="true"
             android:exported="true" >
         </service>
