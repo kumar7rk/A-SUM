@@ -1,1 +1,1 @@
-include ':app', ':bottom-bar',':fgchecker'
+include ':app', ':bottom-bar'

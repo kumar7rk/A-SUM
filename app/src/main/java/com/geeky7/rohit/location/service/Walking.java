@@ -72,13 +72,13 @@ public class Walking extends IntentService {
                 case DetectedActivity.WALKING:
                     Log.i(TAG, "Walking " + detectedActivity.getConfidence());
                     Main.showToast("Walking " + detectedActivity.getConfidence());
-                    createNotification("Are you walking", detectedActivity.getConfidence() + "", getApplicationContext());
+                    createNotification("you were walking", detectedActivity.getConfidence() + "", getApplicationContext());
                     if (detectedActivity.getConfidence()>55 && walking)
                         lockMeNow(ThreeTabsActivity.view);
                     break;
                 case DetectedActivity.STILL:
                     Log.i(TAG, "Standing " + detectedActivity.getConfidence());
-                    createNotification("Are you standing", detectedActivity.getConfidence() + "", getApplicationContext());
+                    createNotification("You are still", detectedActivity.getConfidence() + "", getApplicationContext());
 //                    unlockMeNow(MainActivity.view);
                     break;
             }

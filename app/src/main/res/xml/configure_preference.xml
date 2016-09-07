@@ -4,7 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="Select Scenario(s) to monitor">
+        android:title="Select Scenario(s) to monitor"
+        android:key="checkbox_preference">
 
         <CheckBoxPreference
             android:key="@string/restaurant"

@@ -43,18 +43,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.Configure"
+            android:label="@string/action_configure"
             android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:noHistory="true"
             android:parentActivityName=".activity.ThreeTabsActivity" >
         </activity>
         <activity
             android:name=".activity.SelectRule"
-            android:excludeFromRecents="true"
             android:label="@string/title_activity_select_rule"
-            android:launchMode="singleInstance"
-            android:noHistory="true"
-            android:parentActivityName=".activity.ThreeTabsActivity" >
+            android:excludeFromRecents="true"
+            android:parentActivityName=".activity.Configure" >
         </activity>
 
         <service

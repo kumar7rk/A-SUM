@@ -36,12 +36,9 @@ public class list_of_rule extends Fragment {
         adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, list);
         listView.setAdapter(adapter);
-//        adapter.notifyDataSetChanged();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Main.showToast(getActivity(), list.get(position)+"");
-
                 if (position==0)
                     getFragmentManager().beginTransaction().replace(android.R.id.content,new AutomaticDetails()).commit();
                 if (position==1)

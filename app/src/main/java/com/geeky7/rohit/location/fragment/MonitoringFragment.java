@@ -46,8 +46,7 @@ public class MonitoringFragment extends Fragment{
         super.onActivityCreated(savedInstanceState);
         loadItems();
     }
-    private void checkValues()
-    {
+    private void checkValues(){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         boolean restaurant = sharedPrefs.getBoolean(getResources().getString(R.string.restaurant), false);
         boolean religious_place = sharedPrefs.getBoolean(getResources().getString(R.string.religious_place), false);
