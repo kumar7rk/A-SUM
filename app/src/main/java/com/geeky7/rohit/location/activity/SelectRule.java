@@ -12,74 +12,79 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 
 public class SelectRule extends AppCompatActivity {
 
-    Button cancelB,nextB;
+    Button backB, okB;
     RadioButton radioButton;
     RadioGroup radioGroup;
-    String checkRadioButton;
     SharedPreferences preferences;
+    Main m;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_rule);
-        cancelB = (Button)findViewById(R.id.cancel);
-        nextB = (Button)findViewById(R.id.next);
+        backB = (Button)findViewById(R.id.back);
+        okB = (Button)findViewById(R.id.ok);
         radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
+
+        m = new Main(getApplicationContext());
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         String rule = "AA";
-        rule = sharedPrefs.getString("ThisIsARule", rule);
-        nextB.setOnClickListener(new View.OnClickListener() {
+        rule = sharedPrefs.getString(CONSTANTS.SELECTED_RULE, rule);
+        okB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int selectedRB = radioGroup.getCheckedRadioButtonId();
-                radioButton = (RadioButton)findViewById(selectedRB);
+                radioButton = (RadioButton) findViewById(selectedRB);
                 preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = preferences.edit();
                 String rule = radioButton.getText().toString();
-                editor.putString("ThisIsARule",rule);
+                editor.putString(CONSTANTS.SELECTED_RULE, rule);
                 editor.commit();
                 Main.showToast(getApplication(), rule + " Added");
+                setResult(0);
                 finish();
+
+
+                //startActivity(new Intent(SelectRule.this,ThreeTabsActivity.class)); using this opens selectRuleActivity
+                // instead of configure;
             }
         });
-        cancelB.setOnClickListener(new View.OnClickListener() {
+        backB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Main.showToast(getApplicationContext(), "Cancelled");
+                setResult(1);
                 finish();
             }
         });
     }
 
-    public void onRadioButtonClicked(View view){
-
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_select_rule, menu);
+//        getMenuInflater().inflate(R.menu.menu_select_rule, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                setResult(1);
+                finish();
+                return true;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            case R.id.action_settings:
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -91,5 +96,23 @@ public class SelectRule extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.rule_preference);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(1);
+        finish();
+        super.onBackPressed();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+    }
+    @Override
+    protected void onResume() {
+        super.onPostResume();
+        getDelegate().onPostResume();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 }

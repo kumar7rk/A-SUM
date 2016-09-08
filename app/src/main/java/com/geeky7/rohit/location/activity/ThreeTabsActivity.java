@@ -5,9 +5,12 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.TabMessage;
@@ -25,11 +29,10 @@ import com.geeky7.rohit.location.fragment.Violations;
 import com.geeky7.rohit.location.fragment.list_of_rule;
 import com.geeky7.rohit.location.service.BackgroundService;
 import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.BottomBarBadge;
 import com.roughike.bottombar.OnMenuTabClickListener;
 
-/**
- * Created by iiro on 7.6.2016.
- */
+
 public class ThreeTabsActivity extends AppCompatActivity {
 
     private BottomBar mBottomBar;
@@ -37,25 +40,27 @@ public class ThreeTabsActivity extends AppCompatActivity {
     boolean running,pausedFromActionBar,a;
     Main m;
     public static View view;
-
+    SharedPreferences preferences;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 
+        Bundle bundle = savedInstanceState;
         m = new Main(this);
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
-//        getWindow().setWindowAnimations(1);
 
         m.openLocationSettings(manager);
         m.usageAccessSettingsPage();
         checkPermission();
 
-        if (!running)
+        if (!running && manager.isProviderEnabled(LocationManager.GPS_PROVIDER))
             startService();
         mBottomBar = BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.main);
 
+        updateBadge();
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
 
             @Override
@@ -65,12 +70,10 @@ public class ThreeTabsActivity extends AppCompatActivity {
 
                 switch (menuItemId) {
                     case R.id.bb_menu_monitoring:
-//                        fragment = new Monitoring();
                         fragment = new MonitoringFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
                     case R.id.bb_menu_rules:
-//                        fragment = new Rules();
                         fragment = new list_of_rule();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
@@ -86,28 +89,48 @@ public class ThreeTabsActivity extends AppCompatActivity {
             @Override
             public void onMenuTabReSelected(int menuItemId) {
                 Toast.makeText(getApplicationContext(), TabMessage.get(menuItemId, true), Toast.LENGTH_SHORT).show();
+
                 Fragment fragment = new Rules();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+
                 switch (menuItemId) {
+
                     case R.id.bb_menu_monitoring:
-//                        fragment = new Monitoring();
                         fragment = new MonitoringFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
+
                     case R.id.bb_menu_rules:
                         fragment = new list_of_rule();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
+
                     case R.id.bb_menu_violation:
                         fragment = new Violations();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
+
                     default:
                         fragmentTransaction.remove(fragment);
                 }
             }
         });
+    }
 
+    public void updateBadge() {
+        int redColor = Color.parseColor("#FF0000");
+        int counter = Integer.MAX_VALUE;
+        m = new Main(this);
+        m.countSelectedScenarioForBadge();
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        counter = preferences.getInt(CONSTANTS.NUMBER_OF_SCENARIOS_SELECTED, counter);
+
+        BottomBarBadge monitoringBadge = mBottomBar.makeBadgeForTabAt(0, redColor, counter);
+        monitoringBadge.setAutoShowAfterUnSelection(true);
+        
+        BottomBarBadge violationBadge = mBottomBar.makeBadgeForTabAt(2, redColor, 0);
+        violationBadge.setAutoShowAfterUnSelection(true);
     }
 
     @Override
@@ -117,19 +140,14 @@ public class ThreeTabsActivity extends AppCompatActivity {
                 startActivity(new Intent(this,Configure.class));
             case R.id.stop_service:
                 Intent serviceIntent = new Intent(ThreeTabsActivity.this, BackgroundService.class);
-                /*stopService(new Intent(ThreeTabsActivity.this, Automatic.class));
-                stopService(new Intent(ThreeTabsActivity.this,SemiAutomatic.class));
-                stopService(new Intent(ThreeTabsActivity.this,Manual.class));*/
+
                 if (running){
                     stopService(serviceIntent);
-//                    getActionBar().hide();
-//                    getActionBar().isShowing()
                     running = false;
                 }
             case R.id.start_service:
                 if (!running){
                     startService();
-//                    getActionBar().hide();
                     running = true;
                 }
         }
@@ -138,7 +156,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu,menu);
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -178,4 +196,21 @@ public class ThreeTabsActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+
+        Fragment fragment;
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragment = new MonitoringFragment();
+        fragmentTransaction.replace(android.R.id.content, fragment).commit();
+
+    }
+
+    @Override
+    protected void onPause() {
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+        super.onPause();
+    }
 }

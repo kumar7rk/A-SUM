@@ -18,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -48,6 +49,7 @@ import java.util.List;
 
 public class BackgroundService extends Service implements GoogleApiClient.OnConnectionFailedListener,
 GoogleApiClient.ConnectionCallbacks,LocationListener{
+
     public static final String TAG = "Location";
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS/2;
@@ -93,6 +95,18 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         super.onCreate();
        m = new Main(getApplicationContext());
         Main.showToast("BackgroundService Created");
+/*
+        PugNotification.with(getApplicationContext())
+                .load()
+                .title("1")
+                .message("message")
+                .smallIcon(R.drawable.pugnotification_ic_launcher)
+                .bigTextStyle("bigtext")
+                .largeIcon(R.drawable.pugnotification_ic_launcher)
+                .flags(Notification.DEFAULT_ALL)
+                .simple()
+                .build();
+*/
 //        mRequestingLocationUpdates = false;
         mLastUpdateTime = "";
         buildGoogleApiClient();
@@ -101,31 +115,15 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
             startLocationupdates();
 
         mHandler = new Handler();
-        startRepeatingTask();
+
 //        startService(new Intent(this,MyAccessibilityService.class));
-//        m.usageAccessSettingsPage();
-    }
-
-        //only start fetching place name regularly if any of the scenario is selected
-    private boolean isAnyScenarioSelected() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        boolean restaurant = sharedPrefs.getBoolean(getResources().getString(R.string.restaurant), false);
-        boolean religious_place = sharedPrefs.getBoolean(getResources().getString(R.string.religious_place), false);
-        boolean movie_theatre = sharedPrefs.getBoolean(getResources().getString(R.string.movie_theatre), false);
-
-        if (restaurant||religious_place||movie_theatre)
-            return true;
-
-        return false;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Main.showToast(getApplicationContext(), "BackgroundServiceDestroyed");
-
-        stopSelf();
+//        stopSelf();
         stopService(new Intent(BackgroundService.this, Automatic.class));
         stopService(new Intent(BackgroundService.this, SemiAutomatic.class));
         stopService(new Intent(BackgroundService.this, Manual.class));
@@ -138,7 +136,6 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        isAnyScenarioSelected();
         return START_STICKY;
     }
 
@@ -184,13 +181,15 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
             mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
             updateToast();
         }
+
         if (mRequestingLocationUpdates)
             startLocationupdates();
-
+        startRepeatingTask();
         googleApiClientConnected = true;
         walking();
     }
 
+    //check is user is selected if yes then listen to the recognised activity;
     private void walking() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         walking = sharedPrefs.getBoolean(getResources().getString(R.string.walking), false);
@@ -216,7 +215,6 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
     @Override
     public void onLocationChanged(Location location) {
-
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         updateToast();
@@ -238,8 +236,8 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         double mLatitude = -34.923792;
         double mLongitude = 138.6047722;
         int mRadius = 50;
-/*        mLatitude = mCurrentLocation.getLatitude();
-        mLongitude = mCurrentLocation.getLongitude();*/
+        mLatitude = mCurrentLocation.getLatitude();
+        mLongitude = mCurrentLocation.getLongitude();
 
         String old = "AIzaSyC0ZdWHP1aun8cfHq9aXzOOztUaD1Fmw_I";
         String number1 = "AIzaSyCth6KThdK_C9mztGc2dadvK82yCvktO-o";
@@ -326,7 +324,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 if (!name.equals("Nothing")){
                     String rule = "AA";
-                    rule = sharedPrefs.getString("ThisIsARule", rule);
+                    rule = sharedPrefs.getString(CONSTANTS.SELECTED_RULE, rule);
                     Main.showToast(getApplicationContext(), "RuleName: " + rule);
 
                     if (rule.equalsIgnoreCase("Automatic")){
@@ -479,7 +477,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 Log.i("PlacesForegroundApp", currentApp);
 
                 //check if any scenarios is selected if yes then call the places code which afterwards every 5 seconds
-                if(isAnyScenarioSelected()){
+                if(m.isAnyScenarioSelected()){
                     String sb = sbMethod().toString();
                     new PlacesTask().execute(sb);
                 }

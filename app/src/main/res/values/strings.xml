@@ -1,50 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="lorem_ipsum" translatable="false">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed posuere interdum sem. Quisque ligula eros ullamcorper quis, lacinia quis facilisis sed sapien. Mauris varius diam vitae arcu. Sed arcu lectus auctor vitae, consectetuer et venenatis eget velit. Sed augue orci, lacinia eu tincidunt et eleifend nec lacus. Donec ultricies nisl ut felis, suspendisse potenti. Lorem ipsum ligula ut hendrerit mollis, ipsum erat vehicula risus, eu suscipit sem libero nec erat. Aliquam erat volutpat. Sed congue augue vitae neque. Nulla consectetuer porttitor pede. Fusce purus morbi tortor magna condimentum vel, placerat id blandit sit amet tortor.
+    <string name="lorem_ipsum" translatable="false">SomeLongText</string>
 
-Mauris sed libero. Suspendisse facilisis nulla in lacinia laoreet, lorem velit accumsan velit vel mattis libero nisl et sem. Proin interdum maecenas massa turpis sagittis in, interdum non lobortis vitae massa. Quisque purus lectus, posuere eget imperdiet nec sodales id arcu. Vestibulum elit pede dictum eu, viverra non tincidunt eu ligula.
+    <string name="title_activity_custom_color" translatable="false">CustomColorActivity</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="hello_world" translatable="false">Hello world!</string>
+    <string name="action_settings" translatable="false">Settings</string>
 
-Nam molestie nec tortor. Donec placerat leo sit amet velit. Vestibulum id justo ut vitae massa. Proin in dolor mauris consequat aliquam. Donec ipsum, vestibulum ullamcorper venenatis augue. Aliquam tempus nisi in auctor vulputate, erat felis pellentesque augue nec, pellentesque lectus justo nec erat. Aliquam et nisl. Quisque sit amet dolor in justo pretium condimentum.
+    <string name="monitoring" translatable="false">Monitoring</string>
+    <string name="rules" translatable="false">Rule</string>
+    <string name="violations" translatable="false">Violations</string>
 
-Vivamus placerat lacus vel vehicula scelerisque, dui enim adipiscing lacus sit amet sagittis, libero enim vitae mi. In neque magna posuere, euismod ac tincidunt tempor est. Ut suscipit nisi eu purus. Proin ut pede mauris eget ipsum. Integer vel quam nunc commodo consequat. Integer ac eros eu tellus dignissim viverra. Maecenas erat aliquam erat volutpat. Ut venenatis ipsum quis turpis. Integer cursus scelerisque lorem. Sed nec mauris id quam blandit consequat. Cras nibh mi hendrerit vitae, dapibus et aliquam et magna. Nulla vitae elit. Mauris consectetuer odio vitae augue.
+    <string name="restaurant" translatable="false">Restaurant</string>
+    <string name="religious_place" translatable="false">Religious Place</string>
+    <string name="movie_theatre" translatable="false">Movie Theatre</string>
+    <string name="bed_dark" translatable="false">Bed &#38;&#38; Dark</string>
+    <string name="walking" translatable="false">Walking</string>
 
- Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed posuere interdum sem. Quisque ligula eros ullamcorper quis, lacinia quis facilisis sed sapien. Mauris varius diam vitae arcu. Sed arcu lectus auctor vitae, consectetuer et venenatis eget velit. Sed augue orci, lacinia eu tincidunt et eleifend nec lacus. Donec ultricies nisl ut felis, suspendisse potenti. Lorem ipsum ligula ut hendrerit mollis, ipsum erat vehicula risus, eu suscipit sem libero nec erat. Aliquam erat volutpat. Sed congue augue vitae neque. Nulla consectetuer porttitor pede. Fusce purus morbi tortor magna condimentum vel, placerat id blandit sit amet tortor.
+    <string name="action_configure" translatable="false">Configure</string>
+    <string name="title_activity_configure" translatable="false">Configure</string>
+    <string name="title_activity_select_rule" translatable="false">Select Rule</string>
 
-Mauris sed libero. Suspendisse facilisis nulla in lacinia laoreet, lorem velit accumsan velit vel mattis libero nisl et sem. Proin interdum maecenas massa turpis sagittis in, interdum non lobortis vitae massa. Quisque purus lectus, posuere eget imperdiet nec sodales id arcu. Vestibulum elit pede dictum eu, viverra non tincidunt eu ligula.
-
-Nam molestie nec tortor. Donec placerat leo sit amet velit. Vestibulum id justo ut vitae massa. Proin in dolor mauris consequat aliquam. Donec ipsum, vestibulum ullamcorper venenatis augue. Aliquam tempus nisi in auctor vulputate, erat felis pellentesque augue nec, pellentesque lectus justo nec erat. Aliquam et nisl. Quisque sit amet dolor in justo pretium condimentum.
-
-Vivamus placerat lacus vel vehicula scelerisque, dui enim adipiscing lacus sit amet sagittis, libero enim vitae mi. In neque magna posuere, euismod ac tincidunt tempor est. Ut suscipit nisi eu purus. Proin ut pede mauris eget ipsum. Integer vel quam nunc commodo consequat. Integer ac eros eu tellus dignissim viverra. Maecenas erat aliquam erat volutpat. Ut venenatis ipsum quis turpis. Integer cursus scelerisque lorem. Sed nec mauris id quam blandit consequat. Cras nibh mi hendrerit vitae, dapibus et aliquam et magna. Nulla vitae elit. Mauris consectetuer odio vitae augue.</string>
-        <string name="title_activity_custom_color" translatable="false">CustomColorActivity</string>
-        <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-
-        <string name="hello_world" translatable="false">Hello world!</string>
-        <string name="action_settings" translatable="false">Settings</string>
-
-        <string name="monitoring" translatable="false">Monitoring</string>
-        <string name="rules" translatable="false">Rule</string>
-        <string name="violations">Violations</string>
-
-        <string name="restaurant" translatable="false">Restaurant</string>
-        <string name="religious_place" translatable="false">Religious Place</string>
-        <string name="movie_theatre" translatable="false">Movie Theatre</string>
-        <string name="bed_dark" translatable="false">Bed &#38;&#38; Dark</string>
-        <string name="walking">Walking</string>
-
-        <string name="action_configure">Configure</string>
-        <string name="title_activity_configure">Configure</string>
-
-        <string name="string_ok">OK</string>
-    <string name="title_activity_select_rule">Select Rule</string>
-        <string name="cancel">Cancel</string>
+    <string name="string_ok" translatable="false">OK</string>
+    <string name="back" translatable="false">Back</string>
+    <string name="cancel" translatable="false">Cancel</string>
     <string name="next">Next</string>
-    <string name="automatic">Automatic</string>
-    <string name="semi_automatic">SemiAutomatic</string>
-    <string name="manual">Manual</string>
-    <string name="stopService">StopService</string>
-    <string name="startService">StartService</string>
-    <string name="edit">Edit</string>
+    <string name="edit" translatable="false">Edit</string>
 
-    <string name="device_admin_explanation">For experimentation purposes only</string>
+    <string name="automatic" translatable="false">Automatic</string>
+    <string name="semi_automatic" translatable="false">SemiAutomatic</string>
+    <string name="manual">Manual</string>
+
+    <string name="stopService" translatable="false">StopService</string>
+    <string name="startService" translatable="false">StartService</string>
+
+    <string name="device_admin_explanation" translatable="false">For experimentation purposes only</string>
 
 </resources>

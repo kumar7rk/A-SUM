@@ -3,7 +3,6 @@ package com.geeky7.rohit.location.activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.PreferenceFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,18 +18,23 @@ import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 
 public class Configure extends AppCompatActivity {
-    CheckBoxPreference pref;
     Button cancelB,nextB;
     AppCompatDelegate mDelegate;
+//    CheckBoxPreference pref;
+    Main m;
 
     @Override
-        protected void onCreate(Bundle savedInstanceState)
-        {
+        protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_configure);
-//            getWindow().setWindowAnimations(2);
             cancelB = (Button)findViewById(R.id.cancel);
             nextB = (Button)findViewById(R.id.next);
+
+            m = new Main(getApplicationContext());
+            m.initialValues();
+
+            overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+
             getDelegate().installViewFactory();
             getDelegate().onCreate(savedInstanceState);
             getFragmentManager().beginTransaction().replace(R.id.content, new MyPreferenceFragment())
@@ -39,27 +43,24 @@ public class Configure extends AppCompatActivity {
             nextB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(Configure.this,SelectRule.class));
-                    Main.showToast(getApplicationContext(),"Clicked");
-
-                    /*getFragmentManager().beginTransaction()
-                            .remove(getFragmentManager().findFragmentByTag("tag")).commit();
-                    Main.showToast(getApplicationContext(), "Removed");
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.content, new SelectRule.MyRuleFragment()).commit();
-                    Main.showToast(getApplicationContext(),"replaced");*/
-
+                    startActivityForResult(new Intent(Configure.this, SelectRule.class),1);
                 }
             });
             cancelB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Main.showToast(getApplicationContext(),"Cancelled");
+                    m.cancelOperation();
                     finish();
                 }
             });
         }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==0)
+            finish();
+    }
 
     public static class MyPreferenceFragment extends PreferenceFragment
     {
@@ -70,7 +71,6 @@ public class Configure extends AppCompatActivity {
             addPreferencesFromResource(R.xml.configure_preference);
         }
     }
-
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -89,7 +89,7 @@ public class Configure extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_configure, menu);
+        //getMenuInflater().inflate(R.menu.menu_configure, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -117,6 +117,7 @@ public class Configure extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         getDelegate().onPostResume();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
 
     @Override
@@ -162,8 +163,20 @@ public class Configure extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+    }
+
+    @Override
     protected void onDestroy() {
         getDelegate().onDestroy();
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        m.cancelOperation();
     }
 }

@@ -1,28 +1,24 @@
 package com.geeky7.rohit.location;
 
-import android.Manifest;
 import android.app.ActivityManager;
 import android.app.AppOpsManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
-
-import com.geeky7.rohit.location.activity.ThreeTabsActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,11 +31,12 @@ import java.util.TreeMap;
  */
 public class Main {
 
-    private final int permissionVariable = 0;
     Context mContext;
     private int mInterval = 5000; // 5 seconds by default, can be changed later
-    private Handler mHandler;
+    SharedPreferences preferences;
+    boolean restaurant,religious_place,movie_theatre,bedAndDark,walking;
 
+    private Handler mHandler;
     public Main(Context mContext) {
         this.mContext = mContext;
     }
@@ -177,6 +174,65 @@ public class Main {
                 android.os.Process.myUid(), mContext.getPackageName());
         return mode == AppOpsManager.MODE_ALLOWED;
     }
+    public int countSelectedScenarioForBadge() {
+        int counter = 0;
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 
+        boolean restaurant = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.restaurant), false);
+        boolean religious_place = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.religious_place), false);
+        boolean movie_theatre = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.movie_theatre), false);
+        boolean bedAndDark= sharedPrefs.getBoolean(mContext.getResources().getString(R.string.bed_dark), false);
+        boolean walking = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.walking), false);
 
+        if (restaurant)
+            counter++;
+        if (religious_place)
+            counter++;
+        if (movie_theatre)
+            counter++;
+        if (bedAndDark)
+            counter++;
+        if (walking)
+            counter++;
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(CONSTANTS.NUMBER_OF_SCENARIOS_SELECTED,counter);
+        editor.commit();
+        return counter;
+    }
+
+    public void initialValues(){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
+
+        restaurant = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.restaurant), false);
+        religious_place = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.religious_place), false);
+        movie_theatre = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.movie_theatre), false);
+        bedAndDark= sharedPrefs.getBoolean(mContext.getResources().getString(R.string.bed_dark), false);
+        walking = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.walking), false);
+    }
+    public void cancelOperation(){
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putBoolean(mContext.getResources().getString(R.string.restaurant),restaurant);
+        editor.putBoolean(mContext.getResources().getString(R.string.religious_place),religious_place);
+        editor.putBoolean(mContext.getResources().getString(R.string.movie_theatre),movie_theatre);
+        editor.putBoolean(mContext.getResources().getString(R.string.bed_dark),bedAndDark);
+        editor.putBoolean(mContext.getResources().getString(R.string.walking), walking);
+        editor.commit();
+    }
+
+    //only start fetching place name regularly if any of the scenario is selected
+    public boolean isAnyScenarioSelected() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+
+        boolean restaurant = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.restaurant), false);
+        boolean religious_place = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.religious_place), false);
+        boolean movie_theatre = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.movie_theatre), false);
+
+        if (restaurant||religious_place||movie_theatre)
+            return true;
+
+        return false;
+    }
 }
