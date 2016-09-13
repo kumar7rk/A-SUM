@@ -89,7 +89,11 @@
             android:enabled="true"
             android:exported="true" >
         </service>
-
+        <service
+            android:name=".service.BedAndDark"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
         <receiver
             android:name=".AdminReceiver"
             android:permission="android.permission.BIND_DEVICE_ADMIN" >

@@ -60,7 +60,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     private boolean mRequestingLocationUpdates;
     private String mLastUpdateTime;
 
-    private boolean walking;
+    private boolean walking,bedAndDark;
     private boolean googleApiClientConnected;
     static Context context;
     Main m;
@@ -149,7 +149,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     // method- update the new coordinates
     protected void updateToast(){
 //        Main.showToast("From A-SUM New Coordinates: " + mCurrentLocation.getLatitude() + "\n" + mCurrentLocation.getLongitude());
-        Log.i("A-SUM NewCoordinates: ",mCurrentLocation.getLatitude() + "\n" + mCurrentLocation.getLongitude());
+        Log.i("A-SUM NewCoordinates: ", mCurrentLocation.getLatitude() + "\n" + mCurrentLocation.getLongitude());
     }
     // fetch location now
     protected void startLocationupdates(){
@@ -204,7 +204,17 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
             stopService(new Intent(getApplicationContext(), Walking.class));
         }
     }
-
+    private void bedAndDark() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        bedAndDark = sharedPrefs.getBoolean(getResources().getString(R.string.bed_dark), false);
+        if (bedAndDark) {
+            Intent intent = new Intent(getApplicationContext(), BedAndDark.class);
+            startService( intent);
+        }
+        else if (!bedAndDark){
+            stopService(new Intent(getApplicationContext(), BedAndDark.class));
+        }
+    }
     @Override
     public void onConnectionSuspended(int i) {
         mGoogleApiClient.connect();
@@ -489,6 +499,8 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
                 if(googleApiClientConnected)
                     walking();
+
+                bedAndDark();
 
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
