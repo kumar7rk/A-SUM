@@ -33,6 +33,7 @@ public class list_of_rule extends Fragment {
         list.add("Automatic");
         list.add("SemiAutomatic");
         list.add("Manual");
+        list.add("Notification");
         adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, list);
         listView.setAdapter(adapter);
@@ -45,6 +46,8 @@ public class list_of_rule extends Fragment {
                     getFragmentManager().beginTransaction().replace(android.R.id.content,new SemiAutomaticDetails()).commit();
                 if (position==2)
                     getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualDetails()).commit();
+                if (position==3)
+                    getFragmentManager().beginTransaction().replace(android.R.id.content,new NotificationDetails()).commit();
             }
         });
     }

@@ -78,7 +78,7 @@ public class Walking extends IntentService {
                     break;
                 case DetectedActivity.STILL:
                     Log.i(TAG, "Standing " + detectedActivity.getConfidence());
-                    createNotification("You are still", detectedActivity.getConfidence() + "", getApplicationContext());
+//                    createNotification("You are still", detectedActivity.getConfidence() + "", getApplicationContext());
 //                    unlockMeNow(MainActivity.view);
                     break;
             }

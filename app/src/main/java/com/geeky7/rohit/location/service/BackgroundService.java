@@ -10,7 +10,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -66,13 +65,31 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     static Context context;
     Main m;
 
-    // current == 1 minute
-    private int mInterval = 5000; // 5 seconds by default, can be changed later
+    // current interval for fetching location == 5 Seconds
+    private int mInterval = 5000;
     private Handler mHandler;
 
     public BackgroundService() {
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        m = new Main(getApplicationContext());
+        mLastUpdateTime = "";
+
+        buildGoogleApiClient();
+        mGoogleApiClient.connect();
+
+        // googleAPI is connected and ready to get location updates- start fetching current location
+        if(mGoogleApiClient.isConnected()&&mRequestingLocationUpdates)
+            startLocationupdates();
+
+        // used for running the code every `mInterval` miiliseconds;
+        mHandler = new Handler();
+
+        Main.showToast("BackgroundService Created");
+    }
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
@@ -88,35 +105,6 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 "Google Places API connection failed with error code:" +
                         connectionResult.getErrorCode(),
                 Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-       m = new Main(getApplicationContext());
-        Main.showToast("BackgroundService Created");
-/*
-        PugNotification.with(getApplicationContext())
-                .load()
-                .title("1")
-                .message("message")
-                .smallIcon(R.drawable.pugnotification_ic_launcher)
-                .bigTextStyle("bigtext")
-                .largeIcon(R.drawable.pugnotification_ic_launcher)
-                .flags(Notification.DEFAULT_ALL)
-                .simple()
-                .build();
-*/
-//        mRequestingLocationUpdates = false;
-        mLastUpdateTime = "";
-        buildGoogleApiClient();
-        mGoogleApiClient.connect();
-        if(mGoogleApiClient.isConnected()&&mRequestingLocationUpdates)
-            startLocationupdates();
-
-        mHandler = new Handler();
-
-//        startService(new Intent(this,MyAccessibilityService.class));
     }
 
     @Override
@@ -139,6 +127,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         return START_STICKY;
     }
 
+    // add the API and builds a client
     private void buildGoogleApiClient() {
         mGoogleApiClient = new GoogleApiClient.Builder(BackgroundService.this)
                 .addConnectionCallbacks(this)
@@ -147,9 +136,9 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 .addApi(ActivityRecognition.API)
                 .build();
         createLocationRequest();
-//        walking();
     }
 
+    // method- fetch location every `UPDATE_INTERVAL_IN_MILLISECONDS` milliseconds
     private void createLocationRequest() {
         mlocationRequest = new LocationRequest();
         mlocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
@@ -157,13 +146,17 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         mlocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
     }
+    // method- update the new coordinates
     protected void updateToast(){
-        Main.showToast("New Coordinates: " + mCurrentLocation.getLatitude() + "\n" + mCurrentLocation.getLongitude());
+//        Main.showToast("From A-SUM New Coordinates: " + mCurrentLocation.getLatitude() + "\n" + mCurrentLocation.getLongitude());
+        Log.i("A-SUM NewCoordinates: ",mCurrentLocation.getLatitude() + "\n" + mCurrentLocation.getLongitude());
     }
+    // fetch location now
     protected void startLocationupdates(){
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mlocationRequest, this);
     }
+    // location update no longer needed;
     protected void stopLocationupdates(){
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
@@ -174,8 +167,11 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         mGoogleApiClient.connect();
     }
 
+
     @Override
     public void onConnected(Bundle bundle) {
+
+    // if location null, get last known location, updating the time so that we don't show quite old location
         if (mCurrentLocation==null){
             mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
@@ -184,12 +180,16 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
         if (mRequestingLocationUpdates)
             startLocationupdates();
+
+        // start running the code in the runnable every `mInterval` milliseconds
         startRepeatingTask();
+
         googleApiClientConnected = true;
+
         walking();
     }
 
-    //check is user is selected if yes then listen to the recognised activity;
+    //check is user wants to monitor walking, if yes then listen to the recognised activity;
     private void walking() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         walking = sharedPrefs.getBoolean(getResources().getString(R.string.walking), false);
@@ -199,32 +199,35 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                     intent,PendingIntent.FLAG_UPDATE_CURRENT);
             ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(mGoogleApiClient, 1000
                     ,pendingIntent);
-//            Main.showToast("Walking is true BGService");
         }
         else if (!walking){
             stopService(new Intent(getApplicationContext(), Walking.class));
-//            Main.showToast("Walking is false BGService");
         }
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
         mGoogleApiClient.connect();
     }
 
     @Override
     public void onLocationChanged(Location location) {
+        Main.showToast("I'm called- onLocationChaged");
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         updateToast();
     }
-    //Code for google places begins here:
-    public StringBuilder sbMethod() throws UnsupportedEncodingException {
+    //Code for google places begins here: this methods builds up your URL for fetching the PlaceName for the current location
+    public StringBuilder buildPlacesURL() throws UnsupportedEncodingException {
+
+        // check which scenarios are selected
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
         boolean restaurant = sharedPrefs.getBoolean(getResources().getString(R.string.restaurant), false);
         boolean religious_place = sharedPrefs.getBoolean(getResources().getString(R.string.religious_place), false);
         boolean movie_theatre = sharedPrefs.getBoolean(getResources().getString(R.string.movie_theatre), false);
+
+
         String type = "";
         if (restaurant) type += "restaurant";
         type+="|";
@@ -232,13 +235,15 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         type+="|";
         if (movie_theatre) type += "movie_theater";
 
-        //-35.0161877,138.5439102 Westfield marion 50m
+        // for demo- coordinates for jasmin restaurant 33 i
         double mLatitude = -34.923792;
         double mLongitude = 138.6047722;
-        int mRadius = 50;
+        int mRadius = 10;
+
         mLatitude = mCurrentLocation.getLatitude();
         mLongitude = mCurrentLocation.getLongitude();
 
+        // keys- ideally should not be on Github
         String old = "AIzaSyC0ZdWHP1aun8cfHq9aXzOOztUaD1Fmw_I";
         String number1 = "AIzaSyCth6KThdK_C9mztGc2dadvK82yCvktO-o";
         String number2 = "AIzaSyCv11nDlFA286ZZVnbM3tedhIgsy93afzg";
@@ -253,6 +258,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         Log.v("Places", sb.toString());
         return sb;
     }
+    // method- to download the content returned by the URL built in buildPlacesURL
     private String downloadUrl(String strUrl) throws IOException
     {
         String data = "";
@@ -274,8 +280,12 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
         } catch (Exception e) {
         } finally {
-            iStream.close();
-            urlConnection.disconnect();
+            if (iStream != null) {
+                iStream.close();
+            }
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
         }
         return data;
     }
@@ -309,18 +319,16 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         @Override
         protected void onPostExecute(List<HashMap<String, String>> list) {
             if (list.size()>0){
-                for (int i = 0; i < list.size(); i++) {
+                /*for (int i = 0; i < list.size(); i++) {
                     HashMap<String, String> hmPlace = list.get(0);
-    //                double lat = Double.parseDouble(hmPlace.get("lat"));
-    //                double lng = Double.parseDouble(hmPlace.get("lng"));
                     final String name = hmPlace.get("place_name");
                     String vicinity = hmPlace.get("vicinity");
-                }
+                }*/
                 HashMap<String, String> hmPlace = new HashMap<>();
                 String name = "Nothing" ;
                 hmPlace = list.get(0);
                 name = hmPlace.get("place_name");
-                Main.showToast(getApplicationContext(), name);
+                Main.showToast(name);
                 SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 if (!name.equals("Nothing")){
                     String rule = "AA";
@@ -342,8 +350,10 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                }
             }
             // that is no place is detected from the selected scenarios- shut down any rule;
+            // this else would run everytime a place is not detected including when user was already at a place (restaurant) and then he left the place;
             else if (list.size()==0) {
                 Main.showToast(getApplicationContext(), "NoPlaceDetected");
+
 
                 stopService(new Intent(BackgroundService.this, Automatic.class));
                 stopService(new Intent(BackgroundService.this, SemiAutomatic.class));
@@ -448,25 +458,20 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         @Override
         protected void onPostExecute(String result) {
             ParserTask parserTask = new ParserTask(context);
-//            String temp = "";
-//            if (!temp.equals(result)) {
                 parserTask.execute(result);
-                Log.i("PlacesTaskOnPostExecute", result + "!");
-//                Main.showToast(getApplicationContext(), "PlacesTaskOnPostExecute" + result);
-//            }
-           /* else
-                stopRepeatingTask();*/
-//                Main.showToast(getApplicationContext(),"result is empty");
+                Log.i("PlacesTaskOnPostExecute", result + "");
         }
     }
+    // any code in here would run every `mInterval` milliseconds
     Runnable mStatusChecker = new Runnable() {
         @Override
         public void run() {
             try {
+
+//                startLocationupdates();
                 //get the current foreground app
                 String currentApp = m.getForegroungApp();
-//                Main.showToast("ForegroundApp: " + currentApp);
-                Log.i("ForegroundApp: ",currentApp);
+                Log.i("PlacesForegroundApp", currentApp);
 
                 // static- check if the current app is a app to be blocked
                 if (currentApp.equals("de.dfki.appdetox")){
@@ -474,17 +479,17 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                     // starting home screen everytime the app is in foreground;
                    m.showHomeScreen();
                 }
-                Log.i("PlacesForegroundApp", currentApp);
 
-                //check if any scenarios is selected if yes then call the places code which afterwards every 5 seconds
+                //check if any scenarios is selected if yes then call the places code which afterwards every `mInterval` milliseconds
+
                 if(m.isAnyScenarioSelected()){
-                    String sb = sbMethod().toString();
+                    String sb = buildPlacesURL().toString();
                     new PlacesTask().execute(sb);
                 }
+
                 if(googleApiClientConnected)
                     walking();
-                /*else
-                    Main.showToast(getApplicationContext(),"NoScenarioSelected,Try selecting one");*/
+
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } finally {
@@ -503,6 +508,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
     //A-SUM's activity name with package|| name of launcher with package name
     //http://stackoverflow.com/a/19852713/2900127 AmitGupta's
+
     public void foregroundApplication(){
         ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> RunningTask = mActivityManager.getRunningTasks(1);
@@ -538,35 +544,22 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     //http://stackoverflow.com/a/12675356/2900127
     public void foregroundApp(){
         ActivityManager am = (ActivityManager) BackgroundService.this.getSystemService(ACTIVITY_SERVICE);
-// The first in the list of RunningTasks is always the foreground task.
+        // The first in the list of RunningTasks is always the foreground task.
         ActivityManager.RunningTaskInfo foregroundTaskInfo = am.getRunningTasks(1).get(0);
+
         String foregroundTaskPackageName = foregroundTaskInfo .topActivity.getPackageName();
         PackageManager pm = BackgroundService.this.getPackageManager();
         PackageInfo foregroundAppPackageInfo = null;
+
         try {
             foregroundAppPackageInfo = pm.getPackageInfo(foregroundTaskPackageName, 0);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
         String foregroundTaskAppName = foregroundAppPackageInfo.applicationInfo.loadLabel(pm).toString();
         Main.showToast(getApplicationContext(),foregroundTaskAppName);
         Log.i("PlacesForegroundApp",foregroundTaskAppName);
 
-    }
-
-    //package name only for A_SUM
-    public void method(){
-        ActivityManager mActivityManager =(ActivityManager)this.getSystemService(Context.ACTIVITY_SERVICE);
-
-        if(Build.VERSION.SDK_INT > 20){
-            String mPackageName = mActivityManager.getRunningAppProcesses().get(0).processName;
-            Main.showToast(getApplicationContext(),mPackageName);
-            Log.i("PlacesForegroundApp",mPackageName);
-        }
-        else{
-            String mpackageName = mActivityManager.getRunningTasks(1).get(0).topActivity.getPackageName();
-            Main.showToast(getApplicationContext(),mpackageName);
-            Log.i("PlacesForegroundApp",mpackageName);
-        }
     }
 }

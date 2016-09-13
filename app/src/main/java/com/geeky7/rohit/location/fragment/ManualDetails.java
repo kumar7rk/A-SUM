@@ -48,6 +48,7 @@ public class ManualDetails extends Fragment {
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         Set<String> apps = new HashSet<String>();
         Set<String> appsIndex = new HashSet<String>();
+
         apps = preferences.getStringSet("manualApps", apps);
         appsIndex = preferences.getStringSet("manualAppsIndex", appsIndex);
 //        selectedAppsSetIndex = appsIndex;
@@ -67,8 +68,6 @@ public class ManualDetails extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String selectedAppS = listView.getItemAtPosition(position)+"";
-//                String selectedAppS = adapter.getItem(position);
                 String selectedAppS = packageList.get(position);
                 selectedAppsSet.add(selectedAppS);
                 selectedAppsSetIndex.add(position + "");
@@ -77,15 +76,16 @@ public class ManualDetails extends Fragment {
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_rule, container, false);
-        m = new Main(getActivity());
         listView = (ListView)v.findViewById(R.id.listView);
-        setHasOptionsMenu(true);
+
+        m = new Main(getActivity());
 
         adapter = getInstalledApplicationsv2();
-
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
         appSelected();
+        setHasOptionsMenu(true);
         return v;
     }
 
@@ -109,12 +109,9 @@ public class ManualDetails extends Fragment {
                 editor.putStringSet("manualAppsIndex", selectedAppsSetIndex);
                 editor.commit();
 
-//                editor.apply();
-//                getActivity().getFragmentManager().beginTransaction().remove(this).commit();
-//                getActivity().getFragmentManager().popBackStack();
-                Main.showToast(getActivity(), "ManualAppBlockListUpdated");
                 getActivity().getFragmentManager().beginTransaction()
                         .replace(android.R.id.content, new MonitoringFragment());
+                Main.showToast(getActivity(), "ManualAppBlockListUpdated");
         }
                 return super.onOptionsItemSelected(item);
     }
@@ -134,7 +131,7 @@ public class ManualDetails extends Fragment {
             }
         }
         adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.select_dialog_multichoice, appList);
+                android.R.layout.simple_list_item_checked, appList);
         return adapter;
     }
 }

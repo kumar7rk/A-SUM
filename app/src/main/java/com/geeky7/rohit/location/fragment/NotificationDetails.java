@@ -14,16 +14,15 @@ import com.geeky7.rohit.location.R;
 import java.util.ArrayList;
 
 /**
- * Created by Rohit on 30/08/2016.
+ * Created by Rohit on 13/09/2016.
  */
-public class AutomaticDetails extends Fragment {
+public class NotificationDetails extends Fragment {
     ListView listView;
     private ArrayAdapter<String> adapter;
     ArrayList<String> list = new ArrayList<String>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_automatic_detail, container, false);
-//        listView = (ListView)v.findViewById(android.R.id.list);
+        View v = inflater.inflate(R.layout.fragment_notification_detail, container, false);
         listView = (ListView)v.findViewById(R.id.list);
         loadItems();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -34,10 +33,10 @@ public class AutomaticDetails extends Fragment {
         return v;
     }
     public void loadItems() {
-        list.add("List of blocked apps");
-        list.add("Last Applied ");
+        list.add("Sound.");
+        list.add("Notification Text.");
         adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_checked, list);
+                android.R.layout.simple_list_item_1, list);
 
         listView.setAdapter(adapter);
     }

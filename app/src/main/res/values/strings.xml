@@ -26,6 +26,7 @@
     <string name="cancel" translatable="false">Cancel</string>
     <string name="next">Next</string>
     <string name="edit" translatable="false">Edit</string>
+    <string name="save" translatable="false">Save</string>
 
     <string name="automatic" translatable="false">Automatic</string>
     <string name="semi_automatic" translatable="false">SemiAutomatic</string>
@@ -35,5 +36,6 @@
     <string name="startService" translatable="false">StartService</string>
 
     <string name="device_admin_explanation" translatable="false">For experimentation purposes only</string>
+    <string name="a_switch">ASwitch</string>
 
 </resources>

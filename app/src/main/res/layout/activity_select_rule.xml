@@ -6,8 +6,10 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center">
+
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -17,22 +19,29 @@
                 android:layout_height="wrap_content"
                 android:text="@string/automatic"
                 android:id="@+id/automatic"
-                android:checked="true"/>
+                android:checked="true"
+                android:textSize="30sp"
+                android:typeface="monospace"
+                android:translationX="0.1sp"/>
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/semi_automatic"
-                android:id="@+id/semi_automatic" />
+                android:id="@+id/semi_automatic"
+                android:textSize="30sp"/>
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/manual"
-                android:id="@+id/manual" />
+                android:id="@+id/manual"
+                android:textSize="30sp"
+                />
 
         </RadioGroup>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

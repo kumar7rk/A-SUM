@@ -47,11 +47,11 @@ public class Main {
     }
 
     public static void showToast(Context context, String text) {
-        Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 
     public static void showToast(String text) {
-        Toast.makeText(MyApplication.getAppContext(), text, Toast.LENGTH_LONG).show();
+        Toast.makeText(MyApplication.getAppContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     public String getForegroungApp() {
@@ -222,13 +222,15 @@ public class Main {
         editor.commit();
     }
 
-    //only start fetching place name regularly if any of the scenario is selected
+    //only start fetching place name regularly if atleast one scenario is selected
     public boolean isAnyScenarioSelected() {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 
-        boolean restaurant = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.restaurant), false);
+
+        initialValues();
+        /*boolean restaurant = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.restaurant), false);
         boolean religious_place = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.religious_place), false);
-        boolean movie_theatre = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.movie_theatre), false);
+        boolean movie_theatre = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.movie_theatre), false);*/
 
         if (restaurant||religious_place||movie_theatre)
             return true;

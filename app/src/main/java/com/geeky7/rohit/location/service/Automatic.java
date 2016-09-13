@@ -15,7 +15,6 @@ public class Automatic extends Service {
     public Automatic() {
     }
 
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -58,8 +57,5 @@ public class Automatic extends Service {
         listOfBlockedApps.add("com.google.samples.apps.cardboarddemo");
         listOfBlockedApps.add("com.microsoft.skydrive");
 
-        /*String[] stringsArray = getResources()
-                .getStringArray(R.array.AutomaticblockedApps);
-        ArrayList<String> listOfBlockedApps1 = new ArrayList<String>(Arrays.asList(stringsArray));*/
     }
 }

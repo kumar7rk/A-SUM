@@ -63,6 +63,9 @@ public class MonitoringFragment extends Fragment{
             list.add(getResources().getString(R.string.bed_dark));
         if (walking)
             list.add(getResources().getString(R.string.walking));
+
+        if (!(restaurant || religious_place || movie_theatre || bed_dark || walking))
+            list.add("No scenario to monitor. Click + symbol to add one");
     }
 
 }

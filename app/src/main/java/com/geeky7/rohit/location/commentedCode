@@ -1,0 +1,16 @@
+BackgroundService- onCreate
+/*
+        PugNotification.with(getApplicationContext())
+                .load()
+                .title("1")
+                .message("message")
+                .smallIcon(R.drawable.pugnotification_ic_launcher)
+                .bigTextStyle("bigtext")
+                .largeIcon(R.drawable.pugnotification_ic_launcher)
+                .flags(Notification.DEFAULT_ALL)
+                .simple()
+                .build();
+*/
+
+//        startService(new Intent(this,MyAccessibilityService.class));
+//        mRequestingLocationUpdates = false;

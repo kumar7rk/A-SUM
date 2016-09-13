@@ -153,6 +153,7 @@ public class Configure extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
+                m.cancelOperation();
                 return true;
             case R.id.ok:
 //                getFragmentManager().beginTransaction().replace(android.R.id.content, new MonitoringFragment()).commit();
