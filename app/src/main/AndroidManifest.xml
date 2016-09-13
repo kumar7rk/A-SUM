@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.geeky7.rohit.location">
+    package="com.geeky7.rohit.location" >
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
-        tools:ignore="ProtectedPermissions"/>
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <uses-feature
         android:name="android.software.device_admin"
-        android:required="true"/>
-
+        android:required="true" />
 
     <application
         android:name=".MyApplication"
@@ -33,7 +34,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.FiveColorChangingTabsActivity" />
         <activity android:name=".activity.ThreeTabsQRActivity" />
         <activity android:name=".activity.BadgeActivity" />
@@ -43,26 +43,31 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.Configure"
-            android:label="@string/action_configure"
             android:excludeFromRecents="true"
+            android:label="@string/action_configure"
             android:parentActivityName=".activity.ThreeTabsActivity" >
         </activity>
         <activity
             android:name=".activity.SelectRule"
-            android:label="@string/title_activity_select_rule"
             android:excludeFromRecents="true"
+            android:label="@string/title_activity_select_rule"
             android:parentActivityName=".activity.Configure" >
+        </activity>
+
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_settings" >
         </activity>
 
         <service
             android:name=".service.BackgroundService"
             android:enabled="true"
             android:exported="true" >
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="ACTION_SERVICE" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </service>
         <service
             android:name=".service.Automatic"
@@ -86,16 +91,17 @@
         </service>
 
         <receiver
-        android:name="AdminReceiver"
-        android:permission="android.permission.BIND_DEVICE_ADMIN">
-        <meta-data
-            android:name="android.app.device_admin"
-            android:resource="@xml/device_admin"/>
+            android:name=".AdminReceiver"
+            android:permission="android.permission.BIND_DEVICE_ADMIN" >
+            <meta-data
+                android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
 
-        <intent-filter>
-            <action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
-        </intent-filter>
-    </receiver>
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".service.Walking"
             android:enabled="true"

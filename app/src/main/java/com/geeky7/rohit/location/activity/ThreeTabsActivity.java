@@ -10,13 +10,17 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.geeky7.rohit.location.CONSTANTS;
@@ -37,26 +41,30 @@ public class ThreeTabsActivity extends AppCompatActivity {
 
     private BottomBar mBottomBar;
     private final int permissionVariable = 0;
-    boolean running,pausedFromActionBar,a;
+    boolean running,a,mainSwitch = true;
     Main m;
     public static View view;
     SharedPreferences preferences;
+    Switch aSwitch;
+    MenuItem toggleService;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-
-        Bundle bundle = savedInstanceState;
         m = new Main(this);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
         m.openLocationSettings(manager);
         m.usageAccessSettingsPage();
         checkPermission();
 
-        if (!running && manager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-            startService();
+        /*if (!running && manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && mainSwitch)
+            startService();*/
+
         mBottomBar = BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.main);
 
@@ -135,29 +143,65 @@ public class ThreeTabsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.action_configure:
                 startActivity(new Intent(this,Configure.class));
-            case R.id.stop_service:
-                Intent serviceIntent = new Intent(ThreeTabsActivity.this, BackgroundService.class);
+                break;
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case R.id.main_switch:
 
-                if (running){
-                    stopService(serviceIntent);
-                    running = false;
-                }
-            case R.id.start_service:
-                if (!running){
-                    startService();
-                    running = true;
-                }
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override
+    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
+        editorMainSwitch();
+        super.onPostCreate(savedInstanceState, persistentState);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        toggleService = menu.findItem(R.id.main_switch);
+        View view = MenuItemCompat.getActionView(toggleService);
+        aSwitch = (Switch) view.findViewById(R.id.a_switch);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
+
+        aSwitch.setChecked(mainSwitch);
+        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                editorMainSwitch();
+                if (isChecked) {
+                    if (!running) {
+                        startService();
+                        running = true;
+                    }
+//                    Main.showToast("isChecked");
+                }
+                if (!isChecked){
+                    Intent serviceIntent = new Intent(ThreeTabsActivity.this, BackgroundService.class);
+                    if (running){
+                        stopService(serviceIntent);
+                        running = false;
+                    }
+                }
+            }
+        });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void editorMainSwitch() {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(CONSTANTS.MAIN_SWITCH, aSwitch.isChecked());
+        editor.commit();
     }
 
     private void checkPermission() {
@@ -187,7 +231,6 @@ public class ThreeTabsActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         mBottomBar.onSaveInstanceState(outState);
     }
 
