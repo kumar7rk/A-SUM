@@ -250,8 +250,8 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         double mLongitude = 138.6047722;
         int mRadius = 10;
 
-        mLatitude = mCurrentLocation.getLatitude();
-        mLongitude = mCurrentLocation.getLongitude();
+        /*mLatitude = mCurrentLocation.getLatitude();
+        mLongitude = mCurrentLocation.getLongitude();*/
 
         // keys- ideally should not be on Github
         String old = "AIzaSyC0ZdWHP1aun8cfHq9aXzOOztUaD1Fmw_I";
@@ -478,28 +478,18 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         public void run() {
             try {
 
-//                startLocationupdates();
                 //get the current foreground app
                 String currentApp = m.getForegroungApp();
                 Log.i("PlacesForegroundApp", currentApp);
 
-                // static- check if the current app is a app to be blocked
-                if (currentApp.equals("de.dfki.appdetox")){
-                    Main.showToast("Yes!!!!!");
-                    // starting home screen everytime the app is in foreground;
-                   m.showHomeScreen();
-                }
-
-                //check if any scenarios is selected if yes then call the places code which afterwards every `mInterval` milliseconds
-
+                //check if any scenarios is selected
+                // if yes then call the places code which afterwards every `mInterval` milliseconds
                 if(m.isAnyScenarioSelected()){
                     String sb = buildPlacesURL().toString();
                     new PlacesTask().execute(sb);
                 }
-
                 if(googleApiClientConnected)
                     walking();
-
                 bedAndDark();
 
             } catch (UnsupportedEncodingException e) {
@@ -572,6 +562,5 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         String foregroundTaskAppName = foregroundAppPackageInfo.applicationInfo.loadLabel(pm).toString();
         Main.showToast(getApplicationContext(),foregroundTaskAppName);
         Log.i("PlacesForegroundApp",foregroundTaskAppName);
-
     }
 }

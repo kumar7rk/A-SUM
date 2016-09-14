@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -27,11 +28,15 @@ import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.TabMessage;
+import com.geeky7.rohit.location.ViolationDbHelper;
 import com.geeky7.rohit.location.fragment.MonitoringFragment;
 import com.geeky7.rohit.location.fragment.Rules;
 import com.geeky7.rohit.location.fragment.Violations;
 import com.geeky7.rohit.location.fragment.list_of_rule;
+import com.geeky7.rohit.location.service.Automatic;
 import com.geeky7.rohit.location.service.BackgroundService;
+import com.geeky7.rohit.location.service.Manual;
+import com.geeky7.rohit.location.service.SemiAutomatic;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarBadge;
 import com.roughike.bottombar.OnMenuTabClickListener;
@@ -47,6 +52,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
     SharedPreferences preferences;
     Switch aSwitch;
     MenuItem toggleService;
+    FloatingActionButton floatingActionButton;
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +60,13 @@ public class ThreeTabsActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         m = new Main(this);
 
+        floatingActionButton = (FloatingActionButton)findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ThreeTabsActivity.this,Configure.class));
+            }
+        });
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
@@ -62,8 +75,8 @@ public class ThreeTabsActivity extends AppCompatActivity {
         m.usageAccessSettingsPage();
         checkPermission();
 
-        /*if (!running && manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && mainSwitch)
-            startService();*/
+        if (!running && manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && mainSwitch)
+            startService();
 
         mBottomBar = BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.main);
@@ -127,17 +140,21 @@ public class ThreeTabsActivity extends AppCompatActivity {
 
     public void updateBadge() {
         int redColor = Color.parseColor("#FF0000");
-        int counter = Integer.MAX_VALUE;
+        int scenariosSelected = Integer.MAX_VALUE;
+        int violations = Integer.MAX_VALUE;
         m = new Main(this);
+        ViolationDbHelper violationDbHelper = new ViolationDbHelper(getApplicationContext());
         m.countSelectedScenarioForBadge();
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        counter = preferences.getInt(CONSTANTS.NUMBER_OF_SCENARIOS_SELECTED, counter);
+        scenariosSelected = preferences.getInt(CONSTANTS.NUMBER_OF_SCENARIOS_SELECTED, scenariosSelected);
 
-        BottomBarBadge monitoringBadge = mBottomBar.makeBadgeForTabAt(0, redColor, counter);
+        BottomBarBadge monitoringBadge = mBottomBar.makeBadgeForTabAt(0, redColor, scenariosSelected);
         monitoringBadge.setAutoShowAfterUnSelection(true);
-        
-        BottomBarBadge violationBadge = mBottomBar.makeBadgeForTabAt(2, redColor, 0);
+
+        violations = preferences.getInt(CONSTANTS.NUMBER_OF_VIOLATIONS,violations);
+        violationDbHelper.fetchAll();
+        BottomBarBadge violationBadge = mBottomBar.makeBadgeForTabAt(2, redColor, violations);
         violationBadge.setAutoShowAfterUnSelection(true);
     }
 
@@ -145,9 +162,6 @@ public class ThreeTabsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_configure:
-                startActivity(new Intent(this,Configure.class));
-                break;
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
@@ -190,6 +204,9 @@ public class ThreeTabsActivity extends AppCompatActivity {
                     Intent serviceIntent = new Intent(ThreeTabsActivity.this, BackgroundService.class);
                     if (running){
                         stopService(serviceIntent);
+                        stopService(new Intent(ThreeTabsActivity.this, Automatic.class));
+                        stopService(new Intent(ThreeTabsActivity.this, SemiAutomatic.class));
+                        stopService(new Intent(ThreeTabsActivity.this, Manual.class));
                         running = false;
                     }
                 }

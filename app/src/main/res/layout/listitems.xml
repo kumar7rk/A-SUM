@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/app_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="3dp"
+            android:scaleType="centerCrop" />
+        <CheckBox
+            android:id="@+id/cb_app"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="a"
+            android:textStyle="bold"
+            android:typeface="serif"
+            android:textColor="#000000"
+            android:button="@null"
+            android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+            />
+
+</LinearLayout>

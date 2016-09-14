@@ -1,6 +1,6 @@
 package com.geeky7.rohit.location.fragment;
 
-import android.app.Fragment;
+import android.app.ListFragment;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.geeky7.rohit.location.ApplicationAdapter;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
@@ -29,7 +30,7 @@ import java.util.Set;
 /**
  * Created by Rohit on 30/08/2016.
  */
-public class ManualDetails extends Fragment {
+public class ManualDetails extends ListFragment {
     ListView listView;
     private ArrayAdapter<String> adapter;
     SharedPreferences preferences;
@@ -40,6 +41,17 @@ public class ManualDetails extends Fragment {
     Set<String> selectedAppsSet = new HashSet<String>();
     Set<String> selectedAppsSetIndex = new HashSet<String>();
 
+
+    private PackageManager packageManager = null;
+    private ApplicationAdapter listadapter = null;
+    private List<ApplicationInfo> applist = null;
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        packageManager = MyApplication.getAppContext().getPackageManager();
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -56,6 +68,7 @@ public class ManualDetails extends Fragment {
             Integer in = Integer.parseInt(s);
 //            listView.setItemChecked(in,true);
         }
+        loadItems();
     }
 
     @Override
@@ -68,6 +81,8 @@ public class ManualDetails extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ApplicationInfo applicationInfo = (ApplicationInfo) parent.getItemAtPosition(position);
+                Main.showToast(applicationInfo.loadLabel(packageManager) + "");
                 String selectedAppS = packageList.get(position);
                 selectedAppsSet.add(selectedAppS);
                 selectedAppsSetIndex.add(position + "");
@@ -76,13 +91,13 @@ public class ManualDetails extends Fragment {
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_rule, container, false);
-        listView = (ListView)v.findViewById(R.id.listView);
+        listView = (ListView)v.findViewById(android.R.id.list);
 
         m = new Main(getActivity());
 
-        adapter = getInstalledApplicationsv2();
-        listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+//        adapter = getInstalledApplicationsv2();
+//        setListAdapter(adapter);
+//        adapter.notifyDataSetChanged();
 
         appSelected();
         setHasOptionsMenu(true);
@@ -115,6 +130,27 @@ public class ManualDetails extends Fragment {
         }
                 return super.onOptionsItemSelected(item);
     }
+    public void loadItems(){
+        applist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
+        listadapter = new ApplicationAdapter(MyApplication.getAppContext(),
+                R.layout.listitems, applist);
+        setListAdapter(listadapter);
+    }
+
+    private List<ApplicationInfo> checkForLaunchIntent(List<ApplicationInfo> list) {
+        ArrayList<ApplicationInfo> applist = new ArrayList<ApplicationInfo>();
+        for (ApplicationInfo info : list) {
+            try {
+                if (null != packageManager.getLaunchIntentForPackage(info.packageName)) {
+                    applist.add(info);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return applist;
+    }
     public ArrayAdapter<String> getInstalledApplicationsv2(){
         ArrayAdapter<String> adapter;
         final PackageManager pm = MyApplication.getAppContext().getPackageManager();
@@ -132,6 +168,8 @@ public class ManualDetails extends Fragment {
         }
         adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_checked, appList);
+        adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.select_dialog_multichoice, appList);
         return adapter;
     }
 }

@@ -20,7 +20,6 @@ import com.geeky7.rohit.location.R;
 public class Configure extends AppCompatActivity {
     Button cancelB,nextB;
     AppCompatDelegate mDelegate;
-//    CheckBoxPreference pref;
     Main m;
 
     @Override

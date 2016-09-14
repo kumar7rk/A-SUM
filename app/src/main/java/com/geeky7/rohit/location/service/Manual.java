@@ -54,7 +54,5 @@ public class Manual extends Service {
     }
     public void getListOfBlockedApplications(){
         listOfBlockedApps = preferences.getStringSet("manualApps", listOfBlockedApps);
-        /*for (String s : listOfBlockedApps)
-            Main.showToast(s);*/
     }
 }
