@@ -37,5 +37,6 @@
 
     <string name="device_admin_explanation" translatable="false">For experimentation purposes only</string>
     <string name="a_switch">ASwitch</string>
+    <string name="notification">Notification</string>
 
 </resources>

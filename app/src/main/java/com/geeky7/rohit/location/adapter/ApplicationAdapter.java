@@ -1,4 +1,4 @@
-package com.geeky7.rohit.location;
+package com.geeky7.rohit.location.adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+
+import com.geeky7.rohit.location.R;
 
 import java.util.ArrayList;
 import java.util.List;

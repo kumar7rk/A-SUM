@@ -23,8 +23,8 @@ public class AutomaticDetails extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_automatic_detail, container, false);
-//        listView = (ListView)v.findViewById(android.R.id.list);
         listView = (ListView)v.findViewById(R.id.list);
+
         loadItems();
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -35,10 +35,9 @@ public class AutomaticDetails extends Fragment {
     }
     public void loadItems() {
         list.add("List of blocked apps");
-        list.add("Last Applied ");
+        list.add("Last Applied");
         adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_checked, list);
-
+                android.R.layout.simple_list_item_1, list);
         listView.setAdapter(adapter);
     }
 }

@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.geeky7.rohit.location.ApplicationAdapter;
+import com.geeky7.rohit.location.adapter.ApplicationAdapter;
 import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.ViolationDbHelper;

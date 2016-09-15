@@ -52,8 +52,6 @@ public class SelectRule extends AppCompatActivity {
                 Main.showToast(getApplication(), rule + " Added");
                 setResult(0);
                 finish();
-
-
                 //startActivity(new Intent(SelectRule.this,ThreeTabsActivity.class)); using this opens selectRuleActivity
                 // instead of configure;
             }
@@ -75,7 +73,6 @@ public class SelectRule extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
         switch (item.getItemId()) {
             case android.R.id.home:
                 setResult(1);

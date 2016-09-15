@@ -29,13 +29,14 @@ import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.TabMessage;
 import com.geeky7.rohit.location.ViolationDbHelper;
-import com.geeky7.rohit.location.fragment.MonitoringFragment;
+import com.geeky7.rohit.location.fragment.MonitoringFragmentCardView;
 import com.geeky7.rohit.location.fragment.Rules;
 import com.geeky7.rohit.location.fragment.Violations;
 import com.geeky7.rohit.location.fragment.list_of_rule;
 import com.geeky7.rohit.location.service.Automatic;
 import com.geeky7.rohit.location.service.BackgroundService;
 import com.geeky7.rohit.location.service.Manual;
+import com.geeky7.rohit.location.service.Notification;
 import com.geeky7.rohit.location.service.SemiAutomatic;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarBadge;
@@ -57,6 +58,8 @@ public class ThreeTabsActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         m = new Main(this);
 
@@ -67,7 +70,6 @@ public class ThreeTabsActivity extends AppCompatActivity {
                 startActivity(new Intent(ThreeTabsActivity.this,Configure.class));
             }
         });
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
@@ -91,7 +93,8 @@ public class ThreeTabsActivity extends AppCompatActivity {
 
                 switch (menuItemId) {
                     case R.id.bb_menu_monitoring:
-                        fragment = new MonitoringFragment();
+//                        fragment = new MonitoringFragment();
+                        fragment = new MonitoringFragmentCardView();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
                     case R.id.bb_menu_rules:
@@ -117,7 +120,8 @@ public class ThreeTabsActivity extends AppCompatActivity {
                 switch (menuItemId) {
 
                     case R.id.bb_menu_monitoring:
-                        fragment = new MonitoringFragment();
+//                        fragment = new MonitoringFragment();
+                        fragment = new MonitoringFragmentCardView();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
 
@@ -146,7 +150,6 @@ public class ThreeTabsActivity extends AppCompatActivity {
         ViolationDbHelper violationDbHelper = new ViolationDbHelper(getApplicationContext());
         m.countSelectedScenarioForBadge();
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         scenariosSelected = preferences.getInt(CONSTANTS.NUMBER_OF_SCENARIOS_SELECTED, scenariosSelected);
 
         BottomBarBadge monitoringBadge = mBottomBar.makeBadgeForTabAt(0, redColor, scenariosSelected);
@@ -185,7 +188,6 @@ public class ThreeTabsActivity extends AppCompatActivity {
         View view = MenuItemCompat.getActionView(toggleService);
         aSwitch = (Switch) view.findViewById(R.id.a_switch);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
         mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
 
         aSwitch.setChecked(mainSwitch);
@@ -198,7 +200,6 @@ public class ThreeTabsActivity extends AppCompatActivity {
                         startService();
                         running = true;
                     }
-//                    Main.showToast("isChecked");
                 }
                 if (!isChecked){
                     Intent serviceIntent = new Intent(ThreeTabsActivity.this, BackgroundService.class);
@@ -207,6 +208,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
                         stopService(new Intent(ThreeTabsActivity.this, Automatic.class));
                         stopService(new Intent(ThreeTabsActivity.this, SemiAutomatic.class));
                         stopService(new Intent(ThreeTabsActivity.this, Manual.class));
+                        stopService(new Intent(ThreeTabsActivity.this, Notification.class));
                         running = false;
                     }
                 }
@@ -263,7 +265,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
 
         Fragment fragment;
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragment = new MonitoringFragment();
+        fragment = new MonitoringFragmentCardView();
         fragmentTransaction.replace(android.R.id.content, fragment).commit();
 
     }

@@ -17,7 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.geeky7.rohit.location.ApplicationAdapter;
+import com.geeky7.rohit.location.adapter.ApplicationAdapter;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;

@@ -64,6 +64,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     private boolean googleApiClientConnected;
     static Context context;
     Main m;
+    SharedPreferences preferences;
 
     // current interval for fetching location == 5 Seconds
     private int mInterval = 5000;
@@ -77,6 +78,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         super.onCreate();
         m = new Main(getApplicationContext());
         mLastUpdateTime = "";
+        preferences = PreferenceManager.getDefaultSharedPreferences(this) ;
 
         buildGoogleApiClient();
         mGoogleApiClient.connect();
@@ -110,11 +112,13 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Main.showToast(getApplicationContext(), "BackgroundServiceDestroyed");
-//        stopSelf();
+        Main.showToast("BackgroundServiceDestroyed");
+        stopSelf();
+
         stopService(new Intent(BackgroundService.this, Automatic.class));
         stopService(new Intent(BackgroundService.this, SemiAutomatic.class));
         stopService(new Intent(BackgroundService.this, Manual.class));
+        stopService(new Intent(BackgroundService.this, Notification.class));
 
         if (mGoogleApiClient.isConnected())
             stopLocationupdates();
@@ -191,8 +195,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
     //check is user wants to monitor walking, if yes then listen to the recognised activity;
     private void walking() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        walking = sharedPrefs.getBoolean(getResources().getString(R.string.walking), false);
+        walking = preferences.getBoolean(getResources().getString(R.string.walking), false);
         if (walking) {
             Intent intent = new Intent(getApplicationContext(), Walking.class);
             PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(),0,
@@ -205,8 +208,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         }
     }
     private void bedAndDark() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        bedAndDark = sharedPrefs.getBoolean(getResources().getString(R.string.bed_dark), false);
+        bedAndDark = preferences.getBoolean(getResources().getString(R.string.bed_dark), false);
         if (bedAndDark) {
             Intent intent = new Intent(getApplicationContext(), BedAndDark.class);
             startService( intent);
@@ -231,11 +233,10 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     public StringBuilder buildPlacesURL() throws UnsupportedEncodingException {
 
         // check which scenarios are selected
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        boolean restaurant = sharedPrefs.getBoolean(getResources().getString(R.string.restaurant), false);
-        boolean religious_place = sharedPrefs.getBoolean(getResources().getString(R.string.religious_place), false);
-        boolean movie_theatre = sharedPrefs.getBoolean(getResources().getString(R.string.movie_theatre), false);
+        boolean restaurant = preferences.getBoolean(getResources().getString(R.string.restaurant), false);
+        boolean religious_place = preferences.getBoolean(getResources().getString(R.string.religious_place), false);
+        boolean movie_theatre = preferences.getBoolean(getResources().getString(R.string.movie_theatre), false);
 
 
         String type = "";
@@ -334,16 +335,34 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                     final String name = hmPlace.get("place_name");
                     String vicinity = hmPlace.get("vicinity");
                 }*/
-                HashMap<String, String> hmPlace = new HashMap<>();
-                String name = "Nothing" ;
-                hmPlace = list.get(0);
-                name = hmPlace.get("place_name");
+                HashMap<String, String> hmPlace = list.get(0);
+                String name = hmPlace.get("place_name");
+                String type = hmPlace.get("types");
+                SharedPreferences.Editor editor = preferences.edit();
+                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+
                 Main.showToast(name);
-                SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
                 if (!name.equals("Nothing")){
+
+                    if (type.contains("restaurant")){
+                        editor.putString(CONSTANTS.DETECTED_SCENARIO,
+                                getResources().getString(R.string.restaurant));
+                    }
+                    if (type.contains("place_of_worship")){
+                        editor.putString(CONSTANTS.DETECTED_SCENARIO,
+                                getResources().getString(R.string.religious_place));
+                    }
+                    if (type.contains("movie_theater")){
+                        editor.putString(CONSTANTS.DETECTED_SCENARIO,
+                                getResources().getString(R.string.movie_theatre));
+                    }
+
+                    editor.commit();
+
                     String rule = "AA";
-                    rule = sharedPrefs.getString(CONSTANTS.SELECTED_RULE, rule);
-                    Main.showToast(getApplicationContext(), "RuleName: " + rule);
+                    rule = preferences.getString(CONSTANTS.SELECTED_RULE, rule);
+                    Main.showToast("RuleName: " + rule);
 
                     if (rule.equalsIgnoreCase("Automatic")){
                         startService(new Intent(BackgroundService.this, Automatic.class));
@@ -357,17 +376,21 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                         startService(new Intent(BackgroundService.this, Manual.class));
 //                        stopRepeatingTask();
                     }
+                    if (rule.equalsIgnoreCase("Notification")){
+                        startService(new Intent(BackgroundService.this, Notification.class));
+//                        stopRepeatingTask();
+                    }
                }
             }
             // that is no place is detected from the selected scenarios- shut down any rule;
-            // this else would run everytime a place is not detected including when user was already at a place (restaurant) and then he left the place;
+            // this else would run every time a place is not detected including when user was already at a place (restaurant) and then he left the place;
             else if (list.size()==0) {
-                Main.showToast(getApplicationContext(), "NoPlaceDetected");
-
+                Main.showToast("NoPlaceDetected");
 
                 stopService(new Intent(BackgroundService.this, Automatic.class));
                 stopService(new Intent(BackgroundService.this, SemiAutomatic.class));
                 stopService(new Intent(BackgroundService.this, Manual.class));
+                stopService(new Intent(BackgroundService.this, Notification.class));
             }
         }// onPostExecute
     }// end of the parserTask class
@@ -423,6 +446,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
             String latitude = "";
             String longitude = "";
             String reference = "";
+            String placeType = "";
 
             try {
                 // Extracting Place name, if available
@@ -438,13 +462,16 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 latitude = jPlace.getJSONObject("geometry").getJSONObject("location").getString("lat");
                 longitude = jPlace.getJSONObject("geometry").getJSONObject("location").getString("lng");
                 reference = jPlace.getString("reference");
+                placeType = jPlace.getString("types");
 
                 place.put("place_name", placeName);
                 place.put("vicinity", vicinity);
                 place.put("lat", latitude);
                 place.put("lng", longitude);
                 place.put("reference", reference);
+                place.put("types", placeType);
 
+                Log.i("PlaceType",placeType);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -484,7 +511,9 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
                 //check if any scenarios is selected
                 // if yes then call the places code which afterwards every `mInterval` milliseconds
-                if(m.isAnyScenarioSelected()){
+                boolean mainSwitch = false;
+                mainSwitch = preferences.getBoolean(CONSTANTS.MAIN_SWITCH,mainSwitch);
+                if(m.isAnyScenarioSelected() && mainSwitch){
                     String sb = buildPlacesURL().toString();
                     new PlacesTask().execute(sb);
                 }
@@ -516,12 +545,11 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         List<ActivityManager.RunningTaskInfo> RunningTask = mActivityManager.getRunningTasks(1);
         ActivityManager.RunningTaskInfo ar = RunningTask.get(0);
         String activityOnTop=ar.topActivity.getClassName();
-        Main.showToast(getApplicationContext(), "CurrentForegroundApplication: " + activityOnTop);
+        Main.showToast("CurrentForegroundApplication: " + activityOnTop);
         Log.i("PlacesForegroundApp", activityOnTop);
     }
     //Working
-
-    //Package name and application name of A_SUM only when it is in foreground, whenany other app open nothing in toast;
+    //Package name and application name of A_SUM only when it is in foreground, when any other app open nothing in toast;
     //http://stackoverflow.com/a/27483601/2900127
     public void foreground(){
         ActivityManager activityManager = (ActivityManager) getApplicationContext().getSystemService(Context.ACTIVITY_SERVICE);
@@ -560,7 +588,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         }
 
         String foregroundTaskAppName = foregroundAppPackageInfo.applicationInfo.loadLabel(pm).toString();
-        Main.showToast(getApplicationContext(),foregroundTaskAppName);
+        Main.showToast(foregroundTaskAppName);
         Log.i("PlacesForegroundApp",foregroundTaskAppName);
     }
 }

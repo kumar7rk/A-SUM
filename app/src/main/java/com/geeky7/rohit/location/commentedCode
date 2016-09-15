@@ -14,3 +14,24 @@ BackgroundService- onCreate
 
 //        startService(new Intent(this,MyAccessibilityService.class));
 //        mRequestingLocationUpdates = false;
+
+ThreeTabsActivity- onCreate
+ /*new TapTargetView.Builder(this)
+                .title("Configure")
+                .description("Click this button to select scenarios to monitor")
+                .tintTarget(false)
+                .cancelable(true)
+                .textTypeface(Typeface.SERIF)
+
+                .listener(new TapTargetView.Listener() {
+                    @Override
+                    public void onTargetClick(TapTargetView tapTargetView) {
+                        startActivity(new Intent(ThreeTabsActivity.this, Configure.class));
+                    }
+
+                    @Override
+                    public void onTargetLongClick(TapTargetView tapTargetView) {
+
+                    }
+
+                }).showFor(findViewById(R.id.fab));*/

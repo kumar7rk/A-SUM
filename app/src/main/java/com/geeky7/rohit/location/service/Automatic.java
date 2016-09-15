@@ -3,16 +3,21 @@ package com.geeky7.rohit.location.service;
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 
+import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.ViolationDbHelper;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Automatic extends Service {
     Main m;
@@ -20,6 +25,8 @@ public class Automatic extends Service {
     private Handler mHandler;
 
     ViolationDbHelper violationDbHelper;
+    SharedPreferences preferences;
+
     public Automatic() {
     }
 
@@ -57,6 +64,10 @@ public class Automatic extends Service {
             m.showHomeScreen();
             contentValues.put("AppName", appName);
             sqLiteDatabase.insert("Violation", null, contentValues);
+            preferences = PreferenceManager.getDefaultSharedPreferences(this) ;
+            SharedPreferences.Editor editor = preferences.edit();
+            String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+            editor.putString(CONSTANTS.VIOLATION_TIME,currentDateTimeString).commit();
         }
         sqLiteDatabase.close();
     }
@@ -68,6 +79,12 @@ public class Automatic extends Service {
     }
 
     @Override
+    public boolean onUnbind(Intent intent) {
+        stopRepeatingTask();
+        return super.onUnbind(intent);
+    }
+
+    @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
@@ -75,7 +92,8 @@ public class Automatic extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Main.showToast(getApplicationContext(), "AutomaticServiceDestroyed");
+        Main.showToast("AutomaticServiceDestroyed");
+        stopRepeatingTask();
     }
     public void getListOfBlockedApplications(){
         listOfBlockedApps.add("com.touchboarder.android.api.demos");
