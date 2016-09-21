@@ -11,10 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.geeky7.rohit.location.CONSTANTS;
-import com.geeky7.rohit.location.DataObject;
+import com.geeky7.rohit.location.MonitoringDataObject;
 import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
-import com.geeky7.rohit.location.adapter.RecyclerViewAdapter;
+import com.geeky7.rohit.location.adapter.MonitoringRecyclerViewAdapter;
 
 import java.util.ArrayList;
 
@@ -39,12 +39,12 @@ public class MonitoringFragmentCardView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.monitoring_card_view, container, false);
+        View v = inflater.inflate(R.layout.recycler_view, container, false);
         mRecyclerView = (RecyclerView)v.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new RecyclerViewAdapter(getDataSet());
+        mAdapter = new MonitoringRecyclerViewAdapter(getDataSet());
         mRecyclerView.setAdapter(mAdapter);
         return v;
 
@@ -52,27 +52,28 @@ public class MonitoringFragmentCardView extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((RecyclerViewAdapter) mAdapter).setOnItemClickListener(new RecyclerViewAdapter
+        ((MonitoringRecyclerViewAdapter) mAdapter).setOnItemClickListener(new MonitoringRecyclerViewAdapter
                 .MyClickListener() {
             @Override
             public void onItemClick(int position, View v) {
             }
         });
     }
-    private ArrayList<DataObject> getDataSet() {
-        ArrayList results = new ArrayList<DataObject>();
+    private ArrayList<MonitoringDataObject> getDataSet() {
+        ArrayList results = new ArrayList<MonitoringDataObject>();
         /*for (int index = 0; index < 5; index++) {
-            DataObject obj = new DataObject("Some Primary Text " + index,
+            MonitoringDataObject obj = new MonitoringDataObject("Some Primary Text " + index,
                     "Secondary " + index);
             results.add(index, obj);
         }*/
 
         checkValues();
+        if (list.size()>1)
         for (int index = 0; index < list.size(); index++) {
             String violationTIme = "";
             violationTIme = preferences.getString(CONSTANTS.VIOLATION_TIME,violationTIme);
 
-            DataObject obj = new DataObject(list.get(index)+"!",
+            MonitoringDataObject obj = new MonitoringDataObject(list.get(index)+"!",
                     "Recent Violation: "+ violationTIme);
             results.add(index, obj);
         }

@@ -35,6 +35,7 @@ public class Automatic extends Service {
         super.onCreate();
         stopService(new Intent(Automatic.this, SemiAutomatic.class));
         stopService(new Intent(Automatic.this, Manual.class));
+        stopService(new Intent(Automatic.this, Notification.class));
         violationDbHelper = new ViolationDbHelper(getApplicationContext());
         mHandler = new Handler();
         m = new Main(getApplicationContext());
@@ -67,14 +68,13 @@ public class Automatic extends Service {
             preferences = PreferenceManager.getDefaultSharedPreferences(this) ;
             SharedPreferences.Editor editor = preferences.edit();
             String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-            editor.putString(CONSTANTS.VIOLATION_TIME,currentDateTimeString).commit();
+            editor.putString(CONSTANTS.VIOLATION_TIME,currentDateTimeString).apply();
         }
         sqLiteDatabase.close();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-//        blockAppLaunched();
         return super.onStartCommand(intent, flags, startId);
     }
 

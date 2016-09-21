@@ -24,7 +24,7 @@ public class list_of_rule extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list_of_rule, container, false);
-//        listView = (ListView)v.findViewById(android.R.id.list);
+//        listView = (ListView)v.findViewById(android.R.id.appList);
         listView = (ListView)v.findViewById(R.id.list);
         loadItems();
         return v;
@@ -41,9 +41,9 @@ public class list_of_rule extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position==0)
-                    getFragmentManager().beginTransaction().replace(android.R.id.content,new AutomaticDetails()).commit();
+                    getFragmentManager().beginTransaction().replace(android.R.id.content,new AutomaticDetailsCardView()).commit();
                 if (position==1)
-                    getFragmentManager().beginTransaction().replace(android.R.id.content,new SemiAutomaticDetails()).commit();
+                    getFragmentManager().beginTransaction().replace(android.R.id.content, new SemiAutomaticDetailsCardView()).commit();
                 if (position==2)
                     getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualDetails()).commit();
                 if (position==3)

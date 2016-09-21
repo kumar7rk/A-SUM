@@ -16,6 +16,9 @@ import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 public class SelectRule extends AppCompatActivity {
 
     Button backB, okB;
@@ -48,6 +51,20 @@ public class SelectRule extends AppCompatActivity {
                 SharedPreferences.Editor editor = preferences.edit();
                 String rule = radioButton.getText().toString();
                 editor.putString(CONSTANTS.SELECTED_RULE, rule);
+                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
+
+                if (rule.equalsIgnoreCase("Automatic")){
+                    editor.putString(CONSTANTS.AUTOMATIC_RULE_ADDED_TIME,currentDateTimeString);
+                }
+                if (rule.equalsIgnoreCase("SemiAutomatic")){
+                    editor.putString(CONSTANTS.SEMIAUTOMATIC_RULE_ADDED_TIME,currentDateTimeString);
+                }
+                if (rule.equalsIgnoreCase("Manual")){
+                    editor.putString(CONSTANTS.MANUAL_RULE_ADDED_TIME,currentDateTimeString);
+                }
+                if (rule.equalsIgnoreCase("Notification")){
+                    editor.putString(CONSTANTS.NOTIFICATION_RULE_ADDED_TIME,currentDateTimeString);
+                }
                 editor.commit();
                 Main.showToast(getApplication(), rule + " Added");
                 setResult(0);

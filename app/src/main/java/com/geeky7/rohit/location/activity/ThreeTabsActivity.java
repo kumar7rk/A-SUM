@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -71,7 +72,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
             }
         });
         mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
-        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         m.openLocationSettings(manager);
         m.usageAccessSettingsPage();
@@ -188,9 +189,9 @@ public class ThreeTabsActivity extends AppCompatActivity {
         View view = MenuItemCompat.getActionView(toggleService);
         aSwitch = (Switch) view.findViewById(R.id.a_switch);
 
-        mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
+        boolean m_switch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, false);
 
-        aSwitch.setChecked(mainSwitch);
+        aSwitch.setChecked(m_switch);
         aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -199,16 +200,20 @@ public class ThreeTabsActivity extends AppCompatActivity {
                     if (!running) {
                         startService();
                         running = true;
+                        aSwitch.getThumbDrawable().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
+                        aSwitch.getTrackDrawable().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
                     }
                 }
-                if (!isChecked){
+                else if (!isChecked){
                     Intent serviceIntent = new Intent(ThreeTabsActivity.this, BackgroundService.class);
                     if (running){
-                        stopService(serviceIntent);
+                        aSwitch.getThumbDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+                        aSwitch.getTrackDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
                         stopService(new Intent(ThreeTabsActivity.this, Automatic.class));
                         stopService(new Intent(ThreeTabsActivity.this, SemiAutomatic.class));
                         stopService(new Intent(ThreeTabsActivity.this, Manual.class));
                         stopService(new Intent(ThreeTabsActivity.this, Notification.class));
+                        stopService(serviceIntent);
                         running = false;
                     }
                 }
@@ -266,6 +271,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
         Fragment fragment;
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragment = new MonitoringFragmentCardView();
+//        fragment = new SemiAutomaticDetailsCardView();
         fragmentTransaction.replace(android.R.id.content, fragment).commit();
 
     }

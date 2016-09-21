@@ -22,7 +22,7 @@ public class SemiAutomaticDetails extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_semiautomatic_detail, container, false);
-//        listView = (ListView)v.findViewById(android.R.id.list);
+//        listView = (ListView)v.findViewById(android.R.id.appList);
         listView = (ListView)v.findViewById(R.id.list);
         loadItems();
         return v;

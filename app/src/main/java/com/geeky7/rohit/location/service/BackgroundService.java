@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -174,12 +175,16 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
     @Override
     public void onConnected(Bundle bundle) {
-
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean b = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     // if location null, get last known location, updating the time so that we don't show quite old location
         if (mCurrentLocation==null){
             mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-            updateToast();
+            if (b)
+                updateToast();
+            else if (!b)
+                m.openLocationSettings(manager);
         }
 
         if (mRequestingLocationUpdates)
@@ -211,7 +216,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         bedAndDark = preferences.getBoolean(getResources().getString(R.string.bed_dark), false);
         if (bedAndDark) {
             Intent intent = new Intent(getApplicationContext(), BedAndDark.class);
-            startService( intent);
+            startService(intent);
         }
         else if (!bedAndDark){
             stopService(new Intent(getApplicationContext(), BedAndDark.class));
@@ -519,6 +524,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 }
                 if(googleApiClientConnected)
                     walking();
+
                 bedAndDark();
 
             } catch (UnsupportedEncodingException e) {

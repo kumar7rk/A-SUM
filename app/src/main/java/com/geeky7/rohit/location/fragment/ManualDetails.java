@@ -123,17 +123,16 @@ public class ManualDetails extends ListFragment {
                 editor.putStringSet("manualApps", selectedAppsSet);
                 editor.putStringSet("manualAppsIndex", selectedAppsSetIndex);
                 editor.commit();
-
-                getActivity().getFragmentManager().beginTransaction()
-                        .replace(android.R.id.content, new MonitoringFragment());
                 Main.showToast(getActivity(), "ManualAppBlockListUpdated");
+                getActivity().getFragmentManager().beginTransaction()
+                        .replace(android.R.id.content, new MonitoringFragmentCardView()).commit();
         }
                 return super.onOptionsItemSelected(item);
     }
     public void loadItems(){
         applist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
         listadapter = new ApplicationAdapter(MyApplication.getAppContext(),
-                R.layout.listitems, applist);
+                R.layout.manual_listitems, applist);
         setListAdapter(listadapter);
     }
 

@@ -25,7 +25,6 @@ import com.geeky7.rohit.location.Main;
     10p8
   */
 public class BedAndDark extends Service implements SensorEventListener{
-    public static volatile boolean shouldContinue = true;
 
     SensorManager mSensorManager;
     Sensor mPhotometer,mAccelerometer,mMagnetometer;
@@ -33,7 +32,6 @@ public class BedAndDark extends Service implements SensorEventListener{
 
     SharedPreferences preferences;
     int max = 0;
-    boolean isAppRunning = true;
 
     KeyguardManager keyguardManager;
 

@@ -3,16 +3,17 @@ package com.geeky7.rohit.location.fragment;
 import android.app.ListFragment;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.ArrayAdapter;
 
-import com.geeky7.rohit.location.adapter.ApplicationAdapter;
 import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.ViolationDbHelper;
+import com.geeky7.rohit.location.adapter.ApplicationAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +23,11 @@ public class Violations extends ListFragment {
 
     private PackageManager packageManager = null;
     ViolationDbHelper violationDbHelper;
-    ListView listView;
+//    ListView listView;
     private ApplicationAdapter listadapter = null;
     private List<ApplicationInfo> applist = null;
+    Drawable[] drawables;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,19 +50,17 @@ public class Violations extends ListFragment {
 
     public void loadItems() {
         ArrayList<String> appNames = violationDbHelper.fetchAll();
-        /*ArrayAdapter adapter = new ArrayAdapter<>(getContext(),
-                android.R.layout.simple_list_item_1, appNames);*/
-        for (String s: appNames) {
+        ArrayAdapter adapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_list_item_1, appNames);
+        for (int i = 0; i < appNames.size(); i++) {
             try {
-                applist = checkForLaunchIntent((List<ApplicationInfo>) packageManager.getApplicationInfo(s, PackageManager.GET_META_DATA));
-                listadapter = new ApplicationAdapter(MyApplication.getAppContext(),
-                        R.layout.listitems, applist);
+                drawables[i] = MyApplication.getAppContext().getPackageManager().
+                        getApplicationIcon(appNames.get(i));
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
-//            applist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
         }
-        setListAdapter(listadapter);
+        setListAdapter(adapter);
     }
     private List<ApplicationInfo> checkForLaunchIntent(List<ApplicationInfo> list) {
         ArrayList<ApplicationInfo> applist = new ArrayList<ApplicationInfo>();

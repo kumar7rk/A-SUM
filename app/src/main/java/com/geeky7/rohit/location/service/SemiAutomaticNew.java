@@ -19,9 +19,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.google.android.gms.internal.zzir.runOnUiThread;
-
-public class SemiAutomatic extends Service {
+public class SemiAutomaticNew extends Service {
     Main m;
     ArrayList<String> listOfBlockedApps = new ArrayList<>();
     private Handler mHandler;
@@ -29,7 +27,7 @@ public class SemiAutomatic extends Service {
     ViolationDbHelper violationDbHelper;
     SharedPreferences preferences;
 
-    public SemiAutomatic() {
+    public SemiAutomaticNew() {
     }
 
     @Override
@@ -40,30 +38,21 @@ public class SemiAutomatic extends Service {
         mHandler = new Handler();
         m = new Main(getApplicationContext());
 
-        stopService(new Intent(SemiAutomatic.this, Automatic.class));
-        stopService(new Intent(SemiAutomatic.this, Manual.class));
-        stopService(new Intent(SemiAutomatic.this, Notification.class));
+        stopService(new Intent(SemiAutomaticNew.this, Automatic.class));
+        stopService(new Intent(SemiAutomaticNew.this, Manual.class));
+        stopService(new Intent(SemiAutomaticNew.this, Notification.class));
 //        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         String off_time = preferences.getString(CONSTANTS.SEMIAUTOMATIC_SEEKBAR_PROGRESS_OFF_TIME,"Time");
         int offTime = Integer.parseInt(off_time) * 60000;
-        final int delay = 15000;
 
-//        Main.showToast("Off-time in mins: " + off_time + " in milliSeconds " +offTime);
-        new java.util.Timer().schedule(
+        try {
+            Thread.sleep(offTime);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                startRepeatingTask();
-                                Main.showToast("Current Delay for SemiAutomatic: " +delay/1000 +" seconds");
-                            }
-                        });
-                    }
-                },
-                delay
-        );
+
+        startRepeatingTask();
         Main.showToast(getApplicationContext(), "SemiAutomatic Service started");
     }
 
@@ -145,8 +134,8 @@ public class SemiAutomatic extends Service {
     };
 
     public void startRepeatingTask() {
+        Main.showToast("I'm from SemiAutomatic startRepeatingTask. Hello!");
         mStatusChecker.run();
-    //        Main.showToast("I'm from SemiAutomatic, startRepeatingTask. Hello!");
     }
 
     public void stopRepeatingTask() {

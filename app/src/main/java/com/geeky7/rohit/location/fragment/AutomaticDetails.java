@@ -34,8 +34,9 @@ public class AutomaticDetails extends Fragment {
         return v;
     }
     public void loadItems() {
-        list.add("List of blocked apps");
         list.add("Last Applied");
+        list.add("Time Period");
+        list.add("Blocked Applications");
         adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, list);
         listView.setAdapter(adapter);

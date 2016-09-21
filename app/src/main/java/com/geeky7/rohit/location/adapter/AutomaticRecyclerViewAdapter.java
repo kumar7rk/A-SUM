@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.geeky7.rohit.location.DataObject;
@@ -17,23 +18,25 @@ import com.geeky7.rohit.location.R;
 import java.util.ArrayList;
 
 
-public class RecyclerViewAdapter extends RecyclerView
-        .Adapter<RecyclerViewAdapter
-        .DataObjectHolder> {
-    private static String LOG_TAG = "RecyclerViewAdapter";
+public class AutomaticRecyclerViewAdapter extends RecyclerView
+        .Adapter<AutomaticRecyclerViewAdapter
+        .AutomaticDataObjectHolder> {
+    private static String LOG_TAG = "AutomaticRecyclerViewAdapter";
     private ArrayList<DataObject> mDataset;
     private static MyClickListener myClickListener;
 
-    public static class DataObjectHolder extends RecyclerView.ViewHolder
+    public static class AutomaticDataObjectHolder extends RecyclerView.ViewHolder
             implements View
             .OnClickListener {
         TextView label;
         TextView dateTime;
+        ImageView icon;
 
-        public DataObjectHolder(View itemView) {
+        public AutomaticDataObjectHolder(View itemView) {
             super(itemView);
             label = (TextView) itemView.findViewById(R.id.textView);
             dateTime = (TextView) itemView.findViewById(R.id.textView2);
+            icon = (ImageView)itemView.findViewById(R.id.imageView);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -48,24 +51,27 @@ public class RecyclerViewAdapter extends RecyclerView
         this.myClickListener = myClickListener;
     }
 
-    public RecyclerViewAdapter(ArrayList<DataObject> myDataset) {
+    public AutomaticRecyclerViewAdapter(ArrayList<DataObject> myDataset) {
         mDataset = myDataset;
     }
 
     @Override
-    public DataObjectHolder onCreateViewHolder(ViewGroup parent,
+    public AutomaticDataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_view, parent, false);
+                .inflate(R.layout.automatic_card_view, parent, false);
 
-        DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
-        return dataObjectHolder;
+        AutomaticDataObjectHolder AutomaticDataObjectHolder = new AutomaticDataObjectHolder(view);
+        return AutomaticDataObjectHolder;
     }
 
     @Override
-    public void onBindViewHolder(DataObjectHolder holder, int position) {
+    public void onBindViewHolder(AutomaticDataObjectHolder holder, int position) {
         holder.label.setText(mDataset.get(position).getmText1());
         holder.dateTime.setText(mDataset.get(position).getmText2());
+//        holder.icon.setBackgroundResource(R.drawable.ic_restaurants);
+//        holder.icon.setBackgroundResource(mDataset.get(position).getmImage());
+        holder.icon.setImageDrawable(mDataset.get(position).getmImage());
     }
 
     public void addItem(DataObject dataObj, int index) {
