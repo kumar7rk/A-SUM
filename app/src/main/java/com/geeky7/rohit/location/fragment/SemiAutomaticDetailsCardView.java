@@ -61,7 +61,7 @@ public class SemiAutomaticDetailsCardView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.recycler_view_semiautomatic, container, false);
+        View v = inflater.inflate(R.layout.semiautomatic_recycler_view, container, false);
         mRecyclerView = (RecyclerView)v.findViewById(R.id.my_recycler_view);
         layout = (LinearLayout) v.findViewById(R.id.linear);
         layout1 = (LinearLayout) v.findViewById(R.id.linear1);
@@ -143,7 +143,7 @@ public class SemiAutomaticDetailsCardView extends Fragment {
        seekBar.incrementProgressBy(5);
 
        seekBar.setVisibility(View.VISIBLE);
-       String off_time = preferences.getString(CONSTANTS.SEMIAUTOMATIC_SEEKBAR_PROGRESS_OFF_TIME,"Time");
+       String off_time = preferences.getString(CONSTANTS.SEMIAUTOMATIC_SEEKBAR_PROGRESS_OFF_TIME,"Never Applied");
        int offTime = Integer.parseInt(off_time);
        seekBar.setProgress(offTime/5);
 

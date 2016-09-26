@@ -1,26 +1,25 @@
 package com.geeky7.rohit.location.fragment;
 
-import android.app.ListFragment;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.geeky7.rohit.location.adapter.ApplicationAdapter;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
+import com.geeky7.rohit.location.adapter.ApplicationAdapter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,7 +29,7 @@ import java.util.Set;
 /**
  * Created by Rohit on 30/08/2016.
  */
-public class ManualDetails extends ListFragment {
+public class ManualDetailsDialog extends DialogFragment {
     ListView listView;
     private ArrayAdapter<String> adapter;
     SharedPreferences preferences;
@@ -41,6 +40,7 @@ public class ManualDetails extends ListFragment {
     Set<String> selectedAppsSet = new HashSet<String>();
     Set<String> selectedAppsSetIndex = new HashSet<String>();
 
+    AlertDialog.Builder alertDialog;
 
     private PackageManager packageManager = null;
     private ApplicationAdapter listadapter = null;
@@ -54,9 +54,14 @@ public class ManualDetails extends ListFragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        appSelected();
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        appSelected();
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         Set<String> apps = new HashSet<String>();
         Set<String> appsIndex = new HashSet<String>();
@@ -68,20 +73,20 @@ public class ManualDetails extends ListFragment {
             Integer in = Integer.parseInt(s);
 //            listView.setItemChecked(in,true);
         }
-        loadItems();
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        appSelected();
+//        loadItems();
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
     }
 
     private void appSelected() {
+        Main.showToast("appSelected");
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ApplicationInfo applicationInfo = (ApplicationInfo) parent.getItemAtPosition(position);
+//                Main.showToast("itemClicked");
+                view.getFocusables(position);
+                view.setSelected(true);
+
                 Main.showToast(applicationInfo.loadLabel(packageManager) + "");
                 String selectedAppS = packageList.get(position);
                 selectedAppsSet.add(selectedAppS);
@@ -89,53 +94,56 @@ public class ManualDetails extends ListFragment {
             }
         });
     }
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_rule, container, false);
-        listView = (ListView)v.findViewById(android.R.id.list);
+    public ManualDetailsDialog(){
 
-        m = new Main(getActivity());
-
-//        adapter = getInstalledApplicationsv2();
-//        setListAdapter(adapter);
-//        adapter.notifyDataSetChanged();
-
-        appSelected();
-        setHasOptionsMenu(true);
-        return v;
     }
-
+    public static ManualDetailsDialog newInstance(int title) {
+        ManualDetailsDialog dialog = new ManualDetailsDialog();
+        Bundle args = new Bundle();
+        args.putInt("title", title);
+        dialog.setArguments(args);
+        return dialog;
+    }
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.custom, null);
+        alertDialog = new AlertDialog.Builder(getActivity());
+        listView = (ListView) convertView.findViewById(R.id.listView1);
+        loadItems();
+
+        alertDialog.setView(convertView);
+        alertDialog.setTitle("Select Application(s)").setIcon(R.drawable.abc_list_selector_holo_dark);
+        addButtons();
+        return alertDialog.create();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.application_list_edit, menu);
+    private void addButtons() {
+        alertDialog.setPositiveButton(
+                "SAVE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Main.showToast("Saved");
+                    }
+                });
+
+        alertDialog.setNegativeButton(
+                "CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Main.showToast("Cancelled");
+                    }
+                });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_save:
-                preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putStringSet("manualApps", selectedAppsSet);
-                editor.putStringSet("manualAppsIndex", selectedAppsSetIndex);
-                editor.commit();
-                Main.showToast(getActivity(), "ManualAppBlockListUpdated");
-                getActivity().getFragmentManager().beginTransaction()
-                        .replace(android.R.id.content, new MonitoringFragmentCardView()).commit();
-        }
-                return super.onOptionsItemSelected(item);
-    }
     public void loadItems(){
+        Main.showToast("loadItems");
         applist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
         listadapter = new ApplicationAdapter(MyApplication.getAppContext(),
                 R.layout.manual_listitems, applist);
-        setListAdapter(listadapter);
+        listView.setAdapter(listadapter);
     }
-
     private List<ApplicationInfo> checkForLaunchIntent(List<ApplicationInfo> list) {
         ArrayList<ApplicationInfo> applist = new ArrayList<ApplicationInfo>();
         for (ApplicationInfo info : list) {
@@ -149,26 +157,5 @@ public class ManualDetails extends ListFragment {
         }
 
         return applist;
-    }
-    public ArrayAdapter<String> getInstalledApplicationsv2(){
-        ArrayAdapter<String> adapter;
-        final PackageManager pm = MyApplication.getAppContext().getPackageManager();
-        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-
-        for (ApplicationInfo packageInfo : packages) {
-            if((packageInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-                String packageName = packageInfo.packageName + "";
-                String appName = pm.getApplicationLabel(packageInfo) + "";
-                packageList.add(packageName);
-                appList.add(appName);
-                Log.i("AppName ", packageName);
-                Log.i("AppNamess", appName);
-            }
-        }
-        adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_checked, appList);
-        adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.select_dialog_multichoice, appList);
-        return adapter;
     }
 }

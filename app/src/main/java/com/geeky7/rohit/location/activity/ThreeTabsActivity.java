@@ -271,7 +271,6 @@ public class ThreeTabsActivity extends AppCompatActivity {
         Fragment fragment;
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragment = new MonitoringFragmentCardView();
-//        fragment = new SemiAutomaticDetailsCardView();
         fragmentTransaction.replace(android.R.id.content, fragment).commit();
 
     }

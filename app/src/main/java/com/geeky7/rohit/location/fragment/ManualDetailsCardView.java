@@ -3,27 +3,30 @@ package com.geeky7.rohit.location.fragment;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.geeky7.rohit.location.DataObject;
 import com.geeky7.rohit.location.CONSTANTS;
-import com.geeky7.rohit.location.Main;
+import com.geeky7.rohit.location.DataObject;
 import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
-import com.geeky7.rohit.location.adapter.AutomaticRecyclerViewAdapter;
+import com.geeky7.rohit.location.adapter.ManualRecyclerViewAdapter;
 
 import java.util.ArrayList;
 
-public class AutomaticDetailsCardView extends Fragment {
+public class ManualDetailsCardView extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -33,29 +36,58 @@ public class AutomaticDetailsCardView extends Fragment {
     ArrayList<String> appList = new ArrayList<String>();
     ArrayList<String> listOfBlockedApps = new ArrayList<>();
 
+    Button button;
     Drawable[] drawables = new Drawable[11];
     SharedPreferences preferences;
-    LinearLayout layout;
-    public AutomaticDetailsCardView() {
+    LinearLayout layout,layout1;
+    public ManualDetailsCardView() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        button = new Button(MyApplication.getAppContext());
+        
+    }
+
+    private void addButton() {
+        button.setText("ADD");
+        button.setTextColor(Color.WHITE);
+        button.setBackgroundColor(Color.parseColor("#4997D0"));
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(250, 100);
+        lp.weight = 1.0f;
+        lp.gravity = Gravity.CENTER_VERTICAL;
+        button.setLayoutParams(lp);
+
+        button.setBackgroundResource(R.drawable.tags_rounded_corners);
+
+        GradientDrawable drawable = (GradientDrawable) button.getBackground();
+        drawable.setColor(Color.parseColor("#4997D0"));
+        layout1.addView(button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ManualDetailsDialog dialogFrag = ManualDetailsDialog.newInstance(R.string.startService);
+                dialogFrag.show(getActivity().getFragmentManager(), null);
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.automatic_recycler_view, container, false);
+        View v = inflater.inflate(R.layout.manual_recycler_view, container, false);
         mRecyclerView = (RecyclerView)v.findViewById(R.id.my_recycler_view);
         layout = (LinearLayout) v.findViewById(R.id.linear);
+        layout1 = (LinearLayout) v.findViewById(R.id.linear1);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
 
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new AutomaticRecyclerViewAdapter(getDataSet());
+        mAdapter = new ManualRecyclerViewAdapter(getDataSet());
+        addButton();
 
         mRecyclerView.setAdapter(mAdapter);
         return v;
@@ -64,18 +96,20 @@ public class AutomaticDetailsCardView extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((AutomaticRecyclerViewAdapter) mAdapter).setOnItemClickListener(new AutomaticRecyclerViewAdapter
+        ((ManualRecyclerViewAdapter) mAdapter).setOnItemClickListener(new ManualRecyclerViewAdapter
                 .MyClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                if (position == 2)
-                    Main.showToast("coming soon!");
+                if (position == 2) {
+//                    Main.showToast("coming soon!");
+                    getFragmentManager().beginTransaction().replace(android.R.id.content, new ManualDetailsDialog()).commit();
+                }
             }
         });
     }
     private ArrayList<DataObject> getDataSet() {
         ArrayList results = new ArrayList<DataObject>();
-        String lastApplied = preferences.getString(CONSTANTS.AUTOMATIC_RULE_ADDED_TIME, "Never Applied");
+        String lastApplied = preferences.getString(CONSTANTS.MANUAL_RULE_ADDED_TIME, "Never Applied");
         String timePeriod = "This rule is applied for ALL DAY. No quiet Hours";
         String apps = "someApps";
         addValues();

@@ -10,30 +10,24 @@
         android:scrollbars="vertical"/>
 
     <LinearLayout
-        android:id="@+id/linear2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="260dp"
-        android:layout_marginLeft="10dp"
-        android:orientation="horizontal" >
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/linear1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="290dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginTop="275dp"
+        android:layout_marginLeft="290dp"
+        android:layout_marginRight="15dp"
         android:orientation="horizontal" >
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="365dp"
+        android:layout_marginTop="315dp"
         android:layout_marginLeft="10dp"
         android:orientation="horizontal" >
+
     </LinearLayout>
 
 </RelativeLayout>

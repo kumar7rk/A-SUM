@@ -39,7 +39,7 @@ public class MonitoringFragmentCardView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.recycler_view, container, false);
+        View v = inflater.inflate(R.layout.monitoring_recycler_view, container, false);
         mRecyclerView = (RecyclerView)v.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());

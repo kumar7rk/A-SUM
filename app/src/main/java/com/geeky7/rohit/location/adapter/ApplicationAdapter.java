@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 
+import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (null == view) {
             LayoutInflater layoutInflater = (LayoutInflater) context
@@ -72,14 +73,18 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
             checkBox.setChecked(checkList.get(position)); // set the status as we stored it
             checkBox.setOnCheckedChangeListener(mListener); // set the listener
             checkBox.setText(data.loadLabel(packageManager));
+            checkBox.setButtonDrawable(android.R.color.transparent);
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    Main.showToast(buttonView.getText().toString());
 
+                }
+            });
 //            appName.setText(data.loadLabel(packageManager));
             iconview.setImageDrawable(data.loadIcon(packageManager));
 
 
-            /*preferences = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext()));
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putStringSet("manualApps", checkList);*/
         }
         return view;
     }

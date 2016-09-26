@@ -45,7 +45,7 @@ public class list_of_rule extends Fragment {
                 if (position==1)
                     getFragmentManager().beginTransaction().replace(android.R.id.content, new SemiAutomaticDetailsCardView()).commit();
                 if (position==2)
-                    getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualDetails()).commit();
+                    getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualDetailsCardView()).commit();
                 if (position==3)
                     getFragmentManager().beginTransaction().replace(android.R.id.content,new NotificationDetails()).commit();
             }
