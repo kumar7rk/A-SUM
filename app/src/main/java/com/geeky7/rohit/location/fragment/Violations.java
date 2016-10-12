@@ -50,6 +50,9 @@ public class Violations extends ListFragment {
 
     public void loadItems() {
         ArrayList<String> appNames = violationDbHelper.fetchAll();
+        if (appNames.size()==0){
+            appNames.add("No Violation yet! Hurrah");
+        }
         ArrayAdapter adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, appNames);
         for (int i = 0; i < appNames.size(); i++) {

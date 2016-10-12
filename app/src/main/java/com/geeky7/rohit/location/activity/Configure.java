@@ -57,8 +57,12 @@ public class Configure extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode==0)
+        if (resultCode==0){
+            setResult(0);
             finish();
+
+        }
+
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment

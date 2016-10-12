@@ -59,6 +59,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
@@ -68,13 +69,11 @@ public class ThreeTabsActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(ThreeTabsActivity.this,Configure.class));
+                startActivityForResult(new Intent(ThreeTabsActivity.this, Configure.class),1);
             }
         });
         mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
-        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        m.openLocationSettings(manager);
         m.usageAccessSettingsPage();
         checkPermission();
 
@@ -83,7 +82,6 @@ public class ThreeTabsActivity extends AppCompatActivity {
 
         mBottomBar = BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.main);
-
         updateBadge();
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
 
@@ -141,6 +139,11 @@ public class ThreeTabsActivity extends AppCompatActivity {
                 }
             }
         });
+        mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
+        mBottomBar.mapColorForTab(1, "#fff000");
+        mBottomBar.mapColorForTab(2, "#fff000");
+
+        m.openLocationSettings(manager);
     }
 
     public void updateBadge() {
@@ -169,8 +172,14 @@ public class ThreeTabsActivity extends AppCompatActivity {
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
-            case R.id.main_switch:
-
+            case R.id.action_tutorial:
+                Main.showToast(getResources().getString(R.string.coming_soon));
+                break;
+            case R.id.action_help:
+                Main.showToast(getResources().getString(R.string.coming_soon));
+                break;
+            case R.id.action_about:
+                Main.showToast(getResources().getString(R.string.coming_soon));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -178,7 +187,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
 
     @Override
     public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        editorMainSwitch();
+        //editorMainSwitch();
         super.onPostCreate(savedInstanceState, persistentState);
     }
 
@@ -203,10 +212,9 @@ public class ThreeTabsActivity extends AppCompatActivity {
                         aSwitch.getThumbDrawable().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
                         aSwitch.getTrackDrawable().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
                     }
-                }
-                else if (!isChecked){
+                } else if (!isChecked) {
                     Intent serviceIntent = new Intent(ThreeTabsActivity.this, BackgroundService.class);
-                    if (running){
+                    if (running) {
                         aSwitch.getThumbDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
                         aSwitch.getTrackDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
                         stopService(new Intent(ThreeTabsActivity.this, Automatic.class));
@@ -271,8 +279,15 @@ public class ThreeTabsActivity extends AppCompatActivity {
         Fragment fragment;
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragment = new MonitoringFragmentCardView();
-        fragmentTransaction.replace(android.R.id.content, fragment).commit();
-
+//        fragmentTransaction.replace(android.R.id.content, fragment).commit();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==0){
+            getFragmentManager().beginTransaction().replace(android.R.id.content,new MonitoringFragmentCardView())
+                    .commit();
+        }
     }
 
     @Override

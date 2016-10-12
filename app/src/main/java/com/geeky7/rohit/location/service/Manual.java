@@ -53,6 +53,6 @@ public class Manual extends Service {
             m.showHomeScreen();
     }
     public void getListOfBlockedApplications(){
-        listOfBlockedApps = preferences.getStringSet("manualApps", listOfBlockedApps);
+        listOfBlockedApps = preferences.getStringSet("someStringSet", listOfBlockedApps);
     }
 }

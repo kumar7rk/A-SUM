@@ -69,6 +69,7 @@ public class SelectRule extends AppCompatActivity {
                 Main.showToast(getApplication(), rule + " Added");
                 setResult(0);
                 finish();
+
                 //startActivity(new Intent(SelectRule.this,ThreeTabsActivity.class)); using this opens selectRuleActivity
                 // instead of configure;
             }

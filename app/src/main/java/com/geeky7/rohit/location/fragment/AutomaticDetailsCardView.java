@@ -36,6 +36,7 @@ public class AutomaticDetailsCardView extends Fragment {
     Drawable[] drawables = new Drawable[11];
     SharedPreferences preferences;
     LinearLayout layout;
+
     public AutomaticDetailsCardView() {
     }
 

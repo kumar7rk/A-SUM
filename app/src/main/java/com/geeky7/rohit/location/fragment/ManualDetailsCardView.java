@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +21,14 @@ import android.widget.LinearLayout;
 
 import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.DataObject;
+import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.adapter.ManualRecyclerViewAdapter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ManualDetailsCardView extends Fragment {
 
@@ -101,8 +105,7 @@ public class ManualDetailsCardView extends Fragment {
             @Override
             public void onItemClick(int position, View v) {
                 if (position == 2) {
-//                    Main.showToast("coming soon!");
-                    getFragmentManager().beginTransaction().replace(android.R.id.content, new ManualDetailsDialog()).commit();
+                    Main.showToast("coming soon!");
                 }
             }
         });
@@ -163,28 +166,15 @@ public class ManualDetailsCardView extends Fragment {
         list.add("Time Period");
         list.add("Blocked Applications");
     }
-    private void appList(){
-        appList.add("ApiDemos");
-        appList.add("GPSTester");
-        appList.add("AppDetox");
-        appList.add("Libraries for developers");
-        appList.add("ListView");
-        appList.add("My Application");
-        appList.add("PreventDark");
-        appList.add("Location");
-        appList.add("ListView");
-        appList.add("LostPhone");
-    }
+
     public void getListOfBlockedApplications(){
-        listOfBlockedApps.add("com.touchboarder.android.api.demos");
-        listOfBlockedApps.add("com.agup.gps");
-        listOfBlockedApps.add("de.dfki.appdetox");
-        listOfBlockedApps.add("com.desarrollodroide.repos");
-        listOfBlockedApps.add("com.geeky7.rohit.listview");
-        listOfBlockedApps.add("com.example.rohit.myapplication");
-        listOfBlockedApps.add("com.mycompany12.mytwelthapptopicsfinal");
-        listOfBlockedApps.add("com.geeky7.rohit.locations");
-        listOfBlockedApps.add("com.example.listview");
-        listOfBlockedApps.add("com.geeky7.rohit.lostphone");
+        Log.i("CardView", "getListOf...method");
+//        Main.showToast("getListOf...method");
+        Set<String> apps = new HashSet<String>();
+        apps = preferences.getStringSet("someStringSet",apps);
+        for (String a:apps)
+            Log.i("CardView",a);
+        listOfBlockedApps.addAll(apps);
+
     }
 }

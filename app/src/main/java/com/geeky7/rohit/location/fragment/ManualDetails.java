@@ -35,6 +35,7 @@ public class ManualDetails extends ListFragment {
     private ArrayAdapter<String> adapter;
     SharedPreferences preferences;
     Main m;
+
     ArrayList<String> packageList = new ArrayList<String>();
     ArrayList<String> appList = new ArrayList<String>();
 
@@ -58,6 +59,7 @@ public class ManualDetails extends ListFragment {
         super.onViewCreated(view, savedInstanceState);
         appSelected();
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
         Set<String> apps = new HashSet<String>();
         Set<String> appsIndex = new HashSet<String>();
 
@@ -118,12 +120,15 @@ public class ManualDetails extends ListFragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 SharedPreferences.Editor editor = preferences.edit();
+
                 editor.putStringSet("manualApps", selectedAppsSet);
                 editor.putStringSet("manualAppsIndex", selectedAppsSetIndex);
+
                 editor.commit();
+
                 Main.showToast(getActivity(), "ManualAppBlockListUpdated");
+
                 getActivity().getFragmentManager().beginTransaction()
                         .replace(android.R.id.content, new MonitoringFragmentCardView()).commit();
         }

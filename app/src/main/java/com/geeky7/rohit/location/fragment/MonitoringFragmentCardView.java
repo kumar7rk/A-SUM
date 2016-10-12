@@ -25,6 +25,9 @@ public class MonitoringFragmentCardView extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "MonitoringFragment";
     ArrayList<String> list = new ArrayList<String>();
+    ArrayList<String> detectedTimeList = new ArrayList<String>();
+    String detected_restaurant,detected_religiousPlace,
+            detected_movieThestre,detected_bedAndDark,detected_walking;
 
     SharedPreferences preferences;
     public MonitoringFragmentCardView() {
@@ -61,20 +64,16 @@ public class MonitoringFragmentCardView extends Fragment {
     }
     private ArrayList<MonitoringDataObject> getDataSet() {
         ArrayList results = new ArrayList<MonitoringDataObject>();
-        /*for (int index = 0; index < 5; index++) {
-            MonitoringDataObject obj = new MonitoringDataObject("Some Primary Text " + index,
-                    "Secondary " + index);
-            results.add(index, obj);
-        }*/
-
         checkValues();
-        if (list.size()>1)
         for (int index = 0; index < list.size(); index++) {
-            String violationTIme = "";
-            violationTIme = preferences.getString(CONSTANTS.VIOLATION_TIME,violationTIme);
+            String detectionTime = "No Detection Yet!";
+            detectionTime = detectedTimeList.get(index);
 
-            MonitoringDataObject obj = new MonitoringDataObject(list.get(index)+"!",
-                    "Recent Violation: "+ violationTIme);
+            if (detectionTime == "null")
+                detectionTime = "No Detection Yet!";
+
+            MonitoringDataObject obj = new MonitoringDataObject(list.get(index)+"",
+                    "Recent Detection: "+ detectionTime);
             results.add(index, obj);
         }
         return results;
@@ -85,16 +84,31 @@ public class MonitoringFragmentCardView extends Fragment {
         boolean movie_theatre = preferences.getBoolean(getResources().getString(R.string.movie_theatre), false);
         boolean bed_dark = preferences.getBoolean(getResources().getString(R.string.bed_dark), false);
         boolean walking = preferences.getBoolean(getResources().getString(R.string.walking), false);
-        if (restaurant)
+        if (restaurant){
             list.add(getResources().getString(R.string.restaurant));
-        if (religious_place)
+            detected_restaurant = preferences.getString(CONSTANTS.DETECTED_RESTAURNT_TIME, detected_restaurant);
+            detectedTimeList.add(detected_restaurant);
+        }
+        if (religious_place){
             list.add(getResources().getString(R.string.religious_place));
-        if (movie_theatre)
+            detected_religiousPlace = preferences.getString(CONSTANTS.DETECTED_RELIGIOUSPLACE_TIME,detected_religiousPlace);
+            detectedTimeList.add(detected_religiousPlace);
+        }
+        if (movie_theatre){
             list.add(getResources().getString(R.string.movie_theatre));
-        if (bed_dark)
+            detected_movieThestre = preferences.getString(CONSTANTS.DETECTED_MOVIETHEATRE_TIME,detected_movieThestre);
+            detectedTimeList.add(detected_movieThestre);
+        }
+        if (bed_dark){
             list.add(getResources().getString(R.string.bed_dark));
-        if (walking)
+            detected_bedAndDark = preferences.getString(CONSTANTS.DETECTED_BEDANDDARK_TIME,detected_bedAndDark);
+            detectedTimeList.add(detected_bedAndDark);
+        }
+        if (walking){
             list.add(getResources().getString(R.string.walking));
+            detected_walking = preferences.getString(CONSTANTS.DETECTED_WALKING_TIME,detected_walking);
+            detectedTimeList.add(detected_walking);
+        }
 
         if (!(restaurant || religious_place || movie_theatre || bed_dark || walking))
             list.add("No scenario to monitor. Click + symbol to add one");

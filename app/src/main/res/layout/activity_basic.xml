@@ -30,6 +30,6 @@
         app:layout_anchor="@id/messageView"
         app:layout_anchorGravity="bottom|right|end"
         app:backgroundTint="#FF0000"
-        app:rippleColor="#FFF"/>
+        app:rippleColor="#FFF000"/>
     </android.support.design.widget.CoordinatorLayout>
 </RelativeLayout>

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,9 @@ import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
 
@@ -27,6 +31,12 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
     SharedPreferences preferences;
     CheckBox checkBox;
     ApplicationInfo data;
+
+    ArrayList<String> packageNames = new ArrayList<>();
+    Set<String> selectedAppsSet = new HashSet<String>();
+    Set<String> selectedAppsSetIndex = new HashSet<String>();
+    SharedPreferences.Editor editor;
+
     public ApplicationAdapter(Context context, int textViewResourceId,
                               List<ApplicationInfo> appsList) {
         super(context, textViewResourceId, appsList);
@@ -34,9 +44,34 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
         this.appsList = appsList;
         packageManager = context.getPackageManager();
 
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        editor = preferences.edit();
+
+        Set<String> appsIndex = new HashSet<String>();
+        ArrayList<String> appsIndexList = new ArrayList<>();
+
+        appsIndex = preferences.getStringSet("someStringSetIndex", appsIndex);
+
+        Main.showToast("ApplicationAdapter constructor");
+        for (String s:appsIndex)
+            Log.i("AppsIndex",s);
+
         for (int i = 0; i < appsList.size(); i++) {
             checkList.add(false);
         }
+        for (String s: appsIndex){
+            appsIndexList.add(s);
+        }
+        for (int i = 0;i<appsIndexList.size();i++) {
+            int index = Integer.parseInt(appsIndexList.get(i));
+            checkList.add(index, true);
+        }
+    }
+
+    public ApplicationAdapter(Context context, int resource) {
+        super(context, resource);
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        editor = preferences.edit();
     }
 
     @Override
@@ -64,34 +99,52 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
         }
 
         data = appsList.get(position);
+        packageNames.add(data.packageName);
+
         if (null != data) {
-//            TextView appName = (TextView) view.findViewById(R.id.app_name);
             ImageView iconview = (ImageView) view.findViewById(R.id.app_icon);
 
             checkBox = (CheckBox) view.findViewById(R.id.cb_app);
+
             checkBox.setTag(position); // set the tag so we can identify the correct row in the listener
             checkBox.setChecked(checkList.get(position)); // set the status as we stored it
-            checkBox.setOnCheckedChangeListener(mListener); // set the listener
+//            checkBox.setOnCheckedChangeListener(mListener); // set the listener
             checkBox.setText(data.loadLabel(packageManager));
             checkBox.setButtonDrawable(android.R.color.transparent);
+
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    Main.showToast(buttonView.getText().toString());
+                    String packageName = packageNames.get((Integer) buttonView.getTag());
+                    int index = (Integer) buttonView.getTag();
 
+                    if (isChecked) {
+                        selectedAppsSet.add(packageName);
+                        selectedAppsSetIndex.add(index + "");
+
+                    } else if (!isChecked) {
+                        selectedAppsSet.remove(packageName);
+                        selectedAppsSetIndex.remove(index + "");
+                    }
+
+//                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putStringSet("someStringSet", selectedAppsSet);
+                    editor.putStringSet("someStringSetIndex", selectedAppsSetIndex);
+                    editor.commit();
                 }
             });
-//            appName.setText(data.loadLabel(packageManager));
             iconview.setImageDrawable(data.loadIcon(packageManager));
-
-
         }
         return view;
     }
     CompoundButton.OnCheckedChangeListener mListener = new CompoundButton.OnCheckedChangeListener() {
 
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            checkList.set((Integer)buttonView.getTag(),isChecked); // get the tag so we know the row and store the status
+//            checkList.set((Integer)buttonView.getTag(),isChecked); // get the tag so we know the row and store the status
         }
     };
+    public void commit(){
+        editor.commit();
+        Main.showToast("Commit");
+    }
 }

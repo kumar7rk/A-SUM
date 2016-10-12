@@ -22,6 +22,7 @@ import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.adapter.ApplicationAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,29 +57,30 @@ public class ManualDetailsDialog extends DialogFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        appSelected();
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
         Set<String> apps = new HashSet<String>();
         Set<String> appsIndex = new HashSet<String>();
 
-        apps = preferences.getStringSet("manualApps", apps);
+//        apps = preferences.getStringSet("manualApps", apps);
         appsIndex = preferences.getStringSet("manualAppsIndex", appsIndex);
 //        selectedAppsSetIndex = appsIndex;
         for (String s:appsIndex){
             Integer in = Integer.parseInt(s);
 //            listView.setItemChecked(in,true);
         }
-//        loadItems();
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        appSelected();
     }
 
     private void appSelected() {
-        Main.showToast("appSelected");
+//        Main.showToast("appSelected");
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -108,8 +110,10 @@ public class ManualDetailsDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View convertView = inflater.inflate(R.layout.custom, null);
-        alertDialog = new AlertDialog.Builder(getActivity());
         listView = (ListView) convertView.findViewById(R.id.listView1);
+
+        alertDialog = new AlertDialog.Builder(getActivity());
+
         loadItems();
 
         alertDialog.setView(convertView);
@@ -123,6 +127,12 @@ public class ManualDetailsDialog extends DialogFragment {
                 "SAVE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+//                        ApplicationAdapter a = new ApplicationAdapter(MyApplication.getAppContext(),0);
+                        ApplicationAdapter a = new ApplicationAdapter(MyApplication.getAppContext(),0,applist);
+                        a.commit();
+
+                        getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualDetailsCardView())
+                                .commit();
                         Main.showToast("Saved");
                     }
                 });
@@ -131,15 +141,18 @@ public class ManualDetailsDialog extends DialogFragment {
                 "CANCEL", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                         Main.showToast("Cancelled");
+                        getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualDetailsCardView())
+                                .commit();
                     }
                 });
     }
 
     public void loadItems(){
-        Main.showToast("loadItems");
         applist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
+
+        Collections.sort(applist, new ApplicationInfo.DisplayNameComparator(packageManager));
+
         listadapter = new ApplicationAdapter(MyApplication.getAppContext(),
                 R.layout.manual_listitems, applist);
         listView.setAdapter(listadapter);
@@ -147,9 +160,11 @@ public class ManualDetailsDialog extends DialogFragment {
     private List<ApplicationInfo> checkForLaunchIntent(List<ApplicationInfo> list) {
         ArrayList<ApplicationInfo> applist = new ArrayList<ApplicationInfo>();
         for (ApplicationInfo info : list) {
+            String packageName = info.packageName;
             try {
                 if (null != packageManager.getLaunchIntentForPackage(info.packageName)) {
                     applist.add(info);
+                    packageList.add(packageName);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

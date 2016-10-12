@@ -49,6 +49,7 @@ public class ViolationDbHelper extends SQLiteOpenHelper {
                 arrayList.add(appName);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         editor.putInt(CONSTANTS.NUMBER_OF_VIOLATIONS,arrayList.size());
         editor.commit();
         return arrayList;
