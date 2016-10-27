@@ -207,27 +207,39 @@ public class SemiAutomaticDetailsCardView extends Fragment {
 
     }
     private void appList(){
+        appList.add("WhatsApp");
+        appList.add("Facebook");
+        appList.add("Instagram");
+        appList.add("Snapchat");
+
         appList.add("ApiDemos");
         appList.add("GPSTester");
         appList.add("AppDetox");
         appList.add("Libraries for developers");
         appList.add("ListView");
-        appList.add("My Application");
+        appList.add("ListView");
+
+        /*appList.add("My Application");
         appList.add("PreventDark");
         appList.add("Location");
-        appList.add("ListView");
-        appList.add("LostPhone");
+        appList.add("LostPhone");*/
     }
     public void getListOfBlockedApplications(){
+        listOfBlockedApps.add("com.whatsapp");
+        listOfBlockedApps.add("com.facebook.katana");
+        listOfBlockedApps.add("com.instagram.android");
+        listOfBlockedApps.add("com.snapchat.android");
+
         listOfBlockedApps.add("com.touchboarder.android.api.demos");
         listOfBlockedApps.add("com.agup.gps");
         listOfBlockedApps.add("de.dfki.appdetox");
         listOfBlockedApps.add("com.desarrollodroide.repos");
         listOfBlockedApps.add("com.geeky7.rohit.listview");
-        listOfBlockedApps.add("com.example.rohit.myapplication");
+        listOfBlockedApps.add("com.example.listview");
+
+        /*listOfBlockedApps.add("com.example.rohit.myapplication");
         listOfBlockedApps.add("com.mycompany12.mytwelthapptopicsfinal");
         listOfBlockedApps.add("com.geeky7.rohit.locations");
-        listOfBlockedApps.add("com.example.listview");
-        listOfBlockedApps.add("com.geeky7.rohit.lostphone");
+        listOfBlockedApps.add("com.geeky7.rohit.lostphone");*/
     }
 }

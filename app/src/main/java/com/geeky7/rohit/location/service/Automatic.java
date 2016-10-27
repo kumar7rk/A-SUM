@@ -64,6 +64,7 @@ public class Automatic extends Service {
         if (listOfBlockedApps.contains(currentApp)){
             m.showHomeScreen();
             contentValues.put("AppName", appName);
+            Main.showToast(appName +" is blocked.");
             sqLiteDatabase.insert("Violation", null, contentValues);
             preferences = PreferenceManager.getDefaultSharedPreferences(this) ;
             SharedPreferences.Editor editor = preferences.edit();
@@ -96,16 +97,22 @@ public class Automatic extends Service {
         stopRepeatingTask();
     }
     public void getListOfBlockedApplications(){
+        listOfBlockedApps.add("com.whatsapp");
+        listOfBlockedApps.add("com.facebook.katana");
+        listOfBlockedApps.add("com.instagram.android");
+        listOfBlockedApps.add("com.snapchat.android");
+
         listOfBlockedApps.add("com.touchboarder.android.api.demos");
         listOfBlockedApps.add("com.agup.gps");
         listOfBlockedApps.add("de.dfki.appdetox");
         listOfBlockedApps.add("com.desarrollodroide.repos");
         listOfBlockedApps.add("com.geeky7.rohit.listview");
         listOfBlockedApps.add("com.example.listview");
-        listOfBlockedApps.add("com.example.rohit.myapplication");
+
+        /*listOfBlockedApps.add("com.example.rohit.myapplication");
         listOfBlockedApps.add("com.mycompany12.mytwelthapptopicsfinal");
         listOfBlockedApps.add("com.geeky7.rohit.locations");
-        listOfBlockedApps.add("com.geeky7.rohit.lostphone");
+        listOfBlockedApps.add("com.geeky7.rohit.lostphone");*/
     }
 
     Runnable mStatusChecker = new Runnable() {
