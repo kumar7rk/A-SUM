@@ -254,10 +254,10 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         // for demo- coordinates for jasmin restaurant 33 i
         double mLatitude = -34.923792;
         double mLongitude = 138.6047722;
-        int mRadius = 10;
+        int mRadius = 20;
 
-        /*mLatitude = mCurrentLocation.getLatitude();
-        mLongitude = mCurrentLocation.getLongitude();*/
+        mLatitude = mCurrentLocation.getLatitude();
+        mLongitude = mCurrentLocation.getLongitude();
 
         // keys- ideally should not be on Github
         String old = "AIzaSyC0ZdWHP1aun8cfHq9aXzOOztUaD1Fmw_I";
@@ -334,7 +334,8 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         // Executed after the complete execution of doInBackground() method
         @Override
         protected void onPostExecute(List<HashMap<String, String>> list) {
-            if (list.size()>0){
+
+            if (list.size() >0){
                 /*for (int i = 0; i < list.size(); i++) {
                     HashMap<String, String> hmPlace = list.get(0);
                     final String name = hmPlace.get("place_name");
@@ -346,7 +347,8 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 SharedPreferences.Editor editor = preferences.edit();
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
-                Main.showToast(name);
+                Log.i("PlaceDetected", name);
+//                Main.showToast(name);
 
                 if (!name.equals("Nothing")){
 
@@ -370,7 +372,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
                     String rule = "AA";
                     rule = preferences.getString(CONSTANTS.SELECTED_RULE, rule);
-                    Main.showToast("RuleName: " + rule);
+                    //Main.showToast("RuleName: " + rule);
 
                     if (rule.equalsIgnoreCase("Automatic")){
                         startService(new Intent(BackgroundService.this, Automatic.class));

@@ -21,8 +21,8 @@ public class Notification extends Service {
         stopService(new Intent(Notification.this, Manual.class));
 
         Main.showToast(getApplicationContext(), "Notification Service started");
-        pugNotification("A reminder","Hey! you've been detected at one of the restricted places",
-                "consider using your phone to the minimum anf try enjoying the moment");
+        pugNotification("A reminder","Hey! You've been detected in a social place",
+                "Let's just not use the phone and enjoy the moment");
     }
     @Override
     public IBinder onBind(Intent intent) {

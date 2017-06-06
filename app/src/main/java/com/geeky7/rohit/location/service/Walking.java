@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 
 import com.geeky7.rohit.location.AdminReceiver;
-import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.activity.ThreeTabsActivity;
 import com.google.android.gms.location.ActivityRecognitionResult;
@@ -71,10 +70,13 @@ public class Walking extends IntentService {
             switch (detectedActivity.getType()){
                 case DetectedActivity.WALKING:
                     Log.i(TAG, "Walking " + detectedActivity.getConfidence());
-                    Main.showToast("Walking " + detectedActivity.getConfidence());
-                    createNotification("you were walking", detectedActivity.getConfidence() + "", getApplicationContext());
-                    if (detectedActivity.getConfidence()>55 && walking)
+                    //Main.showToast("Walking " + detectedActivity.getConfidence());
+                    //createNotification("you were walking", detectedActivity.getConfidence() + "", getApplicationContext());
+                    if (detectedActivity.getConfidence()>55 && walking){
+                        createNotification("Warning! You were walking", "For safety reason we locked you phone", getApplicationContext());
                         lockMeNow(ThreeTabsActivity.view);
+
+                    }
                     break;
                 case DetectedActivity.STILL:
                     Log.i(TAG, "Standing " + detectedActivity.getConfidence());

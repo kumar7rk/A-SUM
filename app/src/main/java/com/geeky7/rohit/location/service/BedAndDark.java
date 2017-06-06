@@ -90,7 +90,8 @@ public class BedAndDark extends Service implements SensorEventListener{
         t.start();
         if (event.sensor==mPhotometer) {
             int intValue = (int) event.values[0];
-
+            if (intValue==0)
+                Main.showToast("stop using phone in the darkness");
             max = max < intValue ? intValue : max;
         }
         if (event.sensor==mAccelerometer){

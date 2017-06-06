@@ -65,6 +65,7 @@ public class MonitoringFragmentCardView extends Fragment {
     private ArrayList<MonitoringDataObject> getDataSet() {
         ArrayList results = new ArrayList<MonitoringDataObject>();
         checkValues();
+        if (list.size()>0){
         for (int index = 0; index < list.size(); index++) {
             String detectionTime = "No Detection Yet!";
             detectionTime = detectedTimeList.get(index);
@@ -75,6 +76,12 @@ public class MonitoringFragmentCardView extends Fragment {
             MonitoringDataObject obj = new MonitoringDataObject(list.get(index)+"",
                     "Recent Detection: "+ detectionTime);
             results.add(index, obj);
+        }
+        }
+        else{
+            MonitoringDataObject obj = new MonitoringDataObject("No scenario monitored",
+                    "Click + symbol to add one");
+            results.add(0,obj);
         }
         return results;
     }
@@ -110,7 +117,7 @@ public class MonitoringFragmentCardView extends Fragment {
             detectedTimeList.add(detected_walking);
         }
 
-        if (!(restaurant || religious_place || movie_theatre || bed_dark || walking))
-            list.add("No scenario to monitor. Click + symbol to add one");
+        /*if (!(restaurant || religious_place || movie_theatre || bed_dark || walking))
+            list.add("No scenario to monitor. Click + symbol to add one");*/
     }
 }

@@ -1,0 +1,84 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context="com.geeky7.rohit.location.activity.Configure">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/radioGroup"
+            android:paddingTop="10sp"
+            >
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text= "Automatic \nHelp me choose useless apps to block \n"
+                android:textColor="#0000ff"
+                android:checked="true"
+                android:id="@+id/automatic"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:translationX="0.1sp"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SemiAutomatic \nHelp me choose apps, I will choose off-time\n"
+                android:id="@+id/semi_automatic"
+                android:textColor="#808000"
+                android:textStyle="normal"
+                android:textSize="25sp"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Manual \nI will choose applications I want to block\n"
+                android:textColor="#800080"
+                android:textStyle="italic"
+                android:id="@+id/manual"
+                android:textSize="25sp"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text= "Notification \n Warn me by a notification message only"
+                android:id="@+id/notification"
+                android:textStyle="italic"
+                android:textColor="#666600"
+                android:textSize="25sp"/>
+
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/content1"
+        android:layout_gravity="bottom"
+        android:weightSum="1">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/back"
+            android:id="@+id/back"
+            android:background="#80ffffff"
+            android:layout_gravity="bottom"
+            android:layout_weight="0.5"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/string_ok"
+            android:id="@+id/ok"
+            android:background="#80ffffff"
+            android:layout_gravity="bottom"
+            android:layout_weight="0.5"/>
+    </LinearLayout>
+</RelativeLayout>

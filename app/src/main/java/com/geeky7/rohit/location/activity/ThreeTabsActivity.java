@@ -74,8 +74,8 @@ public class ThreeTabsActivity extends AppCompatActivity {
         });
         mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
 
-        m.usageAccessSettingsPage();
         checkPermission();
+        m.usageAccessSettingsPage();
 
         if (!running && manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && mainSwitch)
             startService();
@@ -237,8 +237,13 @@ public class ThreeTabsActivity extends AppCompatActivity {
     }
 
     private void checkPermission() {
-        int permissionCheck = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
+        /*int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);*/
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                permissionVariable);
+
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.PACKAGE_USAGE_STATS},
                 permissionVariable);

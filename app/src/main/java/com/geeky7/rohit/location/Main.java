@@ -128,7 +128,7 @@ public class Main {
     //takes user to app's page in settings from which could be selected permission
     public void usageAccessSettingsPage(){
         if(!usageAccessPermission()){
-            Main.showToast("Please grant this permission for app to function properly");
+            Main.showToast("Please grant Usage data access permission for app to function properly");
             Intent intent = new Intent();
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setAction(Settings.ACTION_USAGE_ACCESS_SETTINGS);
