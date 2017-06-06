@@ -60,9 +60,7 @@ public class Configure extends AppCompatActivity {
         if (resultCode==0){
             setResult(0);
             finish();
-
         }
-
     }
 
     public static class MyPreferenceFragment extends PreferenceFragment

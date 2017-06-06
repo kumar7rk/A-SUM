@@ -15,7 +15,6 @@ import android.util.Log;
 import android.view.View;
 
 import com.geeky7.rohit.location.AdminReceiver;
-import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.activity.ThreeTabsActivity;
 import com.google.android.gms.location.ActivityRecognitionResult;
@@ -44,7 +43,7 @@ public class Walking extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-        Main.showToast(getApplicationContext(),"Walking IntentService created");
+//        Main.showToast(getApplicationContext(),"Walking IntentService created");
         cn=new ComponentName(this, AdminReceiver.class);
         mgr=(DevicePolicyManager)getSystemService(DEVICE_POLICY_SERVICE);
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -54,7 +53,7 @@ public class Walking extends IntentService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Main.showToast(getApplicationContext(),"WalkingServiceDestroyed");
+//        Main.showToast(getApplicationContext(),"WalkingServiceDestroyed");
     }
 
     @Override

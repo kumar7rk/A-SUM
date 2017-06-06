@@ -23,6 +23,4 @@ public class CONSTANTS {
     public static final String DETECTED_WALKING_TIME = "DETECTED_WALKING_TIME";
 
 
-
-
 }
