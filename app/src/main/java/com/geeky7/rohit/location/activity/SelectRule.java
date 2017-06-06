@@ -1,5 +1,6 @@
 package com.geeky7.rohit.location.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
@@ -15,6 +16,10 @@ import android.widget.RadioGroup;
 import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
+import com.geeky7.rohit.location.service.Automatic;
+import com.geeky7.rohit.location.service.Manual;
+import com.geeky7.rohit.location.service.Notification;
+import com.geeky7.rohit.location.service.SemiAutomatic;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -49,6 +54,19 @@ public class SelectRule extends AppCompatActivity {
                 radioButton = (RadioButton) findViewById(selectedRB);
                 preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = preferences.edit();
+
+                m.countSelectedScenarioForBadge();
+                int selected_scenarios = preferences.getInt(CONSTANTS.NUMBER_OF_SCENARIOS_SELECTED,20);
+//                Main.showToast(getApplicationContext(),selected_scenarios+" scenarios selected");
+                if (selected_scenarios == 0){
+                    stopService(new Intent(SelectRule.this, Automatic.class));
+                    stopService(new Intent(SelectRule.this, SemiAutomatic.class));
+                    stopService(new Intent(SelectRule.this, Manual.class));
+                    stopService(new Intent(SelectRule.this, Notification.class));
+                    setResult(0);
+                    finish();
+//                    Main.showToast(getApplicationContext()," I stopped it because it was not worth it");
+                }
                 String rule = radioButton.getText().toString();
                 editor.putString(CONSTANTS.SELECTED_RULE, rule);
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
@@ -127,6 +145,13 @@ public class SelectRule extends AppCompatActivity {
     }
     @Override
     protected void onResume() {
+        super.onResume();
+        getDelegate().onPostResume();
+        overridePendingTransition(R.anim.fadein, R.anim.fadeout);
+    }
+
+    @Override
+    protected void onPostResume() {
         super.onPostResume();
         getDelegate().onPostResume();
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);

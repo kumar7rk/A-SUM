@@ -371,7 +371,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
                 Log.i("PlaceDetected", name);
-                Main.showToast(getApplicationContext(),name);
+//                Main.showToast(getApplicationContext(),name);
 
                 if (!name.equals("Nothing")){
 
@@ -390,7 +390,6 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                                 getResources().getString(R.string.movie_theatre));
                         editor.putString(CONSTANTS.DETECTED_MOVIETHEATRE_TIME,currentDateTimeString);
                     }
-
                     editor.commit();
 
                     String rule = "AA";
