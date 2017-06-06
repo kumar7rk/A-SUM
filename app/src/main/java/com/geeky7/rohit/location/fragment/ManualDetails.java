@@ -84,7 +84,7 @@ public class ManualDetails extends ListFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ApplicationInfo applicationInfo = (ApplicationInfo) parent.getItemAtPosition(position);
-                Main.showToast(applicationInfo.loadLabel(packageManager) + "");
+//                Main.showToast(applicationInfo.loadLabel(packageManager) + "");
                 String selectedAppS = packageList.get(position);
                 selectedAppsSet.add(selectedAppS);
                 selectedAppsSetIndex.add(position + "");
@@ -127,7 +127,7 @@ public class ManualDetails extends ListFragment {
 
                 editor.commit();
 
-                Main.showToast(getActivity(), "ManualAppBlockListUpdated");
+//                Main.showToast(getActivity(), "ManualAppBlockListUpdated");
 
                 getActivity().getFragmentManager().beginTransaction()
                         .replace(android.R.id.content, new MonitoringFragmentCardView()).commit();

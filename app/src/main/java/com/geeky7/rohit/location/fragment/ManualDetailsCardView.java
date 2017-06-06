@@ -105,14 +105,14 @@ public class ManualDetailsCardView extends Fragment {
             @Override
             public void onItemClick(int position, View v) {
                 if (position == 2) {
-                    Main.showToast("coming soon!");
+                    Main.showToast(getResources().getString(R.string.coming_soon));
                 }
             }
         });
     }
     private ArrayList<DataObject> getDataSet() {
         ArrayList results = new ArrayList<DataObject>();
-        String lastApplied = preferences.getString(CONSTANTS.MANUAL_RULE_ADDED_TIME, "Never Applied");
+        String lastApplied = preferences.getString(CONSTANTS.MANUAL_RULE_ADDED_TIME, "Never");
         String timePeriod = "This rule is applied for ALL DAY. No quiet Hours";
         String apps = "someApps";
         addValues();

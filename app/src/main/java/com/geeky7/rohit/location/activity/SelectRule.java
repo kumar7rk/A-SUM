@@ -40,8 +40,8 @@ public class SelectRule extends AppCompatActivity {
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        String rule = "AA";
-        rule = sharedPrefs.getString(CONSTANTS.SELECTED_RULE, rule);
+        /*String rule = "AA";
+        rule = sharedPrefs.getString(CONSTANTS.SELECTED_RULE, rule);*/
         okB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,10 +67,11 @@ public class SelectRule extends AppCompatActivity {
                 }
                 editor.commit();
                 //Main.showToast(getApplication(), rule + " Added");
-                Main.showToast("Rule Created");
+//                Main.showToast("Rule Created");
                 setResult(0);
                 finish();
 
+                m.usageAccessSettingsPage();
                 //startActivity(new Intent(SelectRule.this,ThreeTabsActivity.class)); using this opens selectRuleActivity
                 // instead of configure;
             }

@@ -93,7 +93,7 @@ public class Automatic extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Main.showToast("AutomaticServiceDestroyed");
+//        Main.showToast("AutomaticServiceDestroyed");
         stopRepeatingTask();
     }
     public void getListOfBlockedApplications(){

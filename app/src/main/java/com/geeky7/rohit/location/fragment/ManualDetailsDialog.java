@@ -89,7 +89,7 @@ public class ManualDetailsDialog extends DialogFragment {
                 view.getFocusables(position);
                 view.setSelected(true);
 
-                Main.showToast(applicationInfo.loadLabel(packageManager) + "");
+//                Main.showToast(applicationInfo.loadLabel(packageManager) + "");
                 String selectedAppS = packageList.get(position);
                 selectedAppsSet.add(selectedAppS);
                 selectedAppsSetIndex.add(position + "");
@@ -133,7 +133,7 @@ public class ManualDetailsDialog extends DialogFragment {
 
                         getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualDetailsCardView())
                                 .commit();
-                        Main.showToast("Saved");
+//                        Main.showToast("Saved");
                     }
                 });
 
@@ -141,7 +141,7 @@ public class ManualDetailsDialog extends DialogFragment {
                 "CANCEL", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Main.showToast("Cancelled");
+//                        Main.showToast("Cancelled");
                         getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualDetailsCardView())
                                 .commit();
                     }

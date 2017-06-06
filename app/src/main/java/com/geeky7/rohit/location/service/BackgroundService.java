@@ -1,5 +1,6 @@
 package com.geeky7.rohit.location.service;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -67,6 +69,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     Main m;
     SharedPreferences preferences;
 
+    boolean locationPermissionGranted = false;
     // current interval for fetching location == 5 Seconds
     private int mInterval = 5000;
     private Handler mHandler;
@@ -81,17 +84,28 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         mLastUpdateTime = "";
         preferences = PreferenceManager.getDefaultSharedPreferences(this) ;
 
-        buildGoogleApiClient();
-        mGoogleApiClient.connect();
+
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        m.openLocationSettings(manager);
+
+
+        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permissionCheck==android.content.pm.PackageManager.PERMISSION_GRANTED) locationPermissionGranted = true;
+
+        if (locationPermissionGranted){
+            buildGoogleApiClient();
+            mGoogleApiClient.connect();
 
         // googleAPI is connected and ready to get location updates- start fetching current location
-        if(mGoogleApiClient.isConnected()&&mRequestingLocationUpdates)
-            startLocationupdates();
-
+            if(mGoogleApiClient.isConnected()&&mRequestingLocationUpdates && locationPermissionGranted)
+                startLocationUpdates();
+        }
         // used for running the code every `mInterval` miiliseconds;
         mHandler = new Handler();
 
-        Main.showToast("BackgroundService Created");
+//        Main.showToast("BackgroundService Created");
     }
     @Override
     public IBinder onBind(Intent intent) {
@@ -113,7 +127,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Main.showToast("BackgroundServiceDestroyed");
+//        Main.showToast("BackgroundServiceDestroyed");
         stopSelf();
 
         stopService(new Intent(BackgroundService.this, Automatic.class));
@@ -157,9 +171,14 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         Log.i("A-SUM NewCoordinates: ", mCurrentLocation.getLatitude() + "\n" + mCurrentLocation.getLongitude());
     }
     // fetch location now
-    protected void startLocationupdates(){
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mlocationRequest, this);
+    protected void startLocationUpdates(){
+        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permissionCheck==android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mlocationRequest, this);
+        }
+
     }
     // location update no longer needed;
     protected void stopLocationupdates(){
@@ -179,6 +198,10 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         boolean b = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     // if location null, get last known location, updating the time so that we don't show quite old location
         if (mCurrentLocation==null){
+            int permissionCheck = ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION);
+            if (permissionCheck==android.content.pm.PackageManager.PERMISSION_GRANTED)
+
             mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
             if (b)
@@ -188,7 +211,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         }
 
         if (mRequestingLocationUpdates)
-            startLocationupdates();
+            startLocationUpdates();
 
         // start running the code in the runnable every `mInterval` milliseconds
         startRepeatingTask();
@@ -229,7 +252,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
     @Override
     public void onLocationChanged(Location location) {
-        Main.showToast("I'm called- onLocationChaged");
+//        Main.showToast("I'm called- onLocationChaged");
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         updateToast();
@@ -395,7 +418,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
             // that is no place is detected from the selected scenarios- shut down any rule;
             // this else would run every time a place is not detected including when user was already at a place (restaurant) and then he left the place;
             else if (list.size()==0) {
-                Main.showToast("NoPlaceDetected");
+//                Main.showToast("NoPlaceDetected");
 
                 stopService(new Intent(BackgroundService.this, Automatic.class));
                 stopService(new Intent(BackgroundService.this, SemiAutomatic.class));
@@ -556,7 +579,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         List<ActivityManager.RunningTaskInfo> RunningTask = mActivityManager.getRunningTasks(1);
         ActivityManager.RunningTaskInfo ar = RunningTask.get(0);
         String activityOnTop=ar.topActivity.getClassName();
-        Main.showToast("CurrentForegroundApplication: " + activityOnTop);
+//        Main.showToast("CurrentForegroundApplication: " + activityOnTop);
         Log.i("PlacesForegroundApp", activityOnTop);
     }
     //Working
@@ -574,7 +597,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 } catch (PackageManager.NameNotFoundException e) {
                     e.printStackTrace();
                 }
-                Main.showToast(getApplicationContext(),appProcess.processName+"\n"+c.toString());
+//                Main.showToast(getApplicationContext(),appProcess.processName+"\n"+c.toString());
                 Log.i("PlacesForegroundApp", "package: " + appProcess.processName + " App: " + c.toString());
             }
         }
@@ -599,7 +622,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         }
 
         String foregroundTaskAppName = foregroundAppPackageInfo.applicationInfo.loadLabel(pm).toString();
-        Main.showToast(foregroundTaskAppName);
+//        Main.showToast(foregroundTaskAppName);
         Log.i("PlacesForegroundApp",foregroundTaskAppName);
     }
 }

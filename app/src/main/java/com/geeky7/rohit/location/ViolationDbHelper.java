@@ -27,7 +27,7 @@ public class ViolationDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Main.showToast("ViolationDbHelperOnCreate");
+//        Main.showToast("ViolationDbHelperOnCreate");
         String s="create table Violation(AppName Text)";
         db.execSQL(s);
     }

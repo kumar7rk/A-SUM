@@ -70,7 +70,7 @@ public class AutomaticDetailsCardView extends Fragment {
             @Override
             public void onItemClick(int position, View v) {
                 if (position == 2)
-                    Main.showToast("coming soon!");
+                    Main.showToast(getResources().getString(R.string.coming_soon));
             }
         });
     }
@@ -130,40 +130,21 @@ public class AutomaticDetailsCardView extends Fragment {
         list.add("Time Period");
         list.add("Blocked Applications");
     }
-    private void appList(){
-        appList.add("WhatsApp");
-        appList.add("Facebook");
-        appList.add("Instagram");
-        appList.add("Snapchat");
-
-        appList.add("ApiDemos");
-        appList.add("GPSTester");
-        appList.add("AppDetox");
-        appList.add("Libraries for developers");
-        appList.add("ListView");
-        appList.add("ListView");
-
-        /*appList.add("My Application");
-        appList.add("PreventDark");
-        appList.add("Location");
-        appList.add("LostPhone");*/
-    }
     public void getListOfBlockedApplications(){
-        listOfBlockedApps.add("com.whatsapp");
-        listOfBlockedApps.add("com.facebook.katana");
-        listOfBlockedApps.add("com.instagram.android");
-        listOfBlockedApps.add("com.snapchat.android");
 
-        listOfBlockedApps.add("com.touchboarder.android.api.demos");
-        listOfBlockedApps.add("com.agup.gps");
-        listOfBlockedApps.add("de.dfki.appdetox");
-        listOfBlockedApps.add("com.desarrollodroide.repos");
-        listOfBlockedApps.add("com.geeky7.rohit.listview");
-        listOfBlockedApps.add("com.example.listview");
+        if(appInstalledOrNot("com.whatsapp")) listOfBlockedApps.add("com.whatsapp");
+        if(appInstalledOrNot("com.facebook.katana")) listOfBlockedApps.add("com.facebook.katana");
+        if(appInstalledOrNot("com.instagram.android")) listOfBlockedApps.add("com.instagram.android");
+        if(appInstalledOrNot("com.snapchat.android")) listOfBlockedApps.add("com.snapchat.android");
+    }
+    private boolean appInstalledOrNot(String uri) {
+        PackageManager pm = MyApplication.getAppContext().getPackageManager();
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
 
-        /*listOfBlockedApps.add("com.example.rohit.myapplication");
-        listOfBlockedApps.add("com.mycompany12.mytwelthapptopicsfinal");
-        listOfBlockedApps.add("com.geeky7.rohit.locations");
-        listOfBlockedApps.add("com.geeky7.rohit.lostphone");*/
+        return false;
     }
 }

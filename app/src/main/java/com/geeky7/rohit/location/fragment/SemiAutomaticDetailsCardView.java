@@ -52,7 +52,7 @@ public class SemiAutomaticDetailsCardView extends Fragment {
         super.onCreate(savedInstanceState);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         textView = new TextView(MyApplication.getAppContext());
-        String off_time = preferences.getString(CONSTANTS.SEMIAUTOMATIC_SEEKBAR_PROGRESS_OFF_TIME,"Time");
+        String off_time = preferences.getString(CONSTANTS.SEMIAUTOMATIC_SEEKBAR_PROGRESS_OFF_TIME,"0");
         textView.setText(off_time+" mins");
         textView.setTextColor(Color.GREEN);
         textView.setTextSize(20);
@@ -104,7 +104,7 @@ public class SemiAutomaticDetailsCardView extends Fragment {
 //                    dialog.show();
                 }
                 if (position == 3)
-                    Main.showToast("Coming Soon!");
+                    Main.showToast(getResources().getString(R.string.coming_soon));
             }
         });
     }
@@ -112,7 +112,7 @@ public class SemiAutomaticDetailsCardView extends Fragment {
         ArrayList results = new ArrayList<DataObject>();
         ArrayList<String> arrayList = new ArrayList<>();
 
-        String lastApplied = preferences.getString(CONSTANTS.SEMIAUTOMATIC_RULE_ADDED_TIME, "Time");
+        String lastApplied = preferences.getString(CONSTANTS.SEMIAUTOMATIC_RULE_ADDED_TIME, "Never");
         String timePeriod = "This rule is applied for ALL DAY. No quiet Hours";
 
         addValues();
@@ -143,7 +143,7 @@ public class SemiAutomaticDetailsCardView extends Fragment {
        seekBar.incrementProgressBy(5);
 
        seekBar.setVisibility(View.VISIBLE);
-       String off_time = preferences.getString(CONSTANTS.SEMIAUTOMATIC_SEEKBAR_PROGRESS_OFF_TIME,"Never Applied");
+       String off_time = preferences.getString(CONSTANTS.SEMIAUTOMATIC_SEEKBAR_PROGRESS_OFF_TIME,"0");
        int offTime = Integer.parseInt(off_time);
        seekBar.setProgress(offTime/5);
 
@@ -206,40 +206,21 @@ public class SemiAutomaticDetailsCardView extends Fragment {
         list.add("Blocked Applications");
 
     }
-    private void appList(){
-        appList.add("WhatsApp");
-        appList.add("Facebook");
-        appList.add("Instagram");
-        appList.add("Snapchat");
-
-        appList.add("ApiDemos");
-        appList.add("GPSTester");
-        appList.add("AppDetox");
-        appList.add("Libraries for developers");
-        appList.add("ListView");
-        appList.add("ListView");
-
-        /*appList.add("My Application");
-        appList.add("PreventDark");
-        appList.add("Location");
-        appList.add("LostPhone");*/
-    }
     public void getListOfBlockedApplications(){
-        listOfBlockedApps.add("com.whatsapp");
-        listOfBlockedApps.add("com.facebook.katana");
-        listOfBlockedApps.add("com.instagram.android");
-        listOfBlockedApps.add("com.snapchat.android");
 
-        listOfBlockedApps.add("com.touchboarder.android.api.demos");
-        listOfBlockedApps.add("com.agup.gps");
-        listOfBlockedApps.add("de.dfki.appdetox");
-        listOfBlockedApps.add("com.desarrollodroide.repos");
-        listOfBlockedApps.add("com.geeky7.rohit.listview");
-        listOfBlockedApps.add("com.example.listview");
+        if(appInstalledOrNot("com.whatsapp")) listOfBlockedApps.add("com.whatsapp");
+        if(appInstalledOrNot("com.facebook.katana")) listOfBlockedApps.add("com.facebook.katana");
+        if(appInstalledOrNot("com.instagram.android")) listOfBlockedApps.add("com.instagram.android");
+        if(appInstalledOrNot("com.snapchat.android")) listOfBlockedApps.add("com.snapchat.android");
+    }
+    private boolean appInstalledOrNot(String uri) {
+        PackageManager pm = MyApplication.getAppContext().getPackageManager();
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
 
-        /*listOfBlockedApps.add("com.example.rohit.myapplication");
-        listOfBlockedApps.add("com.mycompany12.mytwelthapptopicsfinal");
-        listOfBlockedApps.add("com.geeky7.rohit.locations");
-        listOfBlockedApps.add("com.geeky7.rohit.lostphone");*/
+        return false;
     }
 }

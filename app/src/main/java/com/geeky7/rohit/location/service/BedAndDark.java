@@ -44,7 +44,7 @@ public class BedAndDark extends Service implements SensorEventListener{
 
     @Override
     public void onCreate() {
-        Main.showToast("BedAndDark Service created");
+//        Main.showToast("BedAndDark Service created");
         super.onCreate();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         keyguardManager = (KeyguardManager)getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE);
@@ -66,7 +66,7 @@ public class BedAndDark extends Service implements SensorEventListener{
 
     @Override
     public void onDestroy() {
-        Main.showToast("BedAndDarkServiceDestroyed");
+//        Main.showToast("BedAndDarkServiceDestroyed");
         super.onDestroy();
     }
 
@@ -91,7 +91,7 @@ public class BedAndDark extends Service implements SensorEventListener{
         if (event.sensor==mPhotometer) {
             int intValue = (int) event.values[0];
             if (intValue==0)
-                Main.showToast("stop using phone in the darkness");
+                Main.showToast("Stop using phone in darkness");
             max = max < intValue ? intValue : max;
         }
         if (event.sensor==mAccelerometer){

@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 
 import java.util.ArrayList;
@@ -28,13 +29,14 @@ public class NotificationDetails extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Main.showToast(getResources().getString(R.string.coming_soon));
             }
         });
         return v;
     }
     public void loadItems() {
-        list.add("Sound.");
-        list.add("Notification Text.");
+        list.add("Notification Sound");
+        list.add("Notification Text");
         adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1, list);
 

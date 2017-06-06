@@ -69,13 +69,20 @@ public class ThreeTabsActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                m.usageAccessSettingsPage();
                 startActivityForResult(new Intent(ThreeTabsActivity.this, Configure.class),1);
             }
         });
         mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
 
+        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permissionCheck== PackageManager.PERMISSION_DENIED){
+            checkPermission();
+            m.openLocationSettings(manager);
+//            m.usageAccessSettingsPage();
+        }
         checkPermission();
-        m.usageAccessSettingsPage();
 
         if (!running && manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && mainSwitch)
             startService();
@@ -148,8 +155,8 @@ public class ThreeTabsActivity extends AppCompatActivity {
 
     public void updateBadge() {
         int redColor = Color.parseColor("#FF0000");
-        int scenariosSelected = Integer.MAX_VALUE;
-        int violations = Integer.MAX_VALUE;
+        int scenariosSelected = 0;
+        int violations = 0;
         m = new Main(this);
         ViolationDbHelper violationDbHelper = new ViolationDbHelper(getApplicationContext());
         m.countSelectedScenarioForBadge();
@@ -237,8 +244,6 @@ public class ThreeTabsActivity extends AppCompatActivity {
     }
 
     private void checkPermission() {
-        /*int permissionCheck = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);*/
 
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},

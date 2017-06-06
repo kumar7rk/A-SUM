@@ -57,14 +57,14 @@ public class SemiAutomatic extends Service {
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 startRepeatingTask();
-                                Main.showToast("Current Delay for SemiAutomatic: " +delay/1000 +" seconds");
+//                                Main.showToast("Current Delay for SemiAutomatic: " +delay/1000 +" seconds");
                             }
                         });
                     }
                 },
                 delay
         );
-        Main.showToast(getApplicationContext(), "SemiAutomatic Service started");
+//        Main.showToast(getApplicationContext(), "SemiAutomatic Service started");
     }
 
     private void blockAppLaunched() {
@@ -115,7 +115,7 @@ public class SemiAutomatic extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Main.showToast("SemiAutomaticServiceDestroyed");
+//        Main.showToast("SemiAutomaticServiceDestroyed");
         stopRepeatingTask();
     }
     public void getListOfBlockedApplications(){
