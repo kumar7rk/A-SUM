@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 
+import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
 
         appsIndex = preferences.getStringSet("someStringSetIndex", appsIndex);
 
-//        Main.showToast("ApplicationAdapter constructor");
+        Main.showToast(getContext(),"ApplicationAdapter constructor");
         for (String s:appsIndex)
             Log.i("AppsIndex",s);
 
@@ -144,6 +145,6 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
     };
     public void commit(){
         editor.commit();
-//        Main.showToast("Commit");
+        Main.showToast(getContext(),"Commit");
     }
 }

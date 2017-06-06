@@ -70,6 +70,6 @@ public class Monitoring extends Fragment implements View.OnClickListener{
         boolean bed_dark = sharedPrefs.getBoolean(getResources().getString(R.string.bed_dark), false);
         boolean walking = sharedPrefs.getBoolean(getResources().getString(R.string.walking), false);
         if (restaurant)
-            Main.showToast(getActivity(), restaurant + "");
+            Main.showToast(getContext(), restaurant + "");
     }
 }

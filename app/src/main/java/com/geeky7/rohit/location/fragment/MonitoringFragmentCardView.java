@@ -65,7 +65,7 @@ public class MonitoringFragmentCardView extends Fragment {
     private ArrayList<MonitoringDataObject> getDataSet() {
         ArrayList results = new ArrayList<MonitoringDataObject>();
         checkValues();
-        if (list.size()>0){
+        if (list.size()>1){
         for (int index = 0; index < list.size(); index++) {
             String detectionTime = "No Detection Yet!";
             detectionTime = detectedTimeList.get(index);

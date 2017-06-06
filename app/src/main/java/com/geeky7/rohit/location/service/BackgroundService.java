@@ -105,7 +105,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         // used for running the code every `mInterval` miiliseconds;
         mHandler = new Handler();
 
-//        Main.showToast("BackgroundService Created");
+        Main.showToast(getApplicationContext(),"BackgroundService Created");
     }
     @Override
     public IBinder onBind(Intent intent) {
@@ -127,7 +127,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        Main.showToast("BackgroundServiceDestroyed");
+        Main.showToast(getApplicationContext(),"BackgroundServiceDestroyed");
         stopSelf();
 
         stopService(new Intent(BackgroundService.this, Automatic.class));
@@ -371,7 +371,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
                 Log.i("PlaceDetected", name);
-//                Main.showToast(name);
+                Main.showToast(getApplicationContext(),name);
 
                 if (!name.equals("Nothing")){
 
@@ -395,7 +395,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
                     String rule = "AA";
                     rule = preferences.getString(CONSTANTS.SELECTED_RULE, rule);
-                    //Main.showToast("RuleName: " + rule);
+//                    Main.showToast("RuleName: " + rule);
 
                     if (rule.equalsIgnoreCase("Automatic")){
                         startService(new Intent(BackgroundService.this, Automatic.class));
@@ -418,7 +418,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
             // that is no place is detected from the selected scenarios- shut down any rule;
             // this else would run every time a place is not detected including when user was already at a place (restaurant) and then he left the place;
             else if (list.size()==0) {
-//                Main.showToast("NoPlaceDetected");
+                Main.showToast(getApplicationContext(),"NoPlaceDetected");
 
                 stopService(new Intent(BackgroundService.this, Automatic.class));
                 stopService(new Intent(BackgroundService.this, SemiAutomatic.class));

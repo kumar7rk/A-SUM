@@ -66,8 +66,7 @@ public class SelectRule extends AppCompatActivity {
                     editor.putString(CONSTANTS.NOTIFICATION_RULE_ADDED_TIME,currentDateTimeString);
                 }
                 editor.commit();
-                //Main.showToast(getApplication(), rule + " Added");
-//                Main.showToast("Rule Created");
+                Main.showToast(getApplicationContext(), rule + " Added");
                 setResult(0);
                 finish();
 

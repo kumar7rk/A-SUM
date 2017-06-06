@@ -4,6 +4,8 @@ import android.accessibilityservice.AccessibilityService;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
+import com.geeky7.rohit.location.Main;
+
 public class MyAccessibilityService extends AccessibilityService {
 
     String eventText = "NothingYet";
@@ -21,12 +23,12 @@ public class MyAccessibilityService extends AccessibilityService {
         }
 
         eventText = eventText + event.getContentDescription();
-//        Main.showToast(eventText);
+        Main.showToast(getApplicationContext(),eventText);
         Log.i("MyAccessibilityService",eventText);
     }
 
     public MyAccessibilityService() {
-//        Main.showToast(eventText);
+        Main.showToast(getApplicationContext(),eventText);
     }
 
     @Override

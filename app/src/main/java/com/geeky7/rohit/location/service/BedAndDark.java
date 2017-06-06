@@ -44,7 +44,7 @@ public class BedAndDark extends Service implements SensorEventListener{
 
     @Override
     public void onCreate() {
-//        Main.showToast("BedAndDark Service created");
+        Main.showToast(getApplicationContext(),"BedAndDark Service created");
         super.onCreate();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         keyguardManager = (KeyguardManager)getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE);
@@ -66,7 +66,7 @@ public class BedAndDark extends Service implements SensorEventListener{
 
     @Override
     public void onDestroy() {
-//        Main.showToast("BedAndDarkServiceDestroyed");
+        Main.showToast(getApplicationContext(),"BedAndDarkServiceDestroyed");
         super.onDestroy();
     }
 

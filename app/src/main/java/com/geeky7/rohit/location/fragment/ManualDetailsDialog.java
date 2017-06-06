@@ -133,7 +133,7 @@ public class ManualDetailsDialog extends DialogFragment {
 
                         getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualDetailsCardView())
                                 .commit();
-//                        Main.showToast("Saved");
+                        Main.showToast(getContext(),"Saved");
                     }
                 });
 
@@ -141,7 +141,7 @@ public class ManualDetailsDialog extends DialogFragment {
                 "CANCEL", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        Main.showToast("Cancelled");
+                        Main.showToast(getContext(),"Cancelled");
                         getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualDetailsCardView())
                                 .commit();
                     }

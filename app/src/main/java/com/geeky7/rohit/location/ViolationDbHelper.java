@@ -22,12 +22,12 @@ public class ViolationDbHelper extends SQLiteOpenHelper {
     public ViolationDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         /*database.execSQL("delete from Violation");
-        Main.showToast("ViolationDbHelperContructor-->AllValuesDeletedPleaseRemoveMe");*/
+        Main.showToast(MyApplication.getAppContext(), "ViolationDbHelperContructor-->AllValuesDeletedPleaseRemoveMe");*/
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-//        Main.showToast("ViolationDbHelperOnCreate");
+        Main.showToast(MyApplication.getAppContext(), "ViolationDbHelperOnCreate");
         String s="create table Violation(AppName Text)";
         db.execSQL(s);
     }

@@ -40,7 +40,7 @@ public class Automatic extends Service {
         mHandler = new Handler();
         m = new Main(getApplicationContext());
         startRepeatingTask();
-        Main.showToast(getApplicationContext(), "Automatic Service started");
+        Main.showToast(getApplicationContext(),"Automatic Service started");
     }
 
     private void blockAppLaunched() {
@@ -93,7 +93,7 @@ public class Automatic extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        Main.showToast("AutomaticServiceDestroyed");
+        Main.showToast(getApplicationContext(),"AutomaticServiceDestroyed");
         stopRepeatingTask();
     }
     public void getListOfBlockedApplications(){
