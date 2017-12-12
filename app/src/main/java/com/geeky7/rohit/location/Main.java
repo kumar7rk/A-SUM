@@ -47,7 +47,7 @@ public class Main {
 
     // for testing requirements; omits need to comment individually
     public static void showToast(Context context, String text) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 
     // required in google play version
