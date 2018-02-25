@@ -1,15 +1,18 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-
+    compileSdkVersion 25
     defaultConfig {
         applicationId "com.geeky7.rohit.location"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion 21
+        targetSdkVersion 25
         versionCode 4
         versionName "1.1"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+        configurations.all {
+            resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+        }
     }
     buildTypes {
         release {
@@ -22,9 +25,9 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':bottom-bar')
-    compile 'com.android.support:appcompat-v7:' + rootProject.ext.supportLibraryVersion
-    compile 'com.android.support:design:' + rootProject.ext.supportLibraryVersion
-    compile 'com.android.support:support-v4:24.1.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.github.halysongoncalves:pugnotification:1.8.1'
     compile 'com.getkeepsafe.taptargetview:taptargetview:1.0.0'
