@@ -36,7 +36,7 @@
         </activity>
 
         <activity
-            android:name=".activity.Configure"
+            android:name=".activity.ConfigureActivity"
             android:excludeFromRecents="true"
             android:label="@string/action_configure"
             android:parentActivityName=".activity.ThreeTabsActivity" >
@@ -46,7 +46,7 @@
             android:name=".activity.SelectRule"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_select_rule"
-            android:parentActivityName=".activity.Configure" >
+            android:parentActivityName=".activity.ConfigureActivity" >
         </activity>
 
         <activity

@@ -70,7 +70,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                m.usageAccessSettingsPage();
-                startActivityForResult(new Intent(ThreeTabsActivity.this, Configure.class),1);
+                startActivityForResult(new Intent(ThreeTabsActivity.this, ConfigureActivity.class),1);
             }
         });
         mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);

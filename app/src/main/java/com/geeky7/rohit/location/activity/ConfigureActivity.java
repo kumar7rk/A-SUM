@@ -17,7 +17,7 @@ import android.widget.Button;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 
-public class Configure extends AppCompatActivity {
+public class ConfigureActivity extends AppCompatActivity {
     Button cancelB,nextB;
     AppCompatDelegate mDelegate;
     Main m;
@@ -42,7 +42,7 @@ public class Configure extends AppCompatActivity {
             nextB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivityForResult(new Intent(Configure.this, SelectRule.class),1);
+                    startActivityForResult(new Intent(ConfigureActivity.this, SelectRule.class),1);
                 }
             });
             cancelB.setOnClickListener(new View.OnClickListener() {
