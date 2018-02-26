@@ -133,7 +133,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         stopService(new Intent(BackgroundService.this, AutomaticService.class));
         stopService(new Intent(BackgroundService.this, SemiAutomatic.class));
         stopService(new Intent(BackgroundService.this, ManualService.class));
-        stopService(new Intent(BackgroundService.this, Notification.class));
+        stopService(new Intent(BackgroundService.this, NotificationService.class));
 
         if (mGoogleApiClient.isConnected())
             stopLocationupdates();
@@ -409,7 +409,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 //                        stopRepeatingTask();
                     }
                     if (rule.equalsIgnoreCase("Notification")){
-                        startService(new Intent(BackgroundService.this, Notification.class));
+                        startService(new Intent(BackgroundService.this, NotificationService.class));
 //                        stopRepeatingTask();
                     }
                }
@@ -422,7 +422,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 stopService(new Intent(BackgroundService.this, AutomaticService.class));
                 stopService(new Intent(BackgroundService.this, SemiAutomatic.class));
                 stopService(new Intent(BackgroundService.this, ManualService.class));
-                stopService(new Intent(BackgroundService.this, Notification.class));
+                stopService(new Intent(BackgroundService.this, NotificationService.class));
             }
         }// onPostExecute
     }// end of the parserTask class

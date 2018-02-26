@@ -9,16 +9,16 @@ import com.geeky7.rohit.location.R;
 
 import br.com.goncalves.pugnotification.notification.PugNotification;
 
-public class Notification extends Service {
-    public Notification() {
+public class NotificationService extends Service {
+    public NotificationService() {
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        stopService(new Intent(Notification.this, AutomaticService.class));
-        stopService(new Intent(Notification.this, SemiAutomatic.class));
-        stopService(new Intent(Notification.this, ManualService.class));
+        stopService(new Intent(NotificationService.this, AutomaticService.class));
+        stopService(new Intent(NotificationService.this, SemiAutomatic.class));
+        stopService(new Intent(NotificationService.this, ManualService.class));
 
         Main.showToast(getApplicationContext(), "Notification Service started");
         pugNotification("A reminder","Hey! You've been detected in a social place",

@@ -18,7 +18,7 @@ import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.service.AutomaticService;
 import com.geeky7.rohit.location.service.ManualService;
-import com.geeky7.rohit.location.service.Notification;
+import com.geeky7.rohit.location.service.NotificationService;
 import com.geeky7.rohit.location.service.SemiAutomatic;
 
 import java.text.DateFormat;
@@ -62,7 +62,7 @@ public class SelectRuleActivity extends AppCompatActivity {
                     stopService(new Intent(SelectRuleActivity.this, AutomaticService.class));
                     stopService(new Intent(SelectRuleActivity.this, SemiAutomatic.class));
                     stopService(new Intent(SelectRuleActivity.this, ManualService.class));
-                    stopService(new Intent(SelectRuleActivity.this, Notification.class));
+                    stopService(new Intent(SelectRuleActivity.this, NotificationService.class));
                     setResult(0);
                     finish();
 //                    Main.showToast(getApplicationContext()," I stopped it because it was not worth it");

@@ -37,7 +37,7 @@ import com.geeky7.rohit.location.fragment.list_of_rule;
 import com.geeky7.rohit.location.service.AutomaticService;
 import com.geeky7.rohit.location.service.BackgroundService;
 import com.geeky7.rohit.location.service.ManualService;
-import com.geeky7.rohit.location.service.Notification;
+import com.geeky7.rohit.location.service.NotificationService;
 import com.geeky7.rohit.location.service.SemiAutomatic;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarBadge;
@@ -227,7 +227,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
                         stopService(new Intent(ThreeTabsActivity.this, AutomaticService.class));
                         stopService(new Intent(ThreeTabsActivity.this, SemiAutomatic.class));
                         stopService(new Intent(ThreeTabsActivity.this, ManualService.class));
-                        stopService(new Intent(ThreeTabsActivity.this, Notification.class));
+                        stopService(new Intent(ThreeTabsActivity.this, NotificationService.class));
                         stopService(serviceIntent);
                         running = false;
                     }
