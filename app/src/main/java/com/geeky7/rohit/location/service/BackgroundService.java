@@ -132,7 +132,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
         stopService(new Intent(BackgroundService.this, AutomaticService.class));
         stopService(new Intent(BackgroundService.this, SemiAutomatic.class));
-        stopService(new Intent(BackgroundService.this, Manual.class));
+        stopService(new Intent(BackgroundService.this, ManualService.class));
         stopService(new Intent(BackgroundService.this, Notification.class));
 
         if (mGoogleApiClient.isConnected())
@@ -405,7 +405,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 //                        stopRepeatingTask();
                     }
                     if (rule.equalsIgnoreCase("Manual")){
-                        startService(new Intent(BackgroundService.this, Manual.class));
+                        startService(new Intent(BackgroundService.this, ManualService.class));
 //                        stopRepeatingTask();
                     }
                     if (rule.equalsIgnoreCase("Notification")){
@@ -421,7 +421,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
                 stopService(new Intent(BackgroundService.this, AutomaticService.class));
                 stopService(new Intent(BackgroundService.this, SemiAutomatic.class));
-                stopService(new Intent(BackgroundService.this, Manual.class));
+                stopService(new Intent(BackgroundService.this, ManualService.class));
                 stopService(new Intent(BackgroundService.this, Notification.class));
             }
         }// onPostExecute

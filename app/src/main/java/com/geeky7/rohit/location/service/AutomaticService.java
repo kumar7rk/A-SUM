@@ -34,7 +34,7 @@ public class AutomaticService extends Service {
     public void onCreate() {
         super.onCreate();
         stopService(new Intent(AutomaticService.this, SemiAutomatic.class));
-        stopService(new Intent(AutomaticService.this, Manual.class));
+        stopService(new Intent(AutomaticService.this, ManualService.class));
         stopService(new Intent(AutomaticService.this, Notification.class));
         violationDbHelper = new ViolationDbHelper(getApplicationContext());
         mHandler = new Handler();

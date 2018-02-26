@@ -18,7 +18,7 @@ public class Notification extends Service {
         super.onCreate();
         stopService(new Intent(Notification.this, AutomaticService.class));
         stopService(new Intent(Notification.this, SemiAutomatic.class));
-        stopService(new Intent(Notification.this, Manual.class));
+        stopService(new Intent(Notification.this, ManualService.class));
 
         Main.showToast(getApplicationContext(), "Notification Service started");
         pugNotification("A reminder","Hey! You've been detected in a social place",

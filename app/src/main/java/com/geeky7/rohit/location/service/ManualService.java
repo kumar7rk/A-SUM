@@ -11,20 +11,20 @@ import com.geeky7.rohit.location.Main;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Manual extends Service {
+public class ManualService extends Service {
     Set<String> listOfBlockedApps = new HashSet<String>();
     Main m;
     SharedPreferences preferences;
 
-    public Manual() {
+    public ManualService() {
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        stopService(new Intent(Manual.this, AutomaticService.class));
-        stopService(new Intent(Manual.this, SemiAutomatic.class));
-        Main.showToast(getApplicationContext(), "Manual Service started");
+        stopService(new Intent(ManualService.this, AutomaticService.class));
+        stopService(new Intent(ManualService.this, SemiAutomatic.class));
+        Main.showToast(getApplicationContext(), "ManualService Service started");
         m = new Main(getApplicationContext());
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 

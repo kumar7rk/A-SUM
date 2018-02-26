@@ -17,7 +17,7 @@ import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.service.AutomaticService;
-import com.geeky7.rohit.location.service.Manual;
+import com.geeky7.rohit.location.service.ManualService;
 import com.geeky7.rohit.location.service.Notification;
 import com.geeky7.rohit.location.service.SemiAutomatic;
 
@@ -61,7 +61,7 @@ public class SelectRuleActivity extends AppCompatActivity {
                 if (selected_scenarios == 0){
                     stopService(new Intent(SelectRuleActivity.this, AutomaticService.class));
                     stopService(new Intent(SelectRuleActivity.this, SemiAutomatic.class));
-                    stopService(new Intent(SelectRuleActivity.this, Manual.class));
+                    stopService(new Intent(SelectRuleActivity.this, ManualService.class));
                     stopService(new Intent(SelectRuleActivity.this, Notification.class));
                     setResult(0);
                     finish();

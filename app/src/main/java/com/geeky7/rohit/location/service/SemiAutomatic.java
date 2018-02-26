@@ -41,7 +41,7 @@ public class SemiAutomatic extends Service {
         m = new Main(getApplicationContext());
 
         stopService(new Intent(SemiAutomatic.this, AutomaticService.class));
-        stopService(new Intent(SemiAutomatic.this, Manual.class));
+        stopService(new Intent(SemiAutomatic.this, ManualService.class));
         stopService(new Intent(SemiAutomatic.this, Notification.class));
 //        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         String off_time = preferences.getString(CONSTANTS.SEMIAUTOMATIC_SEEKBAR_PROGRESS_OFF_TIME,"Time");

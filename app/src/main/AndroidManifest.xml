@@ -74,7 +74,7 @@
         </service>
 
         <service
-            android:name=".service.Manual"
+            android:name=".service.ManualService"
             android:enabled="true"
             android:exported="true" >
         </service>
