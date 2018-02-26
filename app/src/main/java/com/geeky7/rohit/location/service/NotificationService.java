@@ -17,7 +17,7 @@ public class NotificationService extends Service {
     public void onCreate() {
         super.onCreate();
         stopService(new Intent(NotificationService.this, AutomaticService.class));
-        stopService(new Intent(NotificationService.this, SemiAutomatic.class));
+        stopService(new Intent(NotificationService.this, SemiAutomaticService.class));
         stopService(new Intent(NotificationService.this, ManualService.class));
 
         Main.showToast(getApplicationContext(), "Notification Service started");

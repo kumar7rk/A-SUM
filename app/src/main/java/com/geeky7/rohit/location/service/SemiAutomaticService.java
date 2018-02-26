@@ -21,7 +21,7 @@ import java.util.Date;
 
 import static com.google.android.gms.internal.zzir.runOnUiThread;
 
-public class SemiAutomatic extends Service {
+public class SemiAutomaticService extends Service {
     Main m;
     ArrayList<String> listOfBlockedApps = new ArrayList<>();
     private Handler mHandler;
@@ -29,7 +29,7 @@ public class SemiAutomatic extends Service {
     ViolationDbHelper violationDbHelper;
     SharedPreferences preferences;
 
-    public SemiAutomatic() {
+    public SemiAutomaticService() {
     }
 
     @Override
@@ -40,9 +40,9 @@ public class SemiAutomatic extends Service {
         mHandler = new Handler();
         m = new Main(getApplicationContext());
 
-        stopService(new Intent(SemiAutomatic.this, AutomaticService.class));
-        stopService(new Intent(SemiAutomatic.this, ManualService.class));
-        stopService(new Intent(SemiAutomatic.this, NotificationService.class));
+        stopService(new Intent(SemiAutomaticService.this, AutomaticService.class));
+        stopService(new Intent(SemiAutomaticService.this, ManualService.class));
+        stopService(new Intent(SemiAutomaticService.this, NotificationService.class));
 //        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
         String off_time = preferences.getString(CONSTANTS.SEMIAUTOMATIC_SEEKBAR_PROGRESS_OFF_TIME,"Time");
         int offTime = Integer.parseInt(off_time) * 60000;
@@ -57,7 +57,7 @@ public class SemiAutomatic extends Service {
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 startRepeatingTask();
-                                Main.showToast(getApplicationContext(),"Current Delay for SemiAutomatic: " +delay/1000 +" seconds");
+                                Main.showToast(getApplicationContext(),"Current Delay for SemiAutomatic Service: " +delay/1000 +" seconds");
                             }
                         });
                     }
@@ -152,7 +152,7 @@ public class SemiAutomatic extends Service {
 
     public void startRepeatingTask() {
         mStatusChecker.run();
-    //        Main.showToast("I'm from SemiAutomatic, startRepeatingTask. Hello!");
+    //        Main.showToast("I'm from SemiAutomaticService, startRepeatingTask. Hello!");
     }
 
     public void stopRepeatingTask() {

@@ -23,7 +23,7 @@ public class ManualService extends Service {
     public void onCreate() {
         super.onCreate();
         stopService(new Intent(ManualService.this, AutomaticService.class));
-        stopService(new Intent(ManualService.this, SemiAutomatic.class));
+        stopService(new Intent(ManualService.this, SemiAutomaticService.class));
         Main.showToast(getApplicationContext(), "ManualService Service started");
         m = new Main(getApplicationContext());
         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

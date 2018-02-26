@@ -68,7 +68,7 @@
         </service>
 
         <service
-            android:name=".service.SemiAutomatic"
+            android:name=".service.SemiAutomaticService"
             android:enabled="true"
             android:exported="true" >
         </service>

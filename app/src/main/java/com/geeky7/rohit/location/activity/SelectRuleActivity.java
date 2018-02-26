@@ -19,7 +19,7 @@ import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.service.AutomaticService;
 import com.geeky7.rohit.location.service.ManualService;
 import com.geeky7.rohit.location.service.NotificationService;
-import com.geeky7.rohit.location.service.SemiAutomatic;
+import com.geeky7.rohit.location.service.SemiAutomaticService;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -60,7 +60,7 @@ public class SelectRuleActivity extends AppCompatActivity {
 //                Main.showToast(getApplicationContext(),selected_scenarios+" scenarios selected");
                 if (selected_scenarios == 0){
                     stopService(new Intent(SelectRuleActivity.this, AutomaticService.class));
-                    stopService(new Intent(SelectRuleActivity.this, SemiAutomatic.class));
+                    stopService(new Intent(SelectRuleActivity.this, SemiAutomaticService.class));
                     stopService(new Intent(SelectRuleActivity.this, ManualService.class));
                     stopService(new Intent(SelectRuleActivity.this, NotificationService.class));
                     setResult(0);
