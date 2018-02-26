@@ -35,17 +35,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.FiveColorChangingTabsActivity" />
-
-        <activity android:name=".activity.ThreeTabsQRActivity" />
-
-        <activity android:name=".activity.BadgeActivity" />
-
-        <activity
-            android:name=".activity.CustomColorActivity"
-            android:label="@string/title_activity_custom_color"
-            android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.Configure"
             android:excludeFromRecents="true"
