@@ -24,7 +24,7 @@ import com.geeky7.rohit.location.Main;
     Next approach might include to call the required method from the service class;
     10p8
   */
-public class BedAndDark extends Service implements SensorEventListener{
+public class BedAndDarkService extends Service implements SensorEventListener{
 
     SensorManager mSensorManager;
     Sensor mPhotometer,mAccelerometer,mMagnetometer;
@@ -44,7 +44,7 @@ public class BedAndDark extends Service implements SensorEventListener{
 
     @Override
     public void onCreate() {
-        Main.showToast(getApplicationContext(),"BedAndDark Service created");
+        Main.showToast(getApplicationContext(),"BedAndDarkService Service created");
         super.onCreate();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         keyguardManager = (KeyguardManager)getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE);

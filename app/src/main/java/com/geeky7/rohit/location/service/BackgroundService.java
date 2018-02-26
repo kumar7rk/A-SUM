@@ -238,11 +238,11 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     private void bedAndDark() {
         bedAndDark = preferences.getBoolean(getResources().getString(R.string.bed_dark), false);
         if (bedAndDark) {
-            Intent intent = new Intent(getApplicationContext(), BedAndDark.class);
+            Intent intent = new Intent(getApplicationContext(), BedAndDarkService.class);
             startService(intent);
         }
         else if (!bedAndDark){
-            stopService(new Intent(getApplicationContext(), BedAndDark.class));
+            stopService(new Intent(getApplicationContext(), BedAndDarkService.class));
         }
     }
     @Override

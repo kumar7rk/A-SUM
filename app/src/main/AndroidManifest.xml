@@ -86,7 +86,7 @@
         </service>
 
         <service
-            android:name=".service.BedAndDark"
+            android:name=".service.BedAndDarkService"
             android:enabled="true"
             android:exported="true" >
         </service>
