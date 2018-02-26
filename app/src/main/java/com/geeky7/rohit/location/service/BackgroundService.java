@@ -225,14 +225,14 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     private void walking() {
         walking = preferences.getBoolean(getResources().getString(R.string.walking), false);
         if (walking) {
-            Intent intent = new Intent(getApplicationContext(), Walking.class);
+            Intent intent = new Intent(getApplicationContext(), WalkingService.class);
             PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(),0,
                     intent,PendingIntent.FLAG_UPDATE_CURRENT);
             ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates(mGoogleApiClient, 1000
                     ,pendingIntent);
         }
         else if (!walking){
-            stopService(new Intent(getApplicationContext(), Walking.class));
+            stopService(new Intent(getApplicationContext(), WalkingService.class));
         }
     }
     private void bedAndDark() {

@@ -92,7 +92,7 @@
         </service>
 
         <service
-            android:name=".service.Walking"
+            android:name=".service.WalkingService"
             android:enabled="true"
             android:exported="true" >
         </service>

@@ -29,21 +29,21 @@ import java.util.List;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class Walking extends IntentService {
+public class WalkingService extends IntentService {
 
     private String TAG = "ActivityDetected";
     private DevicePolicyManager mgr=null;
     private ComponentName cn=null;
     public int NOTIFICATION_ID;
     public boolean walking;
-    public Walking() {
-        super("Walking");
+    public WalkingService() {
+        super("WalkingService");
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-//        Main.showToast(getApplicationContext(),"Walking IntentService created");
+//        Main.showToast(getApplicationContext(),"WalkingService IntentService created");
         cn=new ComponentName(this, AdminReceiver.class);
         mgr=(DevicePolicyManager)getSystemService(DEVICE_POLICY_SERVICE);
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -69,8 +69,8 @@ public class Walking extends IntentService {
         for (DetectedActivity detectedActivity : probableActivities){
             switch (detectedActivity.getType()){
                 case DetectedActivity.WALKING:
-                    Log.i(TAG, "Walking " + detectedActivity.getConfidence());
-                    //Main.showToast("Walking " + detectedActivity.getConfidence());
+                    Log.i(TAG, "WalkingService " + detectedActivity.getConfidence());
+                    //Main.showToast("WalkingService " + detectedActivity.getConfidence());
                     //createNotification("you were walking", detectedActivity.getConfidence() + "", getApplicationContext());
                     if (detectedActivity.getConfidence()>55 && walking){
                         createNotification("Warning! You were walking", "For safety reason we locked you phone", getApplicationContext());
