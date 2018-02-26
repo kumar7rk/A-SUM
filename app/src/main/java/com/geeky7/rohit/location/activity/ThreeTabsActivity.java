@@ -34,7 +34,7 @@ import com.geeky7.rohit.location.fragment.MonitoringFragmentCardView;
 import com.geeky7.rohit.location.fragment.Rules;
 import com.geeky7.rohit.location.fragment.Violations;
 import com.geeky7.rohit.location.fragment.list_of_rule;
-import com.geeky7.rohit.location.service.Automatic;
+import com.geeky7.rohit.location.service.AutomaticService;
 import com.geeky7.rohit.location.service.BackgroundService;
 import com.geeky7.rohit.location.service.Manual;
 import com.geeky7.rohit.location.service.Notification;
@@ -224,7 +224,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
                     if (running) {
                         aSwitch.getThumbDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
                         aSwitch.getTrackDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
-                        stopService(new Intent(ThreeTabsActivity.this, Automatic.class));
+                        stopService(new Intent(ThreeTabsActivity.this, AutomaticService.class));
                         stopService(new Intent(ThreeTabsActivity.this, SemiAutomatic.class));
                         stopService(new Intent(ThreeTabsActivity.this, Manual.class));
                         stopService(new Intent(ThreeTabsActivity.this, Notification.class));

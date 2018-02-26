@@ -40,7 +40,7 @@ public class SemiAutomatic extends Service {
         mHandler = new Handler();
         m = new Main(getApplicationContext());
 
-        stopService(new Intent(SemiAutomatic.this, Automatic.class));
+        stopService(new Intent(SemiAutomatic.this, AutomaticService.class));
         stopService(new Intent(SemiAutomatic.this, Manual.class));
         stopService(new Intent(SemiAutomatic.this, Notification.class));
 //        String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());

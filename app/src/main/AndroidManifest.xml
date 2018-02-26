@@ -62,7 +62,7 @@
         </service>
 
         <service
-            android:name=".service.Automatic"
+            android:name=".service.AutomaticService"
             android:enabled="true"
             android:exported="true" >
         </service>

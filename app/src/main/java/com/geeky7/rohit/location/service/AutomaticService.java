@@ -19,7 +19,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Automatic extends Service {
+public class AutomaticService extends Service {
     Main m;
     ArrayList<String> listOfBlockedApps = new ArrayList<>();
     private Handler mHandler;
@@ -27,15 +27,15 @@ public class Automatic extends Service {
     ViolationDbHelper violationDbHelper;
     SharedPreferences preferences;
 
-    public Automatic() {
+    public AutomaticService() {
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        stopService(new Intent(Automatic.this, SemiAutomatic.class));
-        stopService(new Intent(Automatic.this, Manual.class));
-        stopService(new Intent(Automatic.this, Notification.class));
+        stopService(new Intent(AutomaticService.this, SemiAutomatic.class));
+        stopService(new Intent(AutomaticService.this, Manual.class));
+        stopService(new Intent(AutomaticService.this, Notification.class));
         violationDbHelper = new ViolationDbHelper(getApplicationContext());
         mHandler = new Handler();
         m = new Main(getApplicationContext());

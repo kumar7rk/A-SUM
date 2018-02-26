@@ -22,7 +22,7 @@ public class Manual extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        stopService(new Intent(Manual.this, Automatic.class));
+        stopService(new Intent(Manual.this, AutomaticService.class));
         stopService(new Intent(Manual.this, SemiAutomatic.class));
         Main.showToast(getApplicationContext(), "Manual Service started");
         m = new Main(getApplicationContext());

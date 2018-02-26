@@ -16,7 +16,7 @@ public class Notification extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        stopService(new Intent(Notification.this, Automatic.class));
+        stopService(new Intent(Notification.this, AutomaticService.class));
         stopService(new Intent(Notification.this, SemiAutomatic.class));
         stopService(new Intent(Notification.this, Manual.class));
 
