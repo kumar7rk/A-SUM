@@ -42,7 +42,7 @@ public class ConfigureActivity extends AppCompatActivity {
             nextB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivityForResult(new Intent(ConfigureActivity.this, SelectRule.class),1);
+                    startActivityForResult(new Intent(ConfigureActivity.this, SelectRuleActivity.class),1);
                 }
             });
             cancelB.setOnClickListener(new View.OnClickListener() {

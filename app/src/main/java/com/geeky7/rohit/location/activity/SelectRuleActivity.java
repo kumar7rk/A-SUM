@@ -24,7 +24,7 @@ import com.geeky7.rohit.location.service.SemiAutomatic;
 import java.text.DateFormat;
 import java.util.Date;
 
-public class SelectRule extends AppCompatActivity {
+public class SelectRuleActivity extends AppCompatActivity {
 
     Button backB, okB;
     RadioButton radioButton;
@@ -59,10 +59,10 @@ public class SelectRule extends AppCompatActivity {
                 int selected_scenarios = preferences.getInt(CONSTANTS.NUMBER_OF_SCENARIOS_SELECTED,20);
 //                Main.showToast(getApplicationContext(),selected_scenarios+" scenarios selected");
                 if (selected_scenarios == 0){
-                    stopService(new Intent(SelectRule.this, Automatic.class));
-                    stopService(new Intent(SelectRule.this, SemiAutomatic.class));
-                    stopService(new Intent(SelectRule.this, Manual.class));
-                    stopService(new Intent(SelectRule.this, Notification.class));
+                    stopService(new Intent(SelectRuleActivity.this, Automatic.class));
+                    stopService(new Intent(SelectRuleActivity.this, SemiAutomatic.class));
+                    stopService(new Intent(SelectRuleActivity.this, Manual.class));
+                    stopService(new Intent(SelectRuleActivity.this, Notification.class));
                     setResult(0);
                     finish();
 //                    Main.showToast(getApplicationContext()," I stopped it because it was not worth it");
@@ -89,7 +89,7 @@ public class SelectRule extends AppCompatActivity {
                 finish();
 
                 m.usageAccessSettingsPage();
-                //startActivity(new Intent(SelectRule.this,ThreeTabsActivity.class)); using this opens selectRuleActivity
+                //startActivity(new Intent(SelectRuleActivity.this,ThreeTabsActivity.class)); using this opens selectRuleActivity
                 // instead of configure;
             }
         });
