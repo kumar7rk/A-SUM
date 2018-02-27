@@ -9,6 +9,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -41,7 +42,10 @@ public class ManualDetailsDialog extends DialogFragment {
     Set<String> selectedAppsSet = new HashSet<String>();
     Set<String> selectedAppsSetIndex = new HashSet<String>();
 
+    private SparseBooleanArray selectedApps =   new SparseBooleanArray();
+
     AlertDialog.Builder alertDialog;
+
 
     private PackageManager packageManager = null;
     private ApplicationAdapter listadapter = null;
@@ -72,8 +76,9 @@ public class ManualDetailsDialog extends DialogFragment {
         appsIndex = preferences.getStringSet("manualAppsIndex", appsIndex);
 //        selectedAppsSetIndex = appsIndex;
         for (String s:appsIndex){
+            selectedApps.append(Integer.parseInt(s),true);
             Integer in = Integer.parseInt(s);
-//            listView.setItemChecked(in,true);
+            listView.setItemChecked(in,true);
         }
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         appSelected();

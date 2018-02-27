@@ -6,9 +6,11 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -35,6 +37,7 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
     ArrayList<String> packageNames = new ArrayList<>();
     Set<String> selectedAppsSet = new HashSet<String>();
     Set<String> selectedAppsSetIndex = new HashSet<String>();
+    private SparseBooleanArray selectedApps =   new SparseBooleanArray();
     SharedPreferences.Editor editor;
 
     public ApplicationAdapter(Context context, int textViewResourceId,
@@ -65,6 +68,7 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
         for (int i = 0;i<appsIndexList.size();i++) {
             int index = Integer.parseInt(appsIndexList.get(i));
             checkList.add(index, true);
+            selectedApps.append(index,true);
         }
     }
 
@@ -107,12 +111,14 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
             checkBox = (CheckBox) view.findViewById(R.id.cb_app);
 
             checkBox.setTag(position); // set the tag so we can identify the correct row in the listener
-            checkBox.setChecked(checkList.get(position)); // set the status as we stored it
+            //checkBox.setChecked(checkList.get(position)); // set the status as we stored it
+            checkBox.setChecked(selectedApps.get(position));
 //            checkBox.setOnCheckedChangeListener(mListener); // set the listener
             checkBox.setText(data.loadLabel(packageManager));
             checkBox.setButtonDrawable(android.R.color.transparent);
 
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            checkBox.setOnClickListener(new OnItemClickListener(position,checkBox.getText(),checkBox));
+            /*checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     String packageName = packageNames.get((Integer) buttonView.getTag());
@@ -132,7 +138,8 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
                     editor.putStringSet("someStringSetIndex", selectedAppsSetIndex);
                     editor.commit();
                 }
-            });
+            });*/
+
             iconview.setImageDrawable(data.loadIcon(packageManager));
         }
         return view;
@@ -146,5 +153,41 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
     public void commit(){
         editor.commit();
         Main.showToast(getContext(),"Commit");
+    }
+
+    // handles the onClickListener added above
+    class OnItemClickListener implements View.OnClickListener {
+        private int position;
+        private CharSequence text;
+        private CheckBox checkBox;
+        OnItemClickListener(int position, CharSequence text,CheckBox checkBox){
+            this.position = position;
+            this.text = text;
+            this.checkBox = checkBox;
+        }
+        @Override
+        public void onClick(View arg0) {
+
+            String app = checkBox.getText().toString();
+            boolean b = checkBox.isChecked();
+            if (b){
+                selectedApps.append(position, true);
+                Main.showToast(app+ " selected");
+                selectedAppsSetIndex.add(position+"");
+                selectedAppsSet.add(app);
+            }
+            else{
+                selectedApps.append(position, false);
+                Main.showToast(app+ " removed");
+                selectedAppsSetIndex.remove(position+"");
+                selectedAppsSet.remove(app);
+            }
+
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putStringSet("someStringSet", selectedAppsSet);
+            editor.putStringSet("someStringSetIndex", selectedAppsSetIndex);
+            editor.apply();
+        }
+
     }
 }

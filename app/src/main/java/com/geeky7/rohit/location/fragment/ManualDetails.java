@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,6 +43,7 @@ public class ManualDetails extends ListFragment {
     Set<String> selectedAppsSet = new HashSet<String>();
     Set<String> selectedAppsSetIndex = new HashSet<String>();
 
+    private SparseBooleanArray selectedApps =   new SparseBooleanArray();
 
     private PackageManager packageManager = null;
     private ApplicationAdapter listadapter = null;
@@ -66,9 +68,12 @@ public class ManualDetails extends ListFragment {
         apps = preferences.getStringSet("manualApps", apps);
         appsIndex = preferences.getStringSet("manualAppsIndex", appsIndex);
 //        selectedAppsSetIndex = appsIndex;
+
+
         for (String s:appsIndex){
+            selectedApps.append(Integer.parseInt(s),true);
             Integer in = Integer.parseInt(s);
-//            listView.setItemChecked(in,true);
+            //listView.setItemChecked(in,true);
         }
         loadItems();
     }
@@ -125,7 +130,7 @@ public class ManualDetails extends ListFragment {
                 editor.putStringSet("manualApps", selectedAppsSet);
                 editor.putStringSet("manualAppsIndex", selectedAppsSetIndex);
 
-                editor.commit();
+                editor.apply();
 
 //                Main.showToast(getActivity(), "ManualAppBlockListUpdated");
 
