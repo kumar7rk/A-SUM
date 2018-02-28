@@ -33,7 +33,7 @@ import java.util.Set;
 public class ManualDetailsCardView extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.Adapter<ManualRecyclerViewAdapter.ManualDataObjectHolder> mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     ArrayList<String> list = new ArrayList<String>();
@@ -52,7 +52,6 @@ public class ManualDetailsCardView extends Fragment {
         super.onCreate(savedInstanceState);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         button = new Button(MyApplication.getAppContext());
-        
     }
 
     private void addButton() {
@@ -111,7 +110,7 @@ public class ManualDetailsCardView extends Fragment {
         });
     }
     private ArrayList<DataObject> getDataSet() {
-        ArrayList results = new ArrayList<DataObject>();
+        ArrayList<DataObject> results = new ArrayList<DataObject>();
         String lastApplied = preferences.getString(CONSTANTS.MANUAL_RULE_ADDED_TIME, "Never");
         String timePeriod = "This rule is applied for ALL DAY. No quiet Hours";
         String apps = "someApps";
@@ -175,6 +174,5 @@ public class ManualDetailsCardView extends Fragment {
         for (String a:apps)
             Log.i("CardView",a);
         listOfBlockedApps.addAll(apps);
-
     }
 }
