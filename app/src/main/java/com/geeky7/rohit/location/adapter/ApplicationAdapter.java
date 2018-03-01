@@ -151,7 +151,7 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
         }
     };
     public void commit(){
-        editor.commit();
+        editor.apply();
         Main.showToast(getContext(),"Commit");
     }
 
@@ -182,12 +182,9 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
                 selectedAppsSetIndex.remove(position+"");
                 selectedAppsSet.remove(app);
             }
-
-            SharedPreferences.Editor editor = preferences.edit();
             editor.putStringSet("someStringSet", selectedAppsSet);
             editor.putStringSet("someStringSetIndex", selectedAppsSetIndex);
             editor.apply();
         }
-
     }
 }
