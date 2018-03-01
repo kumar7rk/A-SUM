@@ -358,6 +358,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         @Override
         protected void onPostExecute(List<HashMap<String, String>> list) {
 
+            //force close; give yourself a reward when you're here
             if (list.size() >0){
                 /*for (int i = 0; i < list.size(); i++) {
                     HashMap<String, String> hmPlace = list.get(0);
