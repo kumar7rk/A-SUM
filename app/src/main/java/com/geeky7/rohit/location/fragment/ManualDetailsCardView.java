@@ -174,5 +174,9 @@ public class ManualDetailsCardView extends Fragment {
         for (String a:apps)
             Log.i("CardView",a);
         listOfBlockedApps.addAll(apps);
+
+        for (String s:listOfBlockedApps) {
+            Log.i("CardView listBA",s);
+        }
     }
 }
