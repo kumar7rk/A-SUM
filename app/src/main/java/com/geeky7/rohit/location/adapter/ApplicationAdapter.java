@@ -169,18 +169,20 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
         public void onClick(View arg0) {
 
             String app = checkBox.getText().toString();
+            String packageName = packageNames.get((Integer) checkBox.getTag());
+
             boolean b = checkBox.isChecked();
             if (b){
                 selectedApps.append(position, true);
                 Main.showToast(app+ " selected");
                 selectedAppsSetIndex.add(position+"");
-                selectedAppsSet.add(app);
+                selectedAppsSet.add(packageName);
             }
             else{
                 selectedApps.append(position, false);
                 Main.showToast(app+ " removed");
                 selectedAppsSetIndex.remove(position+"");
-                selectedAppsSet.remove(app);
+                selectedAppsSet.remove(packageName);
             }
             editor.putStringSet("someStringSet", selectedAppsSet);
             editor.putStringSet("someStringSetIndex", selectedAppsSetIndex);
