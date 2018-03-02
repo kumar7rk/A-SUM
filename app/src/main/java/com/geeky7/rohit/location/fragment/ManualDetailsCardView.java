@@ -152,8 +152,7 @@ public class ManualDetailsCardView extends Fragment {
     private void getAppIcon() {
         for (int i = 0; i < listOfBlockedApps.size(); i++) {
             try {
-                drawables[i] = MyApplication.getAppContext().getPackageManager().
-                        getApplicationIcon(listOfBlockedApps.get(i));
+                drawables[i] = MyApplication.getAppContext().getPackageManager().getApplicationIcon(listOfBlockedApps.get(i));
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }

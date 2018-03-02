@@ -128,25 +128,21 @@ public class ManualDetailsDialog extends DialogFragment {
     }
 
     private void addButtons() {
-        alertDialog.setPositiveButton(
-                "SAVE", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 //                        ApplicationAdapter a = new ApplicationAdapter(MyApplication.getAppContext(),0);
-                        ApplicationAdapter a = new ApplicationAdapter(MyApplication.getAppContext(),0,applist);
+            ApplicationAdapter a = new ApplicationAdapter(MyApplication.getAppContext(),0,applist);
                         a.commit();
 
-                        getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualDetailsCardView())
-                                .commit();
-                        Main.showToast(getContext(),"Saved");
+            getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualDetailsCardView()).commit();
+//                        Main.showToast(getContext(),"Saved");
                     }
-                });
-
-        alertDialog.setNegativeButton(
-                "CANCEL", new DialogInterface.OnClickListener() {
+        });
+        alertDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Main.showToast(getContext(),"Cancelled");
+//                        Main.showToast(getContext(),"Cancelled");
                         getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualDetailsCardView())
                                 .commit();
                     }
@@ -175,7 +171,6 @@ public class ManualDetailsDialog extends DialogFragment {
                 e.printStackTrace();
             }
         }
-
         return applist;
     }
 }
