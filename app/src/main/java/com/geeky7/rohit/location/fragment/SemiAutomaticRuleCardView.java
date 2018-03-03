@@ -29,7 +29,7 @@ import com.geeky7.rohit.location.adapter.SemiAutomaticRecyclerViewAdapter;
 
 import java.util.ArrayList;
 
-public class SemiAutomaticDetailsCardView extends Fragment {
+public class SemiAutomaticRuleCardView extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -44,7 +44,7 @@ public class SemiAutomaticDetailsCardView extends Fragment {
     Drawable[] drawables = new Drawable[11];
     SharedPreferences preferences;
     LinearLayout layout, layout1, layout2;
-    public SemiAutomaticDetailsCardView() {
+    public SemiAutomaticRuleCardView() {
     }
 
     @Override
