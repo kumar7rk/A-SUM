@@ -31,7 +31,6 @@ import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.TabMessage;
 import com.geeky7.rohit.location.ViolationDbHelper;
 import com.geeky7.rohit.location.fragment.MonitoringFragmentCardView;
-import com.geeky7.rohit.location.fragment.Rules;
 import com.geeky7.rohit.location.fragment.Violations;
 import com.geeky7.rohit.location.fragment.list_of_rule;
 import com.geeky7.rohit.location.service.AutomaticService;
@@ -94,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onMenuTabSelected(int menuItemId) {
-                Fragment fragment = new Rules();
+                Fragment fragment = new list_of_rule();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 
                 switch (menuItemId) {
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             public void onMenuTabReSelected(int menuItemId) {
                 Toast.makeText(getApplicationContext(), TabMessage.get(menuItemId, true), Toast.LENGTH_SHORT).show();
 
-                Fragment fragment = new Rules();
+                Fragment fragment = new list_of_rule();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 
                 switch (menuItemId) {
