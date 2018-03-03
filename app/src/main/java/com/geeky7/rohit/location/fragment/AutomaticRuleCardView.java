@@ -23,7 +23,7 @@ import com.geeky7.rohit.location.adapter.AutomaticRecyclerViewAdapter;
 
 import java.util.ArrayList;
 
-public class AutomaticDetailsCardView extends Fragment {
+public class AutomaticRuleCardView extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -37,7 +37,7 @@ public class AutomaticDetailsCardView extends Fragment {
     SharedPreferences preferences;
     LinearLayout layout;
 
-    public AutomaticDetailsCardView() {
+    public AutomaticRuleCardView() {
     }
 
     @Override
