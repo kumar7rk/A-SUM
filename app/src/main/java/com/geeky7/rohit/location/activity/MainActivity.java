@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomBar mBottomBar;
     private final int permissionVariable = 0;
-    boolean running,a,mainSwitch = true;
+    boolean running,mainSwitch = true;
     Main m;
     public static View view;
     SharedPreferences preferences;
