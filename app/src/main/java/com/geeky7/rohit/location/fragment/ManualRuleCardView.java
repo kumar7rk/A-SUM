@@ -72,7 +72,7 @@ public class ManualRuleCardView extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ManualDetailsDialog dialogFrag = ManualDetailsDialog.newInstance(R.string.startService);
+                InstalledAppsDialog dialogFrag = InstalledAppsDialog.newInstance(R.string.startService);
                 dialogFrag.show(getActivity().getFragmentManager(), null);
             }
         });

@@ -31,7 +31,7 @@ import java.util.Set;
 /**
  * Created by Rohit on 30/08/2016.
  */
-public class ManualDetailsDialog extends DialogFragment {
+public class InstalledAppsDialog extends DialogFragment {
     ListView listView;
     private ArrayAdapter<String> adapter;
     SharedPreferences preferences;
@@ -101,11 +101,11 @@ public class ManualDetailsDialog extends DialogFragment {
             }
         });
     }
-    public ManualDetailsDialog(){
+    public InstalledAppsDialog(){
 
     }
-    public static ManualDetailsDialog newInstance(int title) {
-        ManualDetailsDialog dialog = new ManualDetailsDialog();
+    public static InstalledAppsDialog newInstance(int title) {
+        InstalledAppsDialog dialog = new InstalledAppsDialog();
         Bundle args = new Bundle();
         args.putInt("title", title);
         dialog.setArguments(args);
