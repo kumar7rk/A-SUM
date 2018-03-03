@@ -36,7 +36,7 @@
         </activity>
 
         <activity
-            android:name=".activity.ConfigureActivity"
+            android:name=".activity.SelectScenarioActivity"
             android:excludeFromRecents="true"
             android:label="@string/action_configure"
             android:parentActivityName=".activity.MainActivity" >
@@ -46,7 +46,7 @@
             android:name=".activity.SelectRuleActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_activity_select_rule"
-            android:parentActivityName=".activity.ConfigureActivity" >
+            android:parentActivityName=".activity.SelectScenarioActivity" >
         </activity>
 
         <activity

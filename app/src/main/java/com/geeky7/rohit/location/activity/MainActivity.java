@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                m.usageAccessSettingsPage();
-                startActivityForResult(new Intent(MainActivity.this, ConfigureActivity.class),1);
+                startActivityForResult(new Intent(MainActivity.this, SelectScenarioActivity.class),1);
             }
         });
         mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
