@@ -89,7 +89,7 @@ public class SelectRuleActivity extends AppCompatActivity {
                 finish();
 
                 m.usageAccessSettingsPage();
-                //startActivity(new Intent(SelectRuleActivity.this,ThreeTabsActivity.class)); using this opens selectRuleActivity
+                //startActivity(new Intent(SelectRuleActivity.this,MainActivity.class)); using this opens selectRuleActivity
                 // instead of configure;
             }
         });

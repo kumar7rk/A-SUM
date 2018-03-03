@@ -44,7 +44,7 @@ import com.roughike.bottombar.BottomBarBadge;
 import com.roughike.bottombar.OnMenuTabClickListener;
 
 
-public class ThreeTabsActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private BottomBar mBottomBar;
     private final int permissionVariable = 0;
@@ -70,7 +70,7 @@ public class ThreeTabsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                m.usageAccessSettingsPage();
-                startActivityForResult(new Intent(ThreeTabsActivity.this, ConfigureActivity.class),1);
+                startActivityForResult(new Intent(MainActivity.this, ConfigureActivity.class),1);
             }
         });
         mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
@@ -220,14 +220,14 @@ public class ThreeTabsActivity extends AppCompatActivity {
                         aSwitch.getTrackDrawable().setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
                     }
                 } else if (!isChecked) {
-                    Intent serviceIntent = new Intent(ThreeTabsActivity.this, BackgroundService.class);
+                    Intent serviceIntent = new Intent(MainActivity.this, BackgroundService.class);
                     if (running) {
                         aSwitch.getThumbDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
                         aSwitch.getTrackDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
-                        stopService(new Intent(ThreeTabsActivity.this, AutomaticService.class));
-                        stopService(new Intent(ThreeTabsActivity.this, SemiAutomaticService.class));
-                        stopService(new Intent(ThreeTabsActivity.this, ManualService.class));
-                        stopService(new Intent(ThreeTabsActivity.this, NotificationService.class));
+                        stopService(new Intent(MainActivity.this, AutomaticService.class));
+                        stopService(new Intent(MainActivity.this, SemiAutomaticService.class));
+                        stopService(new Intent(MainActivity.this, ManualService.class));
+                        stopService(new Intent(MainActivity.this, NotificationService.class));
                         stopService(serviceIntent);
                         running = false;
                     }

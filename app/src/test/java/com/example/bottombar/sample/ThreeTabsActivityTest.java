@@ -2,7 +2,7 @@ package com.geeky7.rohit.location;
 
 import android.support.annotation.IdRes;
 
-import com.geeky7.rohit.location.activity.ThreeTabsActivity;
+import com.geeky7.rohit.location.activity.MainActivity;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 
@@ -23,12 +23,12 @@ import static org.junit.Assert.assertEquals;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class ThreeTabsActivityTest {
-    private ThreeTabsActivity activity;
+    private MainActivity activity;
     private int currentMenuId;
 
     @Before
     public void setUp() throws Exception {
-        activity = Robolectric.buildActivity(ThreeTabsActivity.class)
+        activity = Robolectric.buildActivity(MainActivity.class)
                 .create()
                 .resume()
                 .get();

@@ -16,7 +16,7 @@ import android.view.View;
 
 import com.geeky7.rohit.location.AdminReceiver;
 import com.geeky7.rohit.location.R;
-import com.geeky7.rohit.location.activity.ThreeTabsActivity;
+import com.geeky7.rohit.location.activity.MainActivity;
 import com.google.android.gms.location.ActivityRecognitionResult;
 import com.google.android.gms.location.DetectedActivity;
 
@@ -74,7 +74,7 @@ public class WalkingService extends IntentService {
                     //createNotification("you were walking", detectedActivity.getConfidence() + "", getApplicationContext());
                     if (detectedActivity.getConfidence()>55 && walking){
                         createNotification("Warning! You were walking", "For safety reason we locked you phone", getApplicationContext());
-                        lockMeNow(ThreeTabsActivity.view);
+                        lockMeNow(MainActivity.view);
 
                     }
                     break;
