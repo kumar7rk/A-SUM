@@ -23,12 +23,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
-import com.geeky7.rohit.location.TabMessage;
 import com.geeky7.rohit.location.ViolationDbHelper;
 import com.geeky7.rohit.location.fragment.MonitoringFragmentCardView;
 import com.geeky7.rohit.location.fragment.Violations;
@@ -117,8 +115,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onMenuTabReSelected(int menuItemId) {
-                Toast.makeText(getApplicationContext(), TabMessage.get(menuItemId, true), Toast.LENGTH_SHORT).show();
-
                 Fragment fragment = new list_of_rule();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 
