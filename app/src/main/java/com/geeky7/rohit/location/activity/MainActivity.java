@@ -44,23 +44,29 @@ import com.roughike.bottombar.OnMenuTabClickListener;
 public class MainActivity extends AppCompatActivity {
 
     private BottomBar mBottomBar;
+
     private final int permissionVariable = 0;
     boolean running,mainSwitch = true;
+
     Main m;
+
     public static View view;
+
     SharedPreferences preferences;
+
     Switch aSwitch;
     MenuItem toggleService;
     FloatingActionButton floatingActionButton;
+
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
-        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        m = new Main(this);
 
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-        m = new Main(this);
 
         floatingActionButton = (FloatingActionButton)findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         });
         mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
 
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         int permissionCheck = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheck== PackageManager.PERMISSION_DENIED){
@@ -88,15 +95,12 @@ public class MainActivity extends AppCompatActivity {
         mBottomBar.setItems(R.menu.main);
         updateBadge();
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
-
             @Override
             public void onMenuTabSelected(int menuItemId) {
                 Fragment fragment = new list_of_rule();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-
                 switch (menuItemId) {
                     case R.id.bb_menu_monitoring:
-//                        fragment = new MonitoringFragment();
                         fragment = new MonitoringFragmentCardView();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
@@ -112,16 +116,13 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTransaction.remove(fragment);
                 }
             }
-
             @Override
             public void onMenuTabReSelected(int menuItemId) {
                 Fragment fragment = new list_of_rule();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 
                 switch (menuItemId) {
-
                     case R.id.bb_menu_monitoring:
-//                        fragment = new MonitoringFragment();
                         fragment = new MonitoringFragmentCardView();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
@@ -173,15 +174,6 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
-                break;
-            case R.id.action_tutorial:
-                Main.showToast(getResources().getString(R.string.coming_soon));
-                break;
-            case R.id.action_help:
-                Main.showToast(getResources().getString(R.string.coming_soon));
-                break;
-            case R.id.action_about:
-                Main.showToast(getResources().getString(R.string.coming_soon));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -235,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
     private void editorMainSwitch() {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(CONSTANTS.MAIN_SWITCH, aSwitch.isChecked());
-        editor.commit();
+        editor.apply();
     }
 
     private void checkPermission() {
@@ -250,13 +242,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case permissionVariable: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                if (grantResults.length > 0&& grantResults[0] == PackageManager.PERMISSION_GRANTED)
                     return;
             }
         }
@@ -281,9 +271,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 
-        Fragment fragment;
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragment = new MonitoringFragmentCardView();
+       Fragment  fragment = new MonitoringFragmentCardView();
 //        fragmentTransaction.replace(android.R.id.content, fragment).commit();
     }
     @Override
