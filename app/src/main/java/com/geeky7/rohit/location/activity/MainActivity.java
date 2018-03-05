@@ -49,11 +49,9 @@ public class MainActivity extends AppCompatActivity {
     boolean running,mainSwitch = true;
 
     Main m;
-
-    public static View view;
-
     SharedPreferences preferences;
 
+    public static View view;
     Switch aSwitch;
     MenuItem toggleService;
     FloatingActionButton floatingActionButton;
@@ -72,24 +70,22 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                m.usageAccessSettingsPage();
                 startActivityForResult(new Intent(MainActivity.this, SelectScenarioActivity.class),1);
             }
         });
         mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
 
         final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean gps = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         int permissionCheck = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheck== PackageManager.PERMISSION_DENIED){
             checkPermission();
             m.openLocationSettings(manager);
-//            m.usageAccessSettingsPage();
         }
         checkPermission();
 
-        if (!running && manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && mainSwitch)
-            startService();
+        if (!running && gps && mainSwitch) startService();
 
         mBottomBar = BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.main);
@@ -170,19 +166,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        //editorMainSwitch();
-        super.onPostCreate(savedInstanceState, persistentState);
     }
 
     @Override
@@ -211,11 +200,14 @@ public class MainActivity extends AppCompatActivity {
                     if (running) {
                         aSwitch.getThumbDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
                         aSwitch.getTrackDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+
                         stopService(new Intent(MainActivity.this, AutomaticService.class));
                         stopService(new Intent(MainActivity.this, SemiAutomaticService.class));
                         stopService(new Intent(MainActivity.this, ManualService.class));
                         stopService(new Intent(MainActivity.this, NotificationService.class));
+
                         stopService(serviceIntent);
+
                         running = false;
                     }
                 }
