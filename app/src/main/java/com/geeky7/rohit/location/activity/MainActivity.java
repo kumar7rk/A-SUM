@@ -262,10 +262,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-       Fragment  fragment = new MonitoringFragmentCardView();
-//        fragmentTransaction.replace(android.R.id.content, fragment).commit();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -275,7 +271,6 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
     }
-
     @Override
     protected void onPause() {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
