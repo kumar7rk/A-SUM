@@ -16,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by Rohit on 30/08/2016.
  */
-public class list_of_rule extends Fragment {
+public class RuleListFragment extends Fragment {
 
     ListView listView;
     private ArrayAdapter<String> adapter;

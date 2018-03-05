@@ -11,7 +11,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -30,7 +29,7 @@ import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.ViolationDbHelper;
 import com.geeky7.rohit.location.fragment.MonitoringFragmentCardView;
 import com.geeky7.rohit.location.fragment.Violations;
-import com.geeky7.rohit.location.fragment.list_of_rule;
+import com.geeky7.rohit.location.fragment.RuleListFragment;
 import com.geeky7.rohit.location.service.AutomaticService;
 import com.geeky7.rohit.location.service.BackgroundService;
 import com.geeky7.rohit.location.service.ManualService;
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
             @Override
             public void onMenuTabSelected(int menuItemId) {
-                Fragment fragment = new list_of_rule();
+                Fragment fragment = new RuleListFragment();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 switch (menuItemId) {
                     case R.id.bb_menu_monitoring:
@@ -101,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
                     case R.id.bb_menu_rules:
-                        fragment = new list_of_rule();
+                        fragment = new RuleListFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
                     case R.id.bb_menu_violation:
@@ -114,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onMenuTabReSelected(int menuItemId) {
-                Fragment fragment = new list_of_rule();
+                Fragment fragment = new RuleListFragment();
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 
                 switch (menuItemId) {
@@ -124,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.bb_menu_rules:
-                        fragment = new list_of_rule();
+                        fragment = new RuleListFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
 
