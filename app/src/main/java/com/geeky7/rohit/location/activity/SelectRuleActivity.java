@@ -36,14 +36,13 @@ public class SelectRuleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_rule);
+
         backB = (Button)findViewById(R.id.back);
         okB = (Button)findViewById(R.id.ok);
         radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
 
         m = new Main(getApplicationContext());
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
-
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         /*String rule = "AA";
         rule = sharedPrefs.getString(CONSTANTS.SELECTED_RULE, rule);*/
@@ -57,15 +56,13 @@ public class SelectRuleActivity extends AppCompatActivity {
 
                 m.countSelectedScenarioForBadge();
                 int selected_scenarios = preferences.getInt(CONSTANTS.NUMBER_OF_SCENARIOS_SELECTED,20);
-//                Main.showToast(getApplicationContext(),selected_scenarios+" scenarios selected");
                 if (selected_scenarios == 0){
                     stopService(new Intent(SelectRuleActivity.this, AutomaticService.class));
                     stopService(new Intent(SelectRuleActivity.this, SemiAutomaticService.class));
                     stopService(new Intent(SelectRuleActivity.this, ManualService.class));
                     stopService(new Intent(SelectRuleActivity.this, NotificationService.class));
                     setResult(0);
-                    finish();
-//                    Main.showToast(getApplicationContext()," I stopped it because it was not worth it");
+                    finish();//I stopped it because it was not worth it
                 }
                 String rule = radioButton.getText().toString();
                 editor.putString(CONSTANTS.SELECTED_RULE, rule);
@@ -83,7 +80,7 @@ public class SelectRuleActivity extends AppCompatActivity {
                 if (rule.equalsIgnoreCase("Notification")){
                     editor.putString(CONSTANTS.NOTIFICATION_RULE_ADDED_TIME,currentDateTimeString);
                 }
-                editor.commit();
+                editor.apply();
                 Main.showToast(getApplicationContext(), rule + " Added");
                 setResult(0);
                 finish();
