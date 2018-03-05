@@ -166,6 +166,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
     }
     // method- update the new coordinates
+    // force close
     protected void updateToast(){
 //        Main.showToast("From A-SUM New Coordinates: " + mCurrentLocation.getLatitude() + "\n" + mCurrentLocation.getLongitude());
         Log.i("A-SUM NewCoordinates: ", mCurrentLocation.getLatitude() + "\n" + mCurrentLocation.getLongitude());
