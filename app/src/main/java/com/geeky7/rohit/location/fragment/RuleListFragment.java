@@ -47,7 +47,7 @@ public class RuleListFragment extends Fragment {
                 if (position==2)
                     getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualRuleCardView()).commit();
                 if (position==3)
-                    getFragmentManager().beginTransaction().replace(android.R.id.content,new NotificationDetails()).commit();
+                    getFragmentManager().beginTransaction().replace(android.R.id.content,new NotificationFragment()).commit();
             }
         });
     }

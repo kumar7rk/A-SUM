@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by Rohit on 13/09/2016.
  */
-public class NotificationDetails extends Fragment {
+public class NotificationFragment extends Fragment {
     ListView listView;
     private ArrayAdapter<String> adapter;
     ArrayList<String> list = new ArrayList<String>();
