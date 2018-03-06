@@ -3,6 +3,7 @@ package com.geeky7.rohit.location;
 import android.app.ActivityManager;
 import android.app.AppOpsManager;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
@@ -201,7 +202,7 @@ public class Main {
         preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(CONSTANTS.NUMBER_OF_SCENARIOS_SELECTED,counter);
-        editor.commit();
+        editor.apply();
         return counter;
     }
 
@@ -240,15 +241,4 @@ public class Main {
 
         return false;
     }
-    public void createNotification(String contentTitle, String contentText,Context context) {
-
-        Notification.Builder builder = new Notification.Builder(context)
-                .setSmallIcon(android.R.drawable.stat_sys_warning)
-                .setAutoCancel(true)
-                .setContentTitle(contentTitle)
-                .setContentText(contentText);
-//        NotificationManager mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-//        mNotificationManager.notify(NOTIFICATION_ID++, builder.build());
-    }
-
 }
