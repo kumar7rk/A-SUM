@@ -28,7 +28,7 @@ import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.ViolationDbHelper;
 import com.geeky7.rohit.location.fragment.MonitoringFragmentCardView;
-import com.geeky7.rohit.location.fragment.Violations;
+import com.geeky7.rohit.location.fragment.ViolationsFragment;
 import com.geeky7.rohit.location.fragment.RuleListFragment;
 import com.geeky7.rohit.location.service.AutomaticService;
 import com.geeky7.rohit.location.service.BackgroundService;
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
                     case R.id.bb_menu_violation:
-                        fragment = new Violations();
+                        fragment = new ViolationsFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
                     default:
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.bb_menu_violation:
-                        fragment = new Violations();
+                        fragment = new ViolationsFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
 

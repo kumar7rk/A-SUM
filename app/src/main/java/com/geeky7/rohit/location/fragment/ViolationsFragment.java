@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Violations extends ListFragment {
+public class ViolationsFragment extends ListFragment {
 
     private PackageManager packageManager = null;
     ViolationDbHelper violationDbHelper;
