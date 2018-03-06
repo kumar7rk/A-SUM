@@ -48,7 +48,6 @@ public class InstalledAppsDialog extends DialogFragment {
 
 
     private PackageManager packageManager = null;
-    private ApplicationAdapter listadapter = null;
     private List<ApplicationInfo> applist = null;
 
 
@@ -154,9 +153,9 @@ public class InstalledAppsDialog extends DialogFragment {
 
         Collections.sort(applist, new ApplicationInfo.DisplayNameComparator(packageManager));
 
-        listadapter = new ApplicationAdapter(MyApplication.getAppContext(),
+        ApplicationAdapter listAdapter = new ApplicationAdapter(MyApplication.getAppContext(),
                 R.layout.manual_listitems, applist);
-        listView.setAdapter(listadapter);
+        listView.setAdapter(listAdapter);
     }
     private List<ApplicationInfo> checkForLaunchIntent(List<ApplicationInfo> list) {
         ArrayList<ApplicationInfo> applist = new ArrayList<ApplicationInfo>();
