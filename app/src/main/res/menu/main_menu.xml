@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".activity.MainActivity">
     <item android:id="@+id/main_switch" android:title=""
-        app:showAsAction="always" app:actionLayout="@layout/switch_for_actionbar"/>
+        app:showAsAction="ifRoom" app:actionLayout="@layout/switch_for_actionbar"/>
 
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
