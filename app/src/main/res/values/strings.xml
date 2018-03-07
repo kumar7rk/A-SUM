@@ -49,7 +49,9 @@
     <string name="pref_title_stop_time">Stop Time</string>
     <string name="pref_title_start_time">Start Time</string>
 
-
+    <!--added from asha-->
     <string name="permission_rationale">Location, SMS and Contact permissions required for core functionality.</string>
     <string name="permission_denied_explanation">Permission(s) denied, but required for core functionality.</string>
+
+    <string name="settings">Settings</string>
 </resources>
