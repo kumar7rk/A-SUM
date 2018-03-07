@@ -22,5 +22,6 @@ public class CONSTANTS {
     public static final String DETECTED_BEDANDDARK_TIME = "DETECTED_BEDANDDARK_TIME";
     public static final String DETECTED_WALKING_TIME = "DETECTED_WALKING_TIME";
 
+    public static final String MAIN_ACTIVITY = "MAIN_ACTIVITY";
 
 }
