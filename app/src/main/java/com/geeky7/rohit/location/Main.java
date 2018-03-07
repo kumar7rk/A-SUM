@@ -241,4 +241,13 @@ public class Main {
 
         return false;
     }
+
+    // inner stuff for debugging
+    public void updateLog(String className, String text){
+        Log.i(className,text);
+    }
+    // for called method name
+    public void calledMethodLog(String className, String text){
+        Log.i(className,text);
+    }
 }
