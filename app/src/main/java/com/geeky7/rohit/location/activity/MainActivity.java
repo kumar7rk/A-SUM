@@ -10,9 +10,13 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -23,6 +27,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import com.geeky7.rohit.location.BuildConfig;
 import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
@@ -44,7 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomBar mBottomBar;
 
-    private final int permissionVariable = 0;
+    private static final String TAG = CONSTANTS.MAIN_ACTIVITY;
+
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
     boolean running,mainSwitch = true;
 
     Main m;
@@ -59,30 +66,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
+        floatingActionButton = (FloatingActionButton)findViewById(R.id.fab);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         m = new Main(this);
 
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 
-        floatingActionButton = (FloatingActionButton)findViewById(R.id.fab);
+        // set onClickListener for floating action button
+        // which opens a new activity with a list of scenarios
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(MainActivity.this, SelectScenarioActivity.class),1);
             }
         });
+        // checking if the service is on or off
         mainSwitch =  preferences.getBoolean(CONSTANTS.MAIN_SWITCH, mainSwitch);
 
         final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         boolean gps = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        int permissionCheck = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permissionCheck== PackageManager.PERMISSION_DENIED){
-            checkPermission();
-            m.openLocationSettings(manager);
-        }
-        checkPermission();
+        // check location permission
+        if (!checkPermissions()) requestPermissions();
+
 
         if (!running && gps && mainSwitch) startService();
 
@@ -221,26 +227,114 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    private void checkPermission() {
+    private boolean checkPermissions() {
+     //   m.calledMethodLog(TAG,"checkPermission");
 
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                permissionVariable);
+        int locationPermission = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION);
+        int usageAccessPermission = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.PACKAGE_USAGE_STATS);
 
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.PACKAGE_USAGE_STATS},
-                permissionVariable);
-
+        return locationPermission == PackageManager.PERMISSION_GRANTED &&
+                usageAccessPermission == PackageManager.PERMISSION_GRANTED;
     }
+
+    private void requestPermissions() {
+        m.calledMethodLog(TAG,"requestPermission");
+
+        boolean shouldProvideRationaleLocation =
+                ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION);
+        boolean shouldProvideRationaleUsageAccess =
+                ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.PACKAGE_USAGE_STATS);
+        m = new Main(getApplicationContext());
+
+        // Provide an additional rationale to the user. This would happen if the user denied the
+        // request previously, but didn't check the "Don't ask again" checkbox.
+
+        // if either location or SMS or contacts permission is not granted; request
+        if (shouldProvideRationaleLocation || shouldProvideRationaleUsageAccess) {
+            m.updateLog(TAG, "Displaying permission rationale to provide additional context.");
+            showSnackbar(R.string.permission_rationale, android.R.string.ok,
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // Request permission
+                            startPermissionRequest();
+                        }
+                    });
+        } else {
+            m.updateLog(TAG, "Requesting permission");
+            // Request permission. It's possible this can be auto answered if device policy
+            // sets the permission in a given state or the user denied the permission
+            // previously and checked "Never ask again".
+            startPermissionRequest();
+        }
+    }
+    // This method is called the first time the app is installed
+    // requests all the permissions stated here
+    private void startPermissionRequest() {
+        m.calledMethodLog(TAG,"StartPermissionRequest");
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.PACKAGE_USAGE_STATS},
+                REQUEST_PERMISSIONS_REQUEST_CODE);
+    }
+    // this is the important bit which checks if the permission is granted or not
+    // and therefore change your functionality accordingly
+    // this method sets the values of the boolean variable for location, contact and sms and store them in sharedPreference
+    // although it is not the right practice because if a user revokes the permission then these variables are not updated
+    // and can therefore cause crash
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case permissionVariable: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0&& grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    return;
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
+            if (grantResults.length <= 0) {
+                // If user interaction was interrupted, the permission request is cancelled and you
+                // receive empty arrays.
+                m.updateLog(TAG, "User interaction was cancelled.");
+            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted.
+            }
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED ||
+                    grantResults[1] == PackageManager.PERMISSION_DENIED) {
+                // Notify the user via a SnackBar that they have rejected a core permission for the
+                // app, which makes the Activity useless. In a real app, core permissions would
+                // typically be best requested during a welcome-screen flow.
+
+                // Additionally, it is important to remember that a permission might have been
+                // rejected without asking the user for permission (device policy or "Never ask
+                // again" prompts). Therefore, a user interface affordance is typically implemented
+                // when permissions are denied. Otherwise, your app could appear unresponsive to
+                // touches or interactions which have required permissions.
+                showSnackbar(R.string.permission_denied_explanation, R.string.settings,
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // Build intent that displays the App settings screen.
+                                Intent intent = new Intent();
+                                intent.setAction(
+                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package",
+                                        BuildConfig.APPLICATION_ID, null);
+                                intent.setData(uri);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                        }
+                );
             }
         }
+
+
+        /*switch (requestCode) {
+            case REQUEST_PERMISSIONS_REQUEST_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    return;
+            }
+        }*/
     }
     private void startService() {
         Intent serviceIntent = new Intent(getApplicationContext(), BackgroundService.class);
@@ -274,5 +368,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onPause();
+    }
+
+    // Show when a not granted permission is required
+    // no button snackbar
+    private void showSnackbar(final String text) {
+        m.calledMethodLog(TAG,"showSnackbar");
+        Snackbar.make(findViewById(android.R.id.content),text,
+                Snackbar.LENGTH_LONG)
+                .show();
+    }
+    // shows a Snackbar indefinitely (for permissions)
+    private void showSnackbar(final int mainTextStringId, final int actionStringId,
+                              View.OnClickListener listener) {
+        m.calledMethodLog(TAG,"showSnackbar");
+        Snackbar.make(findViewById(android.R.id.content),
+                getString(mainTextStringId),
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(actionStringId), listener).show();
     }
 }
