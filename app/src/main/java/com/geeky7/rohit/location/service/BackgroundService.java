@@ -87,7 +87,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
         final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        m.openLocationSettings(manager);
+        //m.openLocationSettings(manager);
 
 
         int permissionCheck = ContextCompat.checkSelfPermission(this,
@@ -207,8 +207,8 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
             mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
             if (b)
                 updateToast();
-            else if (!b)
-                m.openLocationSettings(manager);
+            /*else if (!b)
+                m.openLocationSettings(manager);*/
         }
 
         if (mRequestingLocationUpdates)
