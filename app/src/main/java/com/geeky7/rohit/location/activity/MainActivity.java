@@ -1,9 +1,11 @@
 package com.geeky7.rohit.location.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,6 +15,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (!running && gps && mainSwitch) startService();
 
-        mBottomBar = BottomBar.attach(this, savedInstanceState);
+        /*mBottomBar = BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.main);
         updateBadge();
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
@@ -145,9 +148,9 @@ public class MainActivity extends AppCompatActivity {
         });
         mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
         mBottomBar.mapColorForTab(1, "#fff000");
-        mBottomBar.mapColorForTab(2, "#fff000");
+        mBottomBar.mapColorForTab(2, "#fff000");*/
 
-        m.openLocationSettings(manager);
+        //m.openLocationSettings(manager);
     }
 
     public void updateBadge() {
@@ -256,6 +259,7 @@ public class MainActivity extends AppCompatActivity {
         // if either location or SMS or contacts permission is not granted; request
         if (shouldProvideRationaleLocation || shouldProvideRationaleUsageAccess) {
             m.updateLog(TAG, "Displaying permission rationale to provide additional context.");
+            showAlertDialog(R.string.permission_rationale);
             showSnackbar(R.string.permission_rationale, android.R.string.ok,
                     new View.OnClickListener() {
                         @Override
@@ -308,6 +312,7 @@ public class MainActivity extends AppCompatActivity {
                 // again" prompts). Therefore, a user interface affordance is typically implemented
                 // when permissions are denied. Otherwise, your app could appear unresponsive to
                 // touches or interactions which have required permissions.
+                showAlertDialog(R.string.permission_denied_explanation);
                 showSnackbar(R.string.permission_denied_explanation, R.string.settings,
                         new View.OnClickListener() {
                             @Override
@@ -386,5 +391,23 @@ public class MainActivity extends AppCompatActivity {
                 getString(mainTextStringId),
                 Snackbar.LENGTH_INDEFINITE)
                 .setAction(getString(actionStringId), listener).show();
+    }
+
+    private void showAlertDialog(final int text){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Permission required")
+                .setMessage("Please grant Usage Access permission" + " " + getString(text))
+                .setIcon(android.R.drawable.checkbox_on_background)
+                .setPositiveButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.string_ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        m.usageAccessSettingsPage();
+                    }
+                });
+//        builder.show();
     }
 }
