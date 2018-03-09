@@ -21,7 +21,7 @@
     <string name="title_activity_configure" translatable="false">Configure</string>
     <string name="title_activity_select_rule" translatable="false">Select Rule</string>
 
-    <string name="string_ok" translatable="false">OK</string>
+    <string name="ok" translatable="false">Ok</string>
     <string name="back" translatable="false">Back</string>
     <string name="cancel" translatable="false">Cancel</string>
     <string name="next">Next</string>
