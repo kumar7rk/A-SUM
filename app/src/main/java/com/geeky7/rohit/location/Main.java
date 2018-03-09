@@ -1,12 +1,15 @@
 package com.geeky7.rohit.location;
 
+import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.app.AppOpsManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -169,8 +172,7 @@ public class Main {
         }
         return enabled;
     }
-    public boolean usageAccessPermission()
-    {
+    public boolean usageAccessPermission(){
         AppOpsManager appOps = (AppOpsManager) mContext
                 .getSystemService(Context.APP_OPS_SERVICE);
         int mode = appOps.checkOpNoThrow("android:get_usage_stats",
@@ -248,5 +250,23 @@ public class Main {
     // for called method name
     public void calledMethodLog(String className, String text){
         Log.i(className,text);
+    }
+
+    public void showUsageDataAccessDialog(Activity activity){
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Permission required")
+                .setMessage(R.string.usage_data_access)
+                .setIcon(android.R.drawable.checkbox_on_background)
+                .setPositiveButton(MyApplication.getAppContext().getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        usageAccessSettingsPage();
+                    }
+                })
+                .setNegativeButton(MyApplication.getAppContext().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.show();
     }
 }
