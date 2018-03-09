@@ -231,15 +231,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean checkPermissions() {
-     //   m.calledMethodLog(TAG,"checkPermission");
+        m.calledMethodLog(TAG,"checkPermission");
 
         int locationPermission = ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION);
-        int usageAccessPermission = ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.PACKAGE_USAGE_STATS);
 
-        return locationPermission == PackageManager.PERMISSION_GRANTED &&
-                usageAccessPermission == PackageManager.PERMISSION_GRANTED;
+        return locationPermission == PackageManager.PERMISSION_GRANTED;
     }
 
     private void requestPermissions() {
@@ -248,18 +245,15 @@ public class MainActivity extends AppCompatActivity {
         boolean shouldProvideRationaleLocation =
                 ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.ACCESS_COARSE_LOCATION);
-        boolean shouldProvideRationaleUsageAccess =
-                ActivityCompat.shouldShowRequestPermissionRationale(this,
-                        Manifest.permission.PACKAGE_USAGE_STATS);
         m = new Main(getApplicationContext());
 
         // Provide an additional rationale to the user. This would happen if the user denied the
         // request previously, but didn't check the "Don't ask again" checkbox.
 
         // if either location or SMS or contacts permission is not granted; request
-        if (shouldProvideRationaleLocation || shouldProvideRationaleUsageAccess) {
+        if (shouldProvideRationaleLocation) {
             m.updateLog(TAG, "Displaying permission rationale to provide additional context.");
-            showAlertDialog(R.string.permission_rationale);
+            //showAlertDialog(R.string.permission_rationale);
             showSnackbar(R.string.permission_rationale, android.R.string.ok,
                     new View.OnClickListener() {
                         @Override
@@ -281,8 +275,7 @@ public class MainActivity extends AppCompatActivity {
     private void startPermissionRequest() {
         m.calledMethodLog(TAG,"StartPermissionRequest");
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.PACKAGE_USAGE_STATS},
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 REQUEST_PERMISSIONS_REQUEST_CODE);
     }
     // this is the important bit which checks if the permission is granted or not
@@ -297,12 +290,12 @@ public class MainActivity extends AppCompatActivity {
                 // If user interaction was interrupted, the permission request is cancelled and you
                 // receive empty arrays.
                 m.updateLog(TAG, "User interaction was cancelled.");
-            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    /*&& grantResults[1] == PackageManager.PERMISSION_GRANTED*/) {
                 // Permission granted.
             }
-            if (grantResults[0] == PackageManager.PERMISSION_DENIED ||
-                    grantResults[1] == PackageManager.PERMISSION_DENIED) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED /*||
+                    grantResults[1] == PackageManager.PERMISSION_DENIED*/) {
                 // Notify the user via a SnackBar that they have rejected a core permission for the
                 // app, which makes the Activity useless. In a real app, core permissions would
                 // typically be best requested during a welcome-screen flow.
@@ -312,34 +305,24 @@ public class MainActivity extends AppCompatActivity {
                 // again" prompts). Therefore, a user interface affordance is typically implemented
                 // when permissions are denied. Otherwise, your app could appear unresponsive to
                 // touches or interactions which have required permissions.
-                showAlertDialog(R.string.permission_denied_explanation);
-                showSnackbar(R.string.permission_denied_explanation, R.string.settings,
+
+                showSnackbar(R.string.permission_rationale, android.R.string.ok,
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                // Build intent that displays the App settings screen.
-                                Intent intent = new Intent();
-                                intent.setAction(
-                                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                Uri uri = Uri.fromParts("package",
-                                        BuildConfig.APPLICATION_ID, null);
-                                intent.setData(uri);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
+                                // Request permission
+                                startPermissionRequest();
                             }
-                        }
-                );
+                        });
+            }
+            boolean firstTime = preferences.getBoolean(CONSTANTS.APP_OPENED_FIRST_TIME,true);
+            preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            final SharedPreferences.Editor editor = preferences.edit();
+            if (firstTime){
+                showAlertDialog(R.string.string_ok);
+                editor.putBoolean(CONSTANTS.APP_OPENED_FIRST_TIME,false).apply();
             }
         }
-
-
-        /*switch (requestCode) {
-            case REQUEST_PERMISSIONS_REQUEST_CODE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    return;
-            }
-        }*/
     }
     private void startService() {
         Intent serviceIntent = new Intent(getApplicationContext(), BackgroundService.class);
@@ -408,6 +391,6 @@ public class MainActivity extends AppCompatActivity {
                         m.usageAccessSettingsPage();
                     }
                 });
-//        builder.show();
+        builder.show();
     }
 }
