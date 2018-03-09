@@ -1,0 +1,11 @@
+App opened for the first time
+ Ask location permission
+  not granted/Revoked? - showAlertdialog for usage access page,showSnackbar
+  Granted?- showAlertdialog for usage access page
+App opened after first time
+ Location permission not granted? showSnackbar indefinite
+ if a scenario is monitored?
+  showAlertDialog
+ScenarioSelection
+ clicking last ok button
+  show alertDialog for usage data access 
