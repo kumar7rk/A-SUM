@@ -51,7 +51,6 @@
 
     <!--added from asha-->
     <string name="permission_rationale">Location permission is required for core functionality.</string>
-    <string name="permission_denied_explanation">Permission(s) denied, but required for core functionality.</string>
 
     <string name="settings">Settings</string>
 </resources>
