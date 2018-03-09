@@ -2,8 +2,6 @@ package com.geeky7.rohit.location.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,16 +10,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -30,14 +24,11 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-import com.geeky7.rohit.location.BuildConfig;
 import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.ViolationDbHelper;
 import com.geeky7.rohit.location.fragment.MonitoringFragmentCardView;
-import com.geeky7.rohit.location.fragment.ViolationsFragment;
-import com.geeky7.rohit.location.fragment.RuleListFragment;
 import com.geeky7.rohit.location.service.AutomaticService;
 import com.geeky7.rohit.location.service.BackgroundService;
 import com.geeky7.rohit.location.service.ManualService;
@@ -45,7 +36,6 @@ import com.geeky7.rohit.location.service.NotificationService;
 import com.geeky7.rohit.location.service.SemiAutomaticService;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarBadge;
-import com.roughike.bottombar.OnMenuTabClickListener;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -380,14 +370,14 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle("Permission required")
                 .setMessage(R.string.usage_data_access)
                 .setIcon(android.R.drawable.checkbox_on_background)
-                .setPositiveButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.string_ok), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         m.usageAccessSettingsPage();
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                     }
                 });
         builder.show();
