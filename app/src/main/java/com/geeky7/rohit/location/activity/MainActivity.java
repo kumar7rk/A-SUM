@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
             preferences = PreferenceManager.getDefaultSharedPreferences(this);
             final SharedPreferences.Editor editor = preferences.edit();
             if (firstTime){
-                showAlertDialog();
+                m.showUsageDataAccessDialog(this);
                 editor.putBoolean(CONSTANTS.APP_OPENED_FIRST_TIME,false).apply();
             }
         }
@@ -346,15 +346,6 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onPause();
     }
-
-    // Show when a not granted permission is required
-    // no button snackbar
-    private void showSnackbar(final String text) {
-        m.calledMethodLog(TAG,"showSnackbar");
-        Snackbar.make(findViewById(android.R.id.content),text,
-                Snackbar.LENGTH_LONG)
-                .show();
-    }
     // shows a Snackbar indefinitely (for permissions)
     private void showSnackbar(final int mainTextStringId, final int actionStringId,
                               View.OnClickListener listener) {
@@ -363,23 +354,5 @@ public class MainActivity extends AppCompatActivity {
                 getString(mainTextStringId),
                 Snackbar.LENGTH_INDEFINITE)
                 .setAction(getString(actionStringId), listener).show();
-    }
-
-    private void showAlertDialog(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Permission required")
-                .setMessage(R.string.usage_data_access)
-                .setIcon(android.R.drawable.checkbox_on_background)
-                .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        m.usageAccessSettingsPage();
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-        builder.show();
     }
 }
