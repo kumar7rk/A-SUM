@@ -1,9 +1,7 @@
 package com.geeky7.rohit.location.activity;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -58,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_basic);
+        setContentView(R.layout.activity_main);
         floatingActionButton = (FloatingActionButton)findViewById(R.id.fab);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
