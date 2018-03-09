@@ -82,7 +82,7 @@ public class SemiAutomaticRuleCardView extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("Set New Off-Time")
                 .setTitle("Off-time");
-        builder.setPositiveButton(R.string.string_ok, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 

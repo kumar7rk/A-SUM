@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.geeky7.rohit.location.activity.SelectScenarioActivity">
-    <item android:id="@+id/ok" android:title="@string/string_ok"
+    <item android:id="@+id/ok" android:title="@string/ok"
         android:orderInCategory="100" app:showAsAction="always"
         android:icon="@android:drawable/ic_media_play"/>
 </menu>
