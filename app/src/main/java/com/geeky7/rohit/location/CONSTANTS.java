@@ -24,4 +24,6 @@ public class CONSTANTS {
 
     public static final String MAIN_ACTIVITY = "MAIN_ACTIVITY";
 
+    public static final String APP_OPENED_FIRST_TIME = "APP_OPENED_FIRST_TIME";
+
 }
