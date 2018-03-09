@@ -253,7 +253,6 @@ public class MainActivity extends AppCompatActivity {
         // if either location or SMS or contacts permission is not granted; request
         if (shouldProvideRationaleLocation) {
             m.updateLog(TAG, "Displaying permission rationale to provide additional context.");
-            //showAlertDialog(R.string.permission_rationale);
             showSnackbar(R.string.permission_rationale, android.R.string.ok,
                     new View.OnClickListener() {
                         @Override
@@ -319,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
             preferences = PreferenceManager.getDefaultSharedPreferences(this);
             final SharedPreferences.Editor editor = preferences.edit();
             if (firstTime){
-                showAlertDialog(R.string.string_ok);
+                showAlertDialog();
                 editor.putBoolean(CONSTANTS.APP_OPENED_FIRST_TIME,false).apply();
             }
         }
@@ -376,10 +375,10 @@ public class MainActivity extends AppCompatActivity {
                 .setAction(getString(actionStringId), listener).show();
     }
 
-    private void showAlertDialog(final int text){
+    private void showAlertDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Permission required")
-                .setMessage("Please grant Usage Access permission" + " " + getString(text))
+                .setMessage(R.string.usage_data_access)
                 .setIcon(android.R.drawable.checkbox_on_background)
                 .setPositiveButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
