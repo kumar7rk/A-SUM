@@ -85,8 +85,6 @@ public class SelectRuleActivity extends AppCompatActivity {
                 setResult(0);
                 finish();
 
-                if (!m.usageAccessPermission())
-                    m.showUsageDataAccessDialog(SelectRuleActivity.this);
             }
         });
         backB.setOnClickListener(new View.OnClickListener() {
