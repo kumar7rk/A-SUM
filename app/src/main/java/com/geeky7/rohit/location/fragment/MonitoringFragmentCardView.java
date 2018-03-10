@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.geeky7.rohit.location.CONSTANTS;
+import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.MonitoringDataObject;
 import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
+import com.geeky7.rohit.location.activity.MainActivity;
 import com.geeky7.rohit.location.adapter.MonitoringRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -30,6 +32,8 @@ public class MonitoringFragmentCardView extends Fragment {
             detected_movieThestre,detected_bedAndDark,detected_walking;
 
     SharedPreferences preferences;
+
+    Main m;
     public MonitoringFragmentCardView() {
     }
 
@@ -37,6 +41,7 @@ public class MonitoringFragmentCardView extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        m = new Main(MyApplication.getAppContext());
     }
 
     @Override
@@ -76,6 +81,7 @@ public class MonitoringFragmentCardView extends Fragment {
                         "Recent Detection: "+ detectionTime);
                 results.add(index, obj);
             }
+            if (!m.usageAccessPermission()) m.showUsageDataAccessDialog(getActivity());
         }
         else{
             MonitoringDataObject obj = new MonitoringDataObject("No scenario monitored",
