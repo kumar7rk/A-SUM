@@ -17,6 +17,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -253,7 +254,12 @@ public class Main {
     }
 
     public void showUsageDataAccessDialog(Activity activity){
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(activity, android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(activity);
+        }
         builder.setTitle("Permission required")
                 .setMessage(R.string.usage_data_access)
                 .setIcon(R.drawable.permission_warning)
