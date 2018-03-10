@@ -1,6 +1,8 @@
 package com.geeky7.rohit.location.activity;
 
 import android.Manifest;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -27,6 +30,8 @@ import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.ViolationDbHelper;
 import com.geeky7.rohit.location.fragment.MonitoringFragmentCardView;
+import com.geeky7.rohit.location.fragment.RuleListFragment;
+import com.geeky7.rohit.location.fragment.ViolationsFragment;
 import com.geeky7.rohit.location.service.AutomaticService;
 import com.geeky7.rohit.location.service.BackgroundService;
 import com.geeky7.rohit.location.service.ManualService;
@@ -34,6 +39,7 @@ import com.geeky7.rohit.location.service.NotificationService;
 import com.geeky7.rohit.location.service.SemiAutomaticService;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarBadge;
+import com.roughike.bottombar.OnMenuTabClickListener;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -83,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (!running && gps && mainSwitch) startService();
 
-        /*mBottomBar = BottomBar.attach(this, savedInstanceState);
+        mBottomBar = BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.main);
         updateBadge();
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
@@ -136,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         });
         mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
         mBottomBar.mapColorForTab(1, "#fff000");
-        mBottomBar.mapColorForTab(2, "#fff000");*/
+        mBottomBar.mapColorForTab(2, "#fff000");
 
         //m.openLocationSettings(manager);
     }
@@ -348,7 +354,8 @@ public class MainActivity extends AppCompatActivity {
     private void showSnackbar(final int mainTextStringId, final int actionStringId,
                               View.OnClickListener listener) {
         m.calledMethodLog(TAG,"showSnackbar");
-        Snackbar.make(findViewById(android.R.id.content),
+//        Snackbar.make(findViewById(android.R.id.content),
+        Snackbar.make(findViewById(R.id.coordinator),
                 getString(mainTextStringId),
                 Snackbar.LENGTH_INDEFINITE)
                 .setAction(getString(actionStringId), listener).show();
