@@ -256,7 +256,7 @@ public class Main {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Permission required")
                 .setMessage(R.string.usage_data_access)
-                .setIcon(android.R.drawable.checkbox_on_background)
+                .setIcon(R.drawable.permission_warning)
                 .setPositiveButton(MyApplication.getAppContext().getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         usageAccessSettingsPage();
