@@ -15,7 +15,6 @@ import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.MonitoringDataObject;
 import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
-import com.geeky7.rohit.location.activity.MainActivity;
 import com.geeky7.rohit.location.adapter.MonitoringRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -24,13 +23,11 @@ public class MonitoringFragmentCardView extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private static String LOG_TAG = "MonitoringFragment";
+    private static String TAG = "MonitoringFragment";
     ArrayList<String> list = new ArrayList<String>();
     ArrayList<String> detectedTimeList = new ArrayList<String>();
     String detected_restaurant,detected_religiousPlace,
-            detected_movieThestre,detected_bedAndDark,detected_walking;
-
+            detected_movieTheatre,detected_bedAndDark,detected_walking;
     SharedPreferences preferences;
 
     Main m;
@@ -50,7 +47,7 @@ public class MonitoringFragmentCardView extends Fragment {
         View v = inflater.inflate(R.layout.monitoring_recycler_view, container, false);
         mRecyclerView = (RecyclerView)v.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MyApplication.getAppContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new MonitoringRecyclerViewAdapter(getDataSet());
         mRecyclerView.setAdapter(mAdapter);
@@ -108,8 +105,8 @@ public class MonitoringFragmentCardView extends Fragment {
         }
         if (movie_theatre){
             list.add(getResources().getString(R.string.movie_theatre));
-            detected_movieThestre = preferences.getString(CONSTANTS.DETECTED_MOVIETHEATRE_TIME,detected_movieThestre);
-            detectedTimeList.add(detected_movieThestre);
+            detected_movieTheatre = preferences.getString(CONSTANTS.DETECTED_MOVIETHEATRE_TIME, detected_movieTheatre);
+            detectedTimeList.add(detected_movieTheatre);
         }
         if (bed_dark){
             list.add(getResources().getString(R.string.bed_dark));
@@ -121,8 +118,5 @@ public class MonitoringFragmentCardView extends Fragment {
             detected_walking = preferences.getString(CONSTANTS.DETECTED_WALKING_TIME,detected_walking);
             detectedTimeList.add(detected_walking);
         }
-
-        /*if (!(restaurant || religious_place || movie_theatre || bed_dark || walking))
-            list.add("No scenario to monitor. Click + symbol to add one");*/
     }
 }
