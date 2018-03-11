@@ -61,13 +61,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate( Bundle savedInstanceState) {
+        m = new Main(this);
+        m.calledMethodLog(TAG,m.getMethodName(2));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         floatingActionButton = (FloatingActionButton)findViewById(R.id.fab);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        m = new Main(this);
-
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 
         // set onClickListener for floating action button
@@ -148,10 +148,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateBadge() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         int redColor = Color.parseColor("#FF0000");
         int scenariosSelected = 0;
         int violations = 0;
-        m = new Main(this);
         ViolationDbHelper violationDbHelper = new ViolationDbHelper(getApplicationContext());
         m.countSelectedScenarioForBadge();
 
@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         switch (item.getItemId()) {
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
@@ -178,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         getMenuInflater().inflate(R.menu.main_menu, menu);
         toggleService = menu.findItem(R.id.main_switch);
         View view = MenuItemCompat.getActionView(toggleService);
@@ -219,14 +221,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void editorMainSwitch() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(CONSTANTS.MAIN_SWITCH, aSwitch.isChecked());
         editor.apply();
     }
 
     private boolean checkPermissions() {
-        m.calledMethodLog(TAG,"checkPermission");
-
+        m.calledMethodLog(TAG,m.getMethodName(2));
         int locationPermission = ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_COARSE_LOCATION);
 
@@ -234,8 +236,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestPermissions() {
-        m.calledMethodLog(TAG,"requestPermission");
-
+        m.calledMethodLog(TAG,m.getMethodName(2));
         boolean shouldProvideRationaleLocation =
                 ActivityCompat.shouldShowRequestPermissionRationale(this,
                         Manifest.permission.ACCESS_COARSE_LOCATION);
@@ -266,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
     // This method is called the first time the app is installed
     // requests all the permissions stated here
     private void startPermissionRequest() {
-        m.calledMethodLog(TAG,"StartPermissionRequest");
+        m.calledMethodLog(TAG,m.getMethodName(2));
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 REQUEST_PERMISSIONS_REQUEST_CODE);
@@ -278,6 +279,7 @@ public class MainActivity extends AppCompatActivity {
     // and can therefore cause crash
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         if (requestCode == REQUEST_PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length <= 0) {
                 // If user interaction was interrupted, the permission request is cancelled and you
@@ -318,27 +320,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void startService() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         Intent serviceIntent = new Intent(getApplicationContext(), BackgroundService.class);
         startService(serviceIntent);
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         super.onSaveInstanceState(outState);
         mBottomBar.onSaveInstanceState(outState);
     }
 
     @Override
     protected void onDestroy() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         super.onDestroy();
     }
 
     @Override
     protected void onResume() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         super.onResume();
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode==0){
             getFragmentManager().beginTransaction().replace(android.R.id.content,new MonitoringFragmentCardView())
@@ -347,14 +354,14 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     protected void onPause() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
         super.onPause();
     }
     // shows a Snackbar indefinitely (for permissions)
     private void showSnackbar(final int mainTextStringId, final int actionStringId,
                               View.OnClickListener listener) {
-        m.calledMethodLog(TAG,"showSnackbar");
-//        Snackbar.make(findViewById(android.R.id.content),
+        m.calledMethodLog(TAG,m.getMethodName(2));
         Snackbar.make(findViewById(R.id.coordinator),
                 getString(mainTextStringId),
                 Snackbar.LENGTH_INDEFINITE)
