@@ -78,7 +78,6 @@ public class MonitoringFragmentCardView extends Fragment {
                         "Recent Detection: "+ detectionTime);
                 results.add(index, obj);
             }
-            if (!m.usageAccessPermission()) m.showUsageDataAccessDialog(getActivity());
         }
         else{
             MonitoringDataObject obj = new MonitoringDataObject("No scenario monitored",
