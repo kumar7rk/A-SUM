@@ -46,7 +46,7 @@ public class Main {
         this.mContext = mContext;
     }
 
-    public static String getMethodName(final int depth) {
+    public String getMethodName(final int depth) {
         final StackTraceElement[] ste = Thread.currentThread().getStackTrace();
         return ste[1 + depth].getMethodName();
     }
