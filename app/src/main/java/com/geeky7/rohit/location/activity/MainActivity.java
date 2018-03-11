@@ -68,6 +68,17 @@ public class MainActivity extends AppCompatActivity {
         floatingActionButton = (FloatingActionButton)findViewById(R.id.fab);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        boolean restaurant = preferences.getBoolean(getResources().getString(R.string.restaurant), false);
+        boolean religious_place = preferences.getBoolean(getResources().getString(R.string.religious_place), false);
+        boolean movie_theatre = preferences.getBoolean(getResources().getString(R.string.movie_theatre), false);
+        boolean bed_dark = preferences.getBoolean(getResources().getString(R.string.bed_dark), false);
+        boolean walking = preferences.getBoolean(getResources().getString(R.string.walking), false);
+        boolean scenario = restaurant || religious_place || movie_theatre || bed_dark || walking;
+
+        if (scenario&& !m.usageAccessPermission()) m.showUsageDataAccessDialog(MainActivity.this);
+
+
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 
         // set onClickListener for floating action button
