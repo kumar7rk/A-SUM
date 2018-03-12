@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
         // check location permission
         if (!checkPermissions()) requestPermissions();
 
-
         if (!running && gps && mainSwitch) startService();
 
         mBottomBar = BottomBar.attach(this, savedInstanceState);
@@ -112,14 +111,17 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bb_menu_monitoring:
                         fragment = new MonitoringFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
+                        getActionBar().setTitle("Monitoring");
                         break;
                     case R.id.bb_menu_rules:
                         fragment = new RuleListFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
+                        getActionBar().setTitle("Rules");
                         break;
                     case R.id.bb_menu_violation:
                         fragment = new ViolationsFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
+                        getActionBar().setTitle("Violations");
                         break;
                     default:
                         fragmentTransaction.remove(fragment);
