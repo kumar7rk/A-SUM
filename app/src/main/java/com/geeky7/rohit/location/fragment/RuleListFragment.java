@@ -41,7 +41,7 @@ public class RuleListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position==0)
-                    getFragmentManager().beginTransaction().replace(android.R.id.content,new AutomaticRuleCardView()).commit();
+                    getFragmentManager().beginTransaction().replace(android.R.id.content,new AutomaticRuleFragment()).commit();
                 if (position==1)
                     getFragmentManager().beginTransaction().replace(android.R.id.content, new SemiAutomaticRuleFragment()).commit();
                 if (position==2)
