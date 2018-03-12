@@ -134,7 +134,7 @@ public class InstalledAppsDialog extends DialogFragment {
             ApplicationAdapter a = new ApplicationAdapter(MyApplication.getAppContext(),0,applist);
                         a.commit();
 
-            getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualRuleCardView()).commit();
+            getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualRuleFragment()).commit();
 //                        Main.showToast(getContext(),"Saved");
                     }
         });
@@ -142,7 +142,7 @@ public class InstalledAppsDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 //                        Main.showToast(getContext(),"Cancelled");
-                        getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualRuleCardView())
+                        getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualRuleFragment())
                                 .commit();
                     }
                 });

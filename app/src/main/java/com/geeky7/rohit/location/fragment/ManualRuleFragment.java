@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ManualRuleCardView extends Fragment {
+public class ManualRuleFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter<ManualRecyclerViewAdapter.ManualDataObjectHolder> mAdapter;
@@ -44,7 +44,7 @@ public class ManualRuleCardView extends Fragment {
     Drawable[] drawables = new Drawable[11];
     SharedPreferences preferences;
     LinearLayout layout,layout1;
-    public ManualRuleCardView() {
+    public ManualRuleFragment() {
     }
 
     @Override
