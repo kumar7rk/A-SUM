@@ -29,7 +29,7 @@ import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.ViolationDbHelper;
-import com.geeky7.rohit.location.fragment.MonitoringFragmentCardView;
+import com.geeky7.rohit.location.fragment.MonitoringFragment;
 import com.geeky7.rohit.location.fragment.RuleListFragment;
 import com.geeky7.rohit.location.fragment.ViolationsFragment;
 import com.geeky7.rohit.location.service.AutomaticService;
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 switch (menuItemId) {
                     case R.id.bb_menu_monitoring:
-                        fragment = new MonitoringFragmentCardView();
+                        fragment = new MonitoringFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
                     case R.id.bb_menu_rules:
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (menuItemId) {
                     case R.id.bb_menu_monitoring:
-                        fragment = new MonitoringFragmentCardView();
+                        fragment = new MonitoringFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
                         break;
 
@@ -359,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
         m.calledMethodLog(TAG,m.getMethodName(2));
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode==0){
-            getFragmentManager().beginTransaction().replace(android.R.id.content,new MonitoringFragmentCardView())
+            getFragmentManager().beginTransaction().replace(android.R.id.content,new MonitoringFragment())
                     .commit();
         }
     }

@@ -19,7 +19,7 @@ import com.geeky7.rohit.location.adapter.MonitoringRecyclerViewAdapter;
 
 import java.util.ArrayList;
 
-public class MonitoringFragmentCardView extends Fragment {
+public class MonitoringFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -31,7 +31,7 @@ public class MonitoringFragmentCardView extends Fragment {
     SharedPreferences preferences;
 
     Main m;
-    public MonitoringFragmentCardView() {
+    public MonitoringFragment() {
     }
 
     @Override
