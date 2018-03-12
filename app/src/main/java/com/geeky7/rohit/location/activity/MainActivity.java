@@ -380,4 +380,8 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.LENGTH_INDEFINITE)
                 .setAction(getString(actionStringId), listener).show();
     }
+
+    public void setActionBarTitle(String title){
+        getActionBar().setTitle(title);
+    }
 }

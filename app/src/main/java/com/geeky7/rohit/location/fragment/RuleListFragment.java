@@ -40,14 +40,23 @@ public class RuleListFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position==0)
+                if (position==0){
                     getFragmentManager().beginTransaction().replace(android.R.id.content,new AutomaticRuleFragment()).commit();
-                if (position==1)
+                    getActivity().getActionBar().setTitle("Automatic Rule");
+                }
+                if (position==1){
                     getFragmentManager().beginTransaction().replace(android.R.id.content, new SemiAutomaticRuleFragment()).commit();
-                if (position==2)
+                    getActivity().getActionBar().setTitle("SemiAutomatic Rule");
+                }
+                if (position==2){
                     getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualRuleFragment()).commit();
-                if (position==3)
+                    getActivity().getActionBar().setTitle("Manual Rule");
+                }
+                if (position==3){
                     getFragmentManager().beginTransaction().replace(android.R.id.content,new NotificationFragment()).commit();
+                    getActivity().getActionBar().setTitle("Notification Rule");
+
+                }
             }
         });
     }
