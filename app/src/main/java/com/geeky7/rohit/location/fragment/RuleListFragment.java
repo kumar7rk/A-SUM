@@ -42,22 +42,25 @@ public class RuleListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position==0){
                     getFragmentManager().beginTransaction().replace(android.R.id.content,new AutomaticRuleFragment()).commit();
-                    getActivity().getActionBar().setTitle("Automatic Rule");
+                    setActionBarTitle("Automatic Rule");
                 }
                 if (position==1){
                     getFragmentManager().beginTransaction().replace(android.R.id.content, new SemiAutomaticRuleFragment()).commit();
-                    getActivity().getActionBar().setTitle("SemiAutomatic Rule");
+                    setActionBarTitle("SemiAutomatic Rule");
                 }
                 if (position==2){
                     getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualRuleFragment()).commit();
-                    getActivity().getActionBar().setTitle("Manual Rule");
+                    setActionBarTitle("Manual Rule");
                 }
                 if (position==3){
                     getFragmentManager().beginTransaction().replace(android.R.id.content,new NotificationFragment()).commit();
-                    getActivity().getActionBar().setTitle("Notification Rule");
-
+                    setActionBarTitle("Notification  Rule");
                 }
             }
         });
+    }
+
+    private void setActionBarTitle(String title){
+        getActivity().getActionBar().setTitle(title);
     }
 }
