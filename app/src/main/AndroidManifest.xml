@@ -37,20 +37,20 @@
         <activity
             android:name=".activity.SelectScenarioActivity"
             android:excludeFromRecents="true"
-            android:label="@string/action_configure"
+            android:label="@string/title_configure"
             android:parentActivityName=".activity.MainActivity" >
         </activity>
 
         <activity
             android:name=".activity.SelectRuleActivity"
             android:excludeFromRecents="true"
-            android:label="@string/title_activity_select_rule"
+            android:label="@string/title_select_rule"
             android:parentActivityName=".activity.SelectScenarioActivity" >
         </activity>
 
         <activity
             android:name=".activity.SettingsActivity"
-            android:label="@string/title_activity_settings"
+            android:label="@string/action_settings"
             android:parentActivityName=".activity.MainActivity">
         </activity>
 
