@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (scenario&& !m.usageAccessPermission()) m.showUsageDataAccessDialog(MainActivity.this);
 
-
         overridePendingTransition(R.anim.fadein, R.anim.fadeout);
 
         // set onClickListener for floating action button
@@ -111,17 +110,17 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bb_menu_monitoring:
                         fragment = new MonitoringFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
-                        getActionBar().setTitle("Monitoring");
+                        setActionBarTitle("Monitoring");
                         break;
                     case R.id.bb_menu_rules:
                         fragment = new RuleListFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
-                        getActionBar().setTitle("Rules");
+                        setActionBarTitle("Rules");
                         break;
                     case R.id.bb_menu_violation:
                         fragment = new ViolationsFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
-                        getActionBar().setTitle("Violations");
+                        setActionBarTitle("Violations");
                         break;
                     default:
                         fragmentTransaction.remove(fragment);
