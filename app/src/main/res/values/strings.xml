@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="lorem_ipsum" translatable="false">SomeLongText</string>
 
-    <string name="title_activity_custom_color" translatable="false">CustomColorActivity</string>
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
-    <string name="hello_world" translatable="false">Hello world!</string>
+    <string name="app_name">A-SUM</string>
+    <string name="settings">Settings</string>
+
+    <!--ActionBar-->
     <string name="action_settings" translatable="false">Settings</string>
+    <string name="action_tutorial">Tutorial</string>
+    <string name="action_help">Help</string>
+    <string name="action_about">About</string>
 
+    <!--Title-->
+    <string name="title_configure" translatable="false">Configure</string>
+    <string name="title_select_rule" translatable="false">Select Rule</string>
+
+    <!--BottomBar-->
     <string name="monitoring" translatable="false">Monitoring</string>
     <string name="rules" translatable="false">Rule</string>
     <string name="violations" translatable="false">Violations</string>
 
+    <!--Scenarios-->
     <string name="restaurant" translatable="false">Restaurant</string>
     <string name="religious_place" translatable="false">Religious Place</string>
     <string name="movie_theatre" translatable="false">Movie Theatre</string>
     <string name="bed_dark" translatable="false">Bed &#38;&#38; Dark</string>
     <string name="walking" translatable="false">Walking</string>
 
-    <string name="action_configure" translatable="false">Configure</string>
-    <string name="title_activity_configure" translatable="false">Configure</string>
-    <string name="title_activity_select_rule" translatable="false">Select Rule</string>
-
+    <!--Dialog-->
     <string name="ok" translatable="false">Ok</string>
     <string name="back" translatable="false">Back</string>
     <string name="cancel" translatable="false">Cancel</string>
@@ -28,31 +34,33 @@
     <string name="edit" translatable="false">Edit</string>
     <string name="save" translatable="false">Save</string>
 
+    <!--Rules-->
     <string name="automatic" translatable="false">Automatic</string>
     <string name="semi_automatic" translatable="false">SemiAutomatic</string>
     <string name="manual">Manual</string>
+    <string name="notification">Notification</string>
 
+    <!--Service-->
     <string name="stopService" translatable="false">StopService</string>
     <string name="startService" translatable="false">StartService</string>
 
+    <!--UnGrouped-->
     <string name="device_admin_explanation" translatable="false">For experimentation purposes only</string>
-    <string name="a_switch">ASwitch</string>
-    <string name="notification">Notification</string>
-    <string name="action_tutorial">Tutorial</string>
-    <string name="action_help">Help</string>
-    <string name="action_about">About</string>
-    <string name="coming_soon">Coming Soon!</string>
     <string name="sound">Sound</string>
+
+    <!--Revolutionary-->
+    <string name="coming_soon">Coming Soon!</string>
+
+
+    <!--Preferences-->
     <string name="pref_title_sound">Sound</string>
     <string name="pref_title_quiet_hours">Quiet Hours</string>
     <string name="pref_title_show_badge">Show Badges</string>
     <string name="pref_title_stop_time">Stop Time</string>
     <string name="pref_title_start_time">Start Time</string>
 
-    <!--new-->
+    <!--Permission-->
     <string name="usage_data_access">Please grant Usage Data Access permission for the app to function properly</string>
-    <!--added from asha-->
     <string name="permission_rationale">Location permission is required for core functionality.</string>
 
-    <string name="settings">Settings</string>
 </resources>
