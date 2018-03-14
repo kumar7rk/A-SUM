@@ -110,17 +110,17 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bb_menu_monitoring:
                         fragment = new MonitoringFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
-                        setActionBarTitle("Monitoring");
+                        setActionBarTitle(getResources().getString(R.string.monitoring));
                         break;
                     case R.id.bb_menu_rules:
                         fragment = new RuleListFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
-                        setActionBarTitle("Rules");
+                        setActionBarTitle(getResources().getString(R.string.rules));
                         break;
                     case R.id.bb_menu_violation:
                         fragment = new ViolationsFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
-                        setActionBarTitle("Violations");
+                        setActionBarTitle(getResources().getString(R.string.violations));
                         break;
                     default:
                         fragmentTransaction.remove(fragment);
@@ -152,9 +152,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
+        /*mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
         mBottomBar.mapColorForTab(1, "#fff000");
-        mBottomBar.mapColorForTab(2, "#fff000");
+        mBottomBar.mapColorForTab(2, "#fff000");*/
 
         //m.openLocationSettings(manager);
     }
@@ -381,6 +381,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setActionBarTitle(String title){
-        getActionBar().setTitle(title);
+        getSupportActionBar().setTitle(title);
     }
 }

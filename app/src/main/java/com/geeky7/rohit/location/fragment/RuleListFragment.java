@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.geeky7.rohit.location.R;
+import com.geeky7.rohit.location.activity.MainActivity;
 
 import java.util.ArrayList;
 
@@ -61,6 +62,6 @@ public class RuleListFragment extends Fragment {
     }
 
     private void setActionBarTitle(String title){
-        getActivity().getActionBar().setTitle(title);
+        ((MainActivity) getActivity()).setActionBarTitle(title);
     }
 }
