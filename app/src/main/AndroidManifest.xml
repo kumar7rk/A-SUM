@@ -51,7 +51,8 @@
         <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/action_settings"
-            android:parentActivityName=".activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
         </activity>
 
         <service
