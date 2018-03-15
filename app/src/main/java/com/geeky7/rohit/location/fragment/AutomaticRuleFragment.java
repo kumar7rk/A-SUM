@@ -9,6 +9,8 @@ import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,6 +21,7 @@ import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
+import com.geeky7.rohit.location.activity.MainActivity;
 import com.geeky7.rohit.location.adapter.AutomaticRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -44,6 +47,21 @@ public class AutomaticRuleFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        setbackArrow();
+    }
+
+    private void setbackArrow() {
+        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
