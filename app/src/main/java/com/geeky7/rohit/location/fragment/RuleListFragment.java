@@ -25,7 +25,6 @@ public class RuleListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list_of_rule, container, false);
-//        listView = (ListView)v.findViewById(android.R.id.appList);
         listView = (ListView)v.findViewById(R.id.list);
         loadItems();
         return v;
@@ -35,7 +34,7 @@ public class RuleListFragment extends Fragment {
         list.add("SemiAutomatic");
         list.add("Manual");
         list.add("Notification");
-        adapter = new ArrayAdapter<String>(getActivity(),
+        adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, list);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -62,7 +61,7 @@ public class RuleListFragment extends Fragment {
     }
 
     private void addFragment(Fragment fragment) {
-        getFragmentManager().beginTransaction().replace(android.R.id.content,fragment).addToBackStack(fragment+"").commit();
+        getFragmentManager().beginTransaction().replace(android.R.id.content,fragment).addToBackStack(null).commit();
     }
 
     private void setActionBarTitle(String title){
