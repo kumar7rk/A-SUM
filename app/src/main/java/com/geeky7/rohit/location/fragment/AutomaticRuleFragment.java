@@ -51,7 +51,7 @@ public class AutomaticRuleFragment extends Fragment {
     }
 
     private void setbackArrow() {
-        ((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
