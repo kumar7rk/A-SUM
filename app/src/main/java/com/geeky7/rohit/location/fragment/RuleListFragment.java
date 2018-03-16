@@ -30,10 +30,10 @@ public class RuleListFragment extends Fragment {
         return v;
     }
     public void loadItems() {
-        list.add("Automatic");
-        list.add("SemiAutomatic");
-        list.add("Manual");
-        list.add("Notification");
+        list.add(getString(R.string.automatic));
+        list.add(getString(R.string.semi_automatic));
+        list.add(getString(R.string.manual));
+        list.add(getString(R.string.notification));
         adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, list);
         listView.setAdapter(adapter);
@@ -54,7 +54,7 @@ public class RuleListFragment extends Fragment {
                 }
                 if (position==3){
                     addFragment(new NotificationFragment());
-                    setActionBarTitle("Notification  Rule");
+                    setActionBarTitle("Notification Rule");
                 }
             }
         });
