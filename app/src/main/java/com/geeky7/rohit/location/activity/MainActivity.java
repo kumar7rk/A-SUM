@@ -1,9 +1,11 @@
 package com.geeky7.rohit.location.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -27,6 +29,7 @@ import android.widget.Switch;
 
 import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
+import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.ViolationDbHelper;
 import com.geeky7.rohit.location.fragment.MonitoringFragment;
@@ -156,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         mBottomBar.mapColorForTab(1, "#fff000");
         mBottomBar.mapColorForTab(2, "#fff000");*/
 
-        //m.openLocationSettings(manager);
+        isGPSOn();
     }
 
     public void updateBadge() {
@@ -330,6 +333,29 @@ public class MainActivity extends AppCompatActivity {
                 editor.putBoolean(CONSTANTS.APP_OPENED_FIRST_TIME,false).apply();
             }
         }
+    }
+    private void isGPSOn(){
+
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean gps = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_Alert);
+        builder.setTitle("Turn GPS on")
+                .setMessage("This app only works if the GPS is turned on")
+                .setIcon(R.drawable.current_location)
+                .setPositiveButton(MyApplication.getAppContext().getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        m.openLocationSettings(manager);
+                    }
+                })
+                .setNegativeButton(MyApplication.getAppContext().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        if (!gps)
+        builder.show();
     }
     private void startService() {
         m.calledMethodLog(TAG,m.getMethodName(2));
