@@ -23,7 +23,7 @@ import com.geeky7.rohit.location.Main;
 
 public class NotificationTextFragment extends DialogFragment {
     SharedPreferences preferences;
-    EditText keyword;
+    EditText text_et;
     AlertDialog.Builder alertDialog;
     Main m;
 
@@ -49,15 +49,15 @@ public class NotificationTextFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.activity_notification_text, null);
 
-        keyword= (EditText) view.findViewById(R.id.notification_text_et);
+        text_et= (EditText) view.findViewById(R.id.notification_text_et);
 
         //putting the caret on the last of the keyword for convenience
-        keyword.setSelection(keyword.getText().length());
+        text_et.setSelection(text_et.getText().length());
 
         // creating dialog with buttons
         //on click save button save the keyword in the sharedPreferences
         alertDialog = new AlertDialog.Builder(getActivity())
-        .setTitle("Edit Keyword")
+        .setTitle("Customise Notification Text")
         .setView(inflater.inflate(R.layout.activity_notification_text, null))
                 // save button, onClick updates the keyword in sharedPreference
                 .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
@@ -91,10 +91,10 @@ public class NotificationTextFragment extends DialogFragment {
         m.calledMethodLog(TAG,"onResume");
 
         super.onResume();
-        keyword = (EditText) getDialog().findViewById(R.id.notification_text_et);
+        text_et = (EditText) getDialog().findViewById(R.id.notification_text_et);
         // get the stored keyword
-        keyword.setText(preferences.getString(CONSTANTS.NOTIFICATION_TEXT,""));
+        text_et.setText(preferences.getString(CONSTANTS.NOTIFICATION_TEXT,""));
         // move the caret to the last of the text; front by default
-        keyword.setSelection(keyword.getText().length());
+        text_et.setSelection(text_et.getText().length());
     }
 }
