@@ -29,7 +29,12 @@ public class NotificationFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Main.showToast(getResources().getString(R.string.coming_soon));
+                if (position==1){
+                    getFragmentManager().beginTransaction().replace(android.R.id.content,new NotificationTextFragment());
+                }
+
+
+//                Main.showToast(getResources().getString(R.string.coming_soon));
             }
         });
         return v;
