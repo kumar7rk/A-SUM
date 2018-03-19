@@ -63,7 +63,7 @@ public class NotificationTextFragment extends DialogFragment {
                 .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        String keywordS = keyword.getText().toString().trim();
+                        String keywordS = text_et.getText().toString().trim();
                         editor.putString(CONSTANTS.NOTIFICATION_TEXT,keywordS);
                         editor.apply();
                     }
