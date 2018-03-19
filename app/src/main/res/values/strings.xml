@@ -34,7 +34,7 @@
     <string name="edit" translatable="false">Edit</string>
     <string name="save" translatable="false">Save</string>
     <string name="close" translatable="false">Close</string>
-    <string name="default" translatable="false">Default</string>
+    <string name="reset" translatable="false">Reset</string>
 
     <!--Rules-->
     <string name="automatic" translatable="false">Automatic</string>
