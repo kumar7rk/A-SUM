@@ -21,6 +21,9 @@ public class NotificationFragment extends Fragment {
     ListView listView;
     private ArrayAdapter<String> adapter;
     ArrayList<String> list = new ArrayList<String>();
+
+    public NotificationTextFragment notificationTextFragment= new NotificationTextFragment();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_notification_detail, container, false);
@@ -30,7 +33,9 @@ public class NotificationFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position==1){
-                    getFragmentManager().beginTransaction().replace(android.R.id.content,new NotificationTextFragment());
+                    if (!notificationTextFragment.isAdded())
+                        notificationTextFragment.show(getFragmentManager(),"Notification Text");
+                    //getFragmentManager().beginTransaction().replace(android.R.id.content,new NotificationTextFragment());
                 }
 
 
