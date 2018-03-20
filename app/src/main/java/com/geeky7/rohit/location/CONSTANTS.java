@@ -27,6 +27,7 @@ public class CONSTANTS {
     public static final String APP_OPENED_FIRST_TIME = "APP_OPENED_FIRST_TIME";
 
     public static final String NOTIFICATION_TEXT = "NOTIFICATION_TEXT";
+    public static final String NOTIFICATION_TEXT_DEFAULT = MyApplication.getAppContext().getString(R.string.notification_text_default);
 
 
 }
