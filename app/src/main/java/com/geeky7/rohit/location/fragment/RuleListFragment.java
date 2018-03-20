@@ -61,7 +61,7 @@ public class RuleListFragment extends Fragment {
     }
 
     private void addFragment(Fragment fragment) {
-        getFragmentManager().beginTransaction().replace(android.R.id.content,fragment).addToBackStack(null).commit();
+        getFragmentManager().beginTransaction().replace(android.R.id.content,fragment)/*.addToBackStack(null)*/.commit();
     }
 
     private void setActionBarTitle(String title){
