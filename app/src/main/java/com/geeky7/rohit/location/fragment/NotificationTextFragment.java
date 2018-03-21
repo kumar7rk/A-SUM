@@ -8,9 +8,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -23,7 +21,7 @@ import com.geeky7.rohit.location.Main;
 
 public class NotificationTextFragment extends DialogFragment {
     SharedPreferences preferences;
-    EditText text_et;
+    EditText notification_text_et;
     AlertDialog.Builder alertDialog;
     Main m;
 
@@ -49,10 +47,14 @@ public class NotificationTextFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.activity_notification_text, null);
 
-        text_et= (EditText) view.findViewById(R.id.notification_text_et);
+        notification_text_et = (EditText) view.findViewById(R.id.notification_text_et);
 
         //putting the caret on the last of the keyword for convenience
-        text_et.setSelection(text_et.getText().length());
+        notification_text_et.setSelection(notification_text_et.getText().length());
+
+        String text = notification_text_et.getText().toString();
+        if (text.equals(""))
+            notification_text_et.setText(CONSTANTS.NOTIFICATION_TEXT_DEFAULT);
 
         // creating dialog with buttons
         //on click save button save the keyword in the sharedPreferences
@@ -63,8 +65,8 @@ public class NotificationTextFragment extends DialogFragment {
                 .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        String keywordS = text_et.getText().toString().trim();
-                        editor.putString(CONSTANTS.NOTIFICATION_TEXT,keywordS);
+                        String notificationTextS = notification_text_et.getText().toString().trim();
+                        editor.putString(CONSTANTS.NOTIFICATION_TEXT,notificationTextS);
                         editor.apply();
                     }
                 })
@@ -79,6 +81,8 @@ public class NotificationTextFragment extends DialogFragment {
         .setNeutralButton(R.string.reset, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                notification_text_et.setText(CONSTANTS.NOTIFICATION_TEXT_DEFAULT);
+                return true;
             }
         });
         return alertDialog.create();
@@ -91,10 +95,10 @@ public class NotificationTextFragment extends DialogFragment {
         m.calledMethodLog(TAG,"onResume");
 
         super.onResume();
-        text_et = (EditText) getDialog().findViewById(R.id.notification_text_et);
+        notification_text_et = (EditText) getDialog().findViewById(R.id.notification_text_et);
         // get the stored keyword
-        text_et.setText(preferences.getString(CONSTANTS.NOTIFICATION_TEXT,""));
+        notification_text_et.setText(preferences.getString(CONSTANTS.NOTIFICATION_TEXT,""));
         // move the caret to the last of the text; front by default
-        text_et.setSelection(text_et.getText().length());
+        notification_text_et.setSelection(notification_text_et.getText().length());
     }
 }
