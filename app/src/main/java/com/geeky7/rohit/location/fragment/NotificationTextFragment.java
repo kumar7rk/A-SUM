@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.geeky7.rohit.location.CONSTANTS;
+import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
 import com.geeky7.rohit.location.Main;
 
@@ -102,12 +103,25 @@ public class NotificationTextFragment extends DialogFragment {
             resetB.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        AlertDialog.Builder builder;
+                        builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Material_Dialog_Alert);
+                        builder.setTitle("Reset Text to Default")
+                                .setIcon(R.drawable.permission_warning)
+                                .setPositiveButton(MyApplication.getAppContext().getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        notification_text_et.setText(CONSTANTS.NOTIFICATION_TEXT_DEFAULT);
+                                        notification_text_et.setSelection(notification_text_et.getText().length());
+                                    }
+                                })
+                                .setNegativeButton(MyApplication.getAppContext().getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                            builder.show();
                         m.updateLog(TAG,"Resetting everything in 3..2...1. Just kidding. Just resetting the notification text to default");
-                        notification_text_et.setText(CONSTANTS.NOTIFICATION_TEXT_DEFAULT);
-                        notification_text_et.setSelection(notification_text_et.getText().length());
                     }
             });
-
         }
         notification_text_et = (EditText) getDialog().findViewById(R.id.notification_text_et);
         // get the stored notification text
