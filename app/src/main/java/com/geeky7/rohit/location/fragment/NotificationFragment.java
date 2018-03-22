@@ -37,9 +37,6 @@ public class NotificationFragment extends Fragment {
                         notificationTextFragment.show(getFragmentManager(),"Notification Text");
                     //getFragmentManager().beginTransaction().replace(android.R.id.content,new NotificationTextFragment());
                 }
-
-
-//                Main.showToast(getResources().getString(R.string.coming_soon));
             }
         });
         return v;
