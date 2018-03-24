@@ -19,7 +19,6 @@ import java.util.ArrayList;
  */
 public class NotificationFragment extends Fragment {
     ListView listView;
-    private ArrayAdapter<String> adapter;
     ArrayList<String> list = new ArrayList<String>();
 
     public NotificationTextFragment notificationTextFragment= new NotificationTextFragment();
@@ -32,19 +31,15 @@ public class NotificationFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position==1){
-                    if (!notificationTextFragment.isAdded())
-                        notificationTextFragment.show(getFragmentManager(),"Notification Text");
-                    //getFragmentManager().beginTransaction().replace(android.R.id.content,new NotificationTextFragment());
-                }
+                if (!notificationTextFragment.isAdded())
+                    notificationTextFragment.show(getFragmentManager(),"Notification Text");
             }
         });
         return v;
     }
     public void loadItems() {
-        list.add("Notification Sound");
-        list.add("Notification Text");
-        adapter = new ArrayAdapter<String>(getActivity(),
+        list.add("Customise Notification Message");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, list);
 
         listView.setAdapter(adapter);
