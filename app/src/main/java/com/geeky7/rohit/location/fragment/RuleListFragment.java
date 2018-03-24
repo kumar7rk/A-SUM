@@ -1,6 +1,8 @@
 package com.geeky7.rohit.location.fragment;
 
 import android.app.Fragment;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,19 +45,19 @@ public class RuleListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position==0){
                     addFragment(new AutomaticRuleFragment());
-                    setActionBarTitle("Automatic Rule");
+                    setActionBarTitleForRules("Automatic Rule");
                 }
                 if (position==1){
                     addFragment(new SemiAutomaticRuleFragment());
-                    setActionBarTitle("SemiAutomatic Rule");
+                    setActionBarTitleForRules("SemiAutomatic Rule");
                 }
                 if (position==2){
                     addFragment(new ManualRuleFragment());
-                    setActionBarTitle("Manual Rule");
+                    setActionBarTitleForRules("Manual Rule");
                 }
                 if (position==3){
                     addFragment(new NotificationFragment());
-                    setActionBarTitle("Notification Rule");
+                    setActionBarTitleForRules("Notification Rule");
                 }
             }
         });
@@ -67,6 +69,9 @@ public class RuleListFragment extends Fragment {
 
     private void setActionBarTitle(String title){
         ((MainActivity) getActivity()).setActionBarTitle(title);
+    }
 
+    public void setActionBarTitleForRules(String title){
+        ((MainActivity) getActivity()).setActionBarTitleForRules(title);
     }
 }
