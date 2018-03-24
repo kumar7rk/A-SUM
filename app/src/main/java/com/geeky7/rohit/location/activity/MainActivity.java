@@ -19,7 +19,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -115,17 +114,17 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.bb_menu_monitoring:
                         fragment = new MonitoringFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
-                        setActionBarTitle(getResources().getString(R.string.monitoring));
+                        customiseActionBar(getResources().getString(R.string.monitoring));
                         break;
                     case R.id.bb_menu_rules:
                         fragment = new RuleListFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
-                        setActionBarTitle(getResources().getString(R.string.rules));
+                        customiseActionBar(getResources().getString(R.string.rules));
                         break;
                     case R.id.bb_menu_violation:
                         fragment = new ViolationsFragment();
                         fragmentTransaction.replace(android.R.id.content, fragment).commit();
-                        setActionBarTitle(getResources().getString(R.string.violations));
+                        customiseActionBar(getResources().getString(R.string.violations));
                         break;
                     default:
                         fragmentTransaction.remove(fragment);
@@ -408,12 +407,12 @@ public class MainActivity extends AppCompatActivity {
                 .setAction(getString(actionStringId), listener).show();
     }
 
-    public void setActionBarTitle(String title){
+    public void customiseActionBar(String title){
         getSupportActionBar().setTitle(title);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
     }
 	
-	public void setActionBarTitleForRules(String title){
+	public void customiseActionBarForRules(String title){
         getSupportActionBar().setTitle(title);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.CYAN));
     }
