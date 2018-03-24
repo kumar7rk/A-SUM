@@ -3,8 +3,7 @@
 
 
     <PreferenceCategory
-        android:title="Choose Rule"
-        android:icon="@drawable/ic_nearby">
+        android:title="Choose Rule">
 
         <ListPreference
             android:title="Choose Rule"
