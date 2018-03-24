@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         boolean movie_theatre = preferences.getBoolean(getResources().getString(R.string.movie_theatre), false);
         boolean bed_dark = preferences.getBoolean(getResources().getString(R.string.bed_dark), false);
         boolean walking = preferences.getBoolean(getResources().getString(R.string.walking), false);
+
         boolean scenario = restaurant || religious_place || movie_theatre || bed_dark || walking;
 
         if (scenario&& !m.usageAccessPermission()) m.showUsageDataAccessDialog(MainActivity.this);
@@ -159,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         mBottomBar.mapColorForTab(1, "#fff000");
         mBottomBar.mapColorForTab(2, "#fff000");*/
 
-        isGPSOn();
+//        isGPSOn();
     }
 
     public void updateBadge() {
@@ -408,5 +410,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void setActionBarTitle(String title){
         getSupportActionBar().setTitle(title);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+    }
+	
+	public void setActionBarTitleForRules(String title){
+        getSupportActionBar().setTitle(title);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.CYAN));
     }
 }
