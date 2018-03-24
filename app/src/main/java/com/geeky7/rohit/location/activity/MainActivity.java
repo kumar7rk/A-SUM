@@ -414,6 +414,6 @@ public class MainActivity extends AppCompatActivity {
 	
 	public void customiseActionBarForRules(String title){
         getSupportActionBar().setTitle(title);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.CYAN));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.DKGRAY));
     }
 }
