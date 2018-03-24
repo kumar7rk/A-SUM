@@ -61,7 +61,7 @@ public class NotificationTextFragment extends DialogFragment {
         // creating dialog with buttons
         //on click save button save the keyword in the sharedPreferences
         alertDialog = new AlertDialog.Builder(getActivity())
-            .setTitle("Customise Notification Text")
+            .setTitle("Customise Notification Message")
             .setView(inflater.inflate(R.layout.activity_notification_text, null))
             //.setPositiveButton(R.string.save,null)
             //.setNegativeButton(R.string.close,null)
@@ -97,7 +97,11 @@ public class NotificationTextFragment extends DialogFragment {
         m.calledMethodLog(TAG,"onResume");
         super.onResume();
 
+
+        // handling onclick reset button
+        // show a dialog to confirm if user want to reset the text.
         final AlertDialog dialog = (AlertDialog) getDialog();
+
         if (dialog!=null){
             Button resetB = dialog.getButton(Dialog.BUTTON_NEUTRAL);
             resetB.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +109,7 @@ public class NotificationTextFragment extends DialogFragment {
                     public void onClick(View view) {
                         AlertDialog.Builder builder;
                         builder = new AlertDialog.Builder(getActivity(), android.R.style.Theme_Material_Dialog_Alert);
-                        builder.setTitle("Reset Text to Default")
+                        builder.setTitle("Reset notification message to Default")
                                 .setIcon(R.drawable.permission_warning)
                                 .setPositiveButton(MyApplication.getAppContext().getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
