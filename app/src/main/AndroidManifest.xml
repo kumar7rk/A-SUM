@@ -38,14 +38,16 @@
             android:name=".activity.SelectScenarioActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_configure"
-            android:parentActivityName=".activity.MainActivity" >
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/Theme.Design.Light">
         </activity>
 
         <activity
             android:name=".activity.SelectRuleActivity"
             android:excludeFromRecents="true"
             android:label="@string/title_select_rule"
-            android:parentActivityName=".activity.SelectScenarioActivity" >
+            android:parentActivityName=".activity.SelectScenarioActivity"
+            android:theme="@style/Theme.Design.Light">
         </activity>
 
         <activity
