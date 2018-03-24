@@ -1,8 +1,6 @@
 package com.geeky7.rohit.location.fragment;
 
 import android.app.Fragment;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +27,7 @@ public class RuleListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_list_of_rule, container, false);
         listView = (ListView)v.findViewById(R.id.list);
         loadItems();
-        setActionBarTitle("Rules");
+        customiseActionBar("Rules");
         return v;
     }
     public void loadItems() {
@@ -45,19 +43,19 @@ public class RuleListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position==0){
                     addFragment(new AutomaticRuleFragment());
-                    setActionBarTitleForRules("Automatic Rule");
+                    customiseActionBarForRules("Automatic Rule");
                 }
                 if (position==1){
                     addFragment(new SemiAutomaticRuleFragment());
-                    setActionBarTitleForRules("SemiAutomatic Rule");
+                    customiseActionBarForRules("SemiAutomatic Rule");
                 }
                 if (position==2){
                     addFragment(new ManualRuleFragment());
-                    setActionBarTitleForRules("Manual Rule");
+                    customiseActionBarForRules("Manual Rule");
                 }
                 if (position==3){
                     addFragment(new NotificationFragment());
-                    setActionBarTitleForRules("Notification Rule");
+                    customiseActionBarForRules("Notification Rule");
                 }
             }
         });
@@ -67,11 +65,11 @@ public class RuleListFragment extends Fragment {
         getFragmentManager().beginTransaction().replace(android.R.id.content,fragment)/*.addToBackStack(null)*/.commit();
     }
 
-    private void setActionBarTitle(String title){
-        ((MainActivity) getActivity()).setActionBarTitle(title);
+    private void customiseActionBar(String title){
+        ((MainActivity) getActivity()).customiseActionBar(title);
     }
 
-    public void setActionBarTitleForRules(String title){
-        ((MainActivity) getActivity()).setActionBarTitleForRules(title);
+    public void customiseActionBarForRules(String title){
+        ((MainActivity) getActivity()).customiseActionBarForRules(title);
     }
 }
