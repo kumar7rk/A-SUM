@@ -37,7 +37,7 @@
         <activity
             android:name=".activity.SelectScenarioActivity"
             android:excludeFromRecents="true"
-            android:label="@string/title_configure"
+            android:label="@string/title_select_scenario"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.Design.Light">
         </activity>
