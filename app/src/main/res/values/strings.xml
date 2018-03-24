@@ -11,7 +11,7 @@
     <string name="action_about">About</string>
 
     <!--Title-->
-    <string name="title_configure" translatable="false">Configure</string>
+    <string name="title_select_scenario" translatable="false">Select Scenarios</string>
     <string name="title_select_rule" translatable="false">Select Rule</string>
 
     <!--BottomBar-->
