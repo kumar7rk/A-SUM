@@ -27,6 +27,7 @@ public class RuleListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_list_of_rule, container, false);
         listView = (ListView)v.findViewById(R.id.list);
         loadItems();
+        setActionBarTitle("Rules");
         return v;
     }
     public void loadItems() {
@@ -66,5 +67,6 @@ public class RuleListFragment extends Fragment {
 
     private void setActionBarTitle(String title){
         ((MainActivity) getActivity()).setActionBarTitle(title);
+
     }
 }
