@@ -2,14 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/bb_menu_monitoring"
-        android:icon="@drawable/ic_favorites"
         android:title="@string/monitoring" />
     <item
         android:id="@+id/bb_menu_rules"
-        android:icon="@drawable/ic_nearby"
         android:title="@string/rules" />
     <item
         android:id="@+id/bb_menu_violation"
-        android:icon="@drawable/ic_friends"
         android:title="@string/violations" />
 </menu>
