@@ -69,7 +69,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
         public void onCreate(final Bundle savedInstanceState)
         {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.configure_preference);
+            addPreferencesFromResource(R.xml.select_scenario_preference);
         }
     }
 
