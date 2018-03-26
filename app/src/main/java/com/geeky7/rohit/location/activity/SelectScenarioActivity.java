@@ -25,7 +25,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
     @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_configure);
+            setContentView(R.layout.activity_select_scenario);
             cancelB = (Button)findViewById(R.id.cancel);
             nextB = (Button)findViewById(R.id.next);
 
