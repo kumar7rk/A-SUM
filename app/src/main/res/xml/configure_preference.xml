@@ -9,8 +9,7 @@
 
         <CheckBoxPreference
             android:key="@string/restaurant"
-            android:icon="@drawable/ic_restaurants"
-            android:background="@color/accent_material_dark"
+            android:icon="@drawable/restaurant"
             android:title="@string/restaurant"/>
         <CheckBoxPreference
             android:key="@string/religious_place"
