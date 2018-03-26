@@ -228,16 +228,9 @@ public class Main {
         editor.commit();
     }
 
-    //only start fetching place name regularly if atleast one scenario is selected
+    //only start fetching place name regularly if at least one scenario is selected
     public boolean isAnyScenarioSelected() {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-
-
         initialValues();
-        /*boolean restaurant = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.restaurant), false);
-        boolean religious_place = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.religious_place), false);
-        boolean movie_theatre = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.movie_theatre), false);*/
-
         if (restaurant||religious_place||movie_theatre)
             return true;
 
