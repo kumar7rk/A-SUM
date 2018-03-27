@@ -13,7 +13,7 @@
             android:title="@string/restaurant"/>
         <CheckBoxPreference
             android:key="@string/religious_place"
-            android:icon="@drawable/church"
+            android:icon="@drawable/religious_place"
             android:title="@string/religious_place"/>
         <CheckBoxPreference
             android:key="@string/movie_theatre"
@@ -21,7 +21,7 @@
             android:title="@string/movie_theatre"/>
         <CheckBoxPreference
             android:key="@string/bed_dark"
-            android:icon="@drawable/bed"
+            android:icon="@drawable/bed_and_dark"
             android:title="@string/bed_dark"/>
         <CheckBoxPreference
             android:key="@string/walking"
