@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         mBottomBar = BottomBar.attach(this, savedInstanceState);
         mBottomBar.setItems(R.menu.main);
-        int padding = 40;
+        int padding = 50;
         mBottomBar.setPadding(padding,padding,padding,padding);
         updateBadge();
         mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {

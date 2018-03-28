@@ -231,9 +231,7 @@ public class Main {
     //only start fetching place name regularly if at least one scenario is selected
     public boolean isAnyScenarioSelected() {
         initialValues();
-        if (restaurant||religious_place||movie_theatre)
-            return true;
-
+        if (restaurant||religious_place||movie_theatre) return true;
         return false;
     }
 
