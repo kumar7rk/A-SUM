@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:id="@+id/content"
-            android:layout_weight="0.95">
+            android:layout_weight="1">
         </FrameLayout>
 
         <LinearLayout
@@ -22,23 +22,23 @@
             android:id="@+id/content1"
             android:layout_gravity="bottom"
             android:weightSum="1">
+            <!--android:style="?android:attr/buttonBarButtonStyle">-->
         <Button
+            android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel"
-            android:id="@+id/cancel"
             android:background="#80ffffff"
-            android:layout_gravity="bottom"
             android:layout_weight="0.5"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/next"
-            android:id="@+id/next"
-            android:background="#80ffffff"
-            android:layout_gravity="bottom"
-            android:layout_weight="0.5"/>
+            <Button
+                android:id="@+id/next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/next"
+                android:background="#80ffffff"
+                android:elevation="24dp"
+                android:layout_weight="0.5"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
