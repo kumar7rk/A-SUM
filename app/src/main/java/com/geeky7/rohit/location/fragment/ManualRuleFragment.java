@@ -1,11 +1,14 @@
 package com.geeky7.rohit.location.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +27,7 @@ import com.geeky7.rohit.location.DataObject;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
+import com.geeky7.rohit.location.activity.MainActivity;
 import com.geeky7.rohit.location.adapter.ManualRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -72,8 +76,9 @@ public class ManualRuleFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InstalledAppsDialog dialogFrag = InstalledAppsDialog.newInstance(R.string.startService);
-                dialogFrag.show(getActivity().getFragmentManager(), null);
+                new YourAsyncTask(getActivity()).execute();// gps in on
+                /*InstalledAppsDialog dialogFrag = InstalledAppsDialog.newInstance(R.string.startService);
+                dialogFrag.show(getActivity().getFragmentManager(), null);*/
             }
         });
     }
@@ -176,6 +181,37 @@ public class ManualRuleFragment extends Fragment {
 
         for (String s:listOfBlockedApps) {
             Log.i("CardView listBA",s);
+        }
+    }
+
+    private class YourAsyncTask extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog dialog;
+        public YourAsyncTask(Activity activity) {
+            dialog = new ProgressDialog(activity);
+        }
+        @Override
+        protected void onPreExecute() {
+            String message = "Getting list of apps";
+
+            dialog.setTitle("Please wait");
+            dialog.setMessage(message);
+            dialog.setCancelable(false);
+            dialog.setIndeterminate(true);
+            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dialog.show();
+        }
+        protected Void doInBackground(Void... args) {
+            try {
+                Thread.sleep(8000);
+                InstalledAppsDialog dialogFrag = InstalledAppsDialog.newInstance(R.string.startService);
+                dialogFrag.show(getActivity().getFragmentManager(), null);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        protected void onPostExecute(Void result) {
+            if (dialog.isShowing()) dialog.dismiss();
         }
     }
 }
