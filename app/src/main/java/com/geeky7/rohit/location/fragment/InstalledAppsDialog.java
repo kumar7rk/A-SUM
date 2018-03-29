@@ -121,7 +121,7 @@ public class InstalledAppsDialog extends DialogFragment {
         loadItems();
 
         alertDialog.setView(convertView);
-        alertDialog.setTitle("Select Application(s)").setIcon(R.drawable.abc_list_selector_holo_dark);
+        alertDialog.setTitle("Select Application(s)");
         addButtons();
         return alertDialog.create();
     }
