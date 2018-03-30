@@ -1,12 +1,15 @@
 package com.geeky7.rohit.location.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.SparseBooleanArray;
@@ -27,6 +30,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Rohit on 30/08/2016.
@@ -49,7 +53,6 @@ public class InstalledAppsDialog extends DialogFragment {
 
     private PackageManager packageManager = null;
     private List<ApplicationInfo> applist = null;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,6 +111,7 @@ public class InstalledAppsDialog extends DialogFragment {
         Bundle args = new Bundle();
         args.putInt("title", title);
         dialog.setArguments(args);
+
         return dialog;
     }
     @Override
@@ -118,10 +122,15 @@ public class InstalledAppsDialog extends DialogFragment {
 
         alertDialog = new AlertDialog.Builder(getActivity());
 
-        loadItems();
+//        loadItems();
 
+        try {
+            new YourAsyncTask().execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
         alertDialog.setView(convertView);
-        alertDialog.setTitle("Select Application(s)");
+        alertDialog.setTitle(R.string.select_applications);
         addButtons();
         return alertDialog.create();
     }
@@ -171,5 +180,25 @@ public class InstalledAppsDialog extends DialogFragment {
             }
         }
         return applist;
+    }
+
+
+    private class YourAsyncTask extends AsyncTask<Void, Void, Void> {
+        public YourAsyncTask() {
+        }
+        @Override
+        protected void onPreExecute() {
+        }
+        protected Void doInBackground(Void... args) {
+            loadItems();
+            /*try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
+            return null;
+        }
+        protected void onPostExecute(Void result) {
+        }
     }
 }
