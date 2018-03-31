@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -185,13 +184,7 @@ public class ManualRuleFragment extends Fragment {
         m.calledMethodLog(TAG,m.getMethodName(2));
         Set<String> apps = new HashSet<String>();
         apps = preferences.getStringSet("someStringSet",apps);
-        for (String a:apps)
-            Log.i("CardView",a);
         listOfBlockedApps.addAll(apps);
-
-        for (String s:listOfBlockedApps) {
-            Log.i("CardView listBA",s);
-        }
     }
 
     private class YourAsyncTask extends AsyncTask<Void, Void, Void> {
