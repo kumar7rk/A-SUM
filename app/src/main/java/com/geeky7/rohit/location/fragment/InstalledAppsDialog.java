@@ -56,7 +56,6 @@ public class InstalledAppsDialog extends DialogFragment {
     private List<ApplicationInfo> applist = null;
 
     public InstalledAppsDialog(){
-        m.calledMethodLog(TAG,m.getMethodName(2));
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -142,28 +141,6 @@ public class InstalledAppsDialog extends DialogFragment {
             }
         });
     }
-    private void addButtons() {
-        m.calledMethodLog(TAG,m.getMethodName(2));
-        alertDialog.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-//                        ApplicationAdapter a = new ApplicationAdapter(MyApplication.getAppContext(),0);
-            ApplicationAdapter a = new ApplicationAdapter(MyApplication.getAppContext(),0,applist);
-                        a.commit();
-
-            getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualRuleFragment()).commit();
-//                        Main.showToast(getContext(),"Saved");
-                    }
-        });
-        alertDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-//                        Main.showToast(getContext(),"Cancelled");
-                        getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualRuleFragment())
-                                .commit();
-                    }
-                });
-    }
 
     public void loadItems(){
         m.calledMethodLog(TAG,m.getMethodName(2));
@@ -191,8 +168,24 @@ public class InstalledAppsDialog extends DialogFragment {
         }
         return applist;
     }
+    private void addButtons() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
+        alertDialog.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ApplicationAdapter a = new ApplicationAdapter(MyApplication.getAppContext(),0,applist);
+                a.commit();
 
-
+                getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualRuleFragment()).commit();
+            }
+        });
+        alertDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualRuleFragment()).commit();
+            }
+        });
+    }
     private class YourAsyncTask extends AsyncTask<Void, Void, Void> {
         public YourAsyncTask() {
         }
