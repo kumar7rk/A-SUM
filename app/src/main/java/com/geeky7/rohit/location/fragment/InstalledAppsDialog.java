@@ -57,6 +57,7 @@ public class InstalledAppsDialog extends DialogFragment {
 
     public InstalledAppsDialog(){
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         m = new Main(MyApplication.getAppContext());
@@ -69,6 +70,12 @@ public class InstalledAppsDialog extends DialogFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         m.calledMethodLog(TAG,m.getMethodName(2));
         super.onActivityCreated(savedInstanceState);
+
+        try {
+            new YourAsyncTask().execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -105,11 +112,11 @@ public class InstalledAppsDialog extends DialogFragment {
 
 //        loadItems();
 
-        try {
+        /*try {
             new YourAsyncTask().execute().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
-        }
+        }*/
         alertDialog.setView(convertView);
         alertDialog.setTitle(R.string.select_applications);
         addButtons();
@@ -170,7 +177,7 @@ public class InstalledAppsDialog extends DialogFragment {
     }
     private void addButtons() {
         m.calledMethodLog(TAG,m.getMethodName(2));
-        alertDialog.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ApplicationAdapter a = new ApplicationAdapter(MyApplication.getAppContext(),0,applist);
@@ -179,7 +186,7 @@ public class InstalledAppsDialog extends DialogFragment {
                 getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualRuleFragment()).commit();
             }
         });
-        alertDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 getFragmentManager().beginTransaction().replace(android.R.id.content,new ManualRuleFragment()).commit();
