@@ -1,10 +1,8 @@
 package com.geeky7.rohit.location.fragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -20,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
@@ -36,6 +35,8 @@ import java.util.concurrent.ExecutionException;
  * Created by Rohit on 30/08/2016.
  */
 public class InstalledAppsDialog extends DialogFragment {
+
+    private static final String TAG = CONSTANTS.INSTALLED_APPS_DIALOG;
     ListView listView;
     private ArrayAdapter<String> adapter;
     SharedPreferences preferences;
@@ -54,19 +55,25 @@ public class InstalledAppsDialog extends DialogFragment {
     private PackageManager packageManager = null;
     private List<ApplicationInfo> applist = null;
 
+    public InstalledAppsDialog(){
+
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         packageManager = MyApplication.getAppContext().getPackageManager();
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         super.onActivityCreated(savedInstanceState);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         super.onViewCreated(view, savedInstanceState);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -86,36 +93,10 @@ public class InstalledAppsDialog extends DialogFragment {
         appSelected();
     }
 
-    private void appSelected() {
-//        Main.showToast("appSelected");
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ApplicationInfo applicationInfo = (ApplicationInfo) parent.getItemAtPosition(position);
-//                Main.showToast("itemClicked");
-                view.getFocusables(position);
-                view.setSelected(true);
 
-//                Main.showToast(applicationInfo.loadLabel(packageManager) + "");
-                String selectedAppS = packageList.get(position);
-                selectedAppsSet.add(selectedAppS);
-                selectedAppsSetIndex.add(position + "");
-            }
-        });
-    }
-    public InstalledAppsDialog(){
-
-    }
-    public static InstalledAppsDialog newInstance(int title) {
-        InstalledAppsDialog dialog = new InstalledAppsDialog();
-        Bundle args = new Bundle();
-        args.putInt("title", title);
-        dialog.setArguments(args);
-
-        return dialog;
-    }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View convertView = inflater.inflate(R.layout.custom, null);
         listView = (ListView) convertView.findViewById(R.id.listView1);
@@ -135,7 +116,33 @@ public class InstalledAppsDialog extends DialogFragment {
         return alertDialog.create();
     }
 
+    public static InstalledAppsDialog newInstance(int title) {
+        Main m = new Main(MyApplication.getAppContext());
+        m.calledMethodLog(TAG,m.getMethodName(2));
+        InstalledAppsDialog dialog = new InstalledAppsDialog();
+        Bundle args = new Bundle();
+        args.putInt("title", title);
+        dialog.setArguments(args);
+
+        return dialog;
+    }
+    private void appSelected() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ApplicationInfo applicationInfo = (ApplicationInfo) parent.getItemAtPosition(position);
+                view.getFocusables(position);
+                view.setSelected(true);
+
+                String selectedAppS = packageList.get(position);
+                selectedAppsSet.add(selectedAppS);
+                selectedAppsSetIndex.add(position + "");
+            }
+        });
+    }
     private void addButtons() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         alertDialog.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -158,6 +165,7 @@ public class InstalledAppsDialog extends DialogFragment {
     }
 
     public void loadItems(){
+        m.calledMethodLog(TAG,m.getMethodName(2));
         applist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
 
         Collections.sort(applist, new ApplicationInfo.DisplayNameComparator(packageManager));
@@ -167,6 +175,7 @@ public class InstalledAppsDialog extends DialogFragment {
         listView.setAdapter(listAdapter);
     }
     private List<ApplicationInfo> checkForLaunchIntent(List<ApplicationInfo> list) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         ArrayList<ApplicationInfo> applist = new ArrayList<ApplicationInfo>();
         for (ApplicationInfo info : list) {
             String packageName = info.packageName;
@@ -188,8 +197,10 @@ public class InstalledAppsDialog extends DialogFragment {
         }
         @Override
         protected void onPreExecute() {
+            m.calledMethodLog(TAG+".YourAsyncTask",m.getMethodName(2));
         }
         protected Void doInBackground(Void... args) {
+            m.calledMethodLog(TAG+".YourAsyncTask",m.getMethodName(2));
             loadItems();
             /*try {
                 Thread.sleep(2000);
@@ -199,6 +210,7 @@ public class InstalledAppsDialog extends DialogFragment {
             return null;
         }
         protected void onPostExecute(Void result) {
+            m.calledMethodLog(TAG+".YourAsyncTask",m.getMethodName(2));
         }
     }
 }
