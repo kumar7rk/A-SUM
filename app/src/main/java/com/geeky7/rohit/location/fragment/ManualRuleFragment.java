@@ -27,7 +27,6 @@ import com.geeky7.rohit.location.DataObject;
 import com.geeky7.rohit.location.Main;
 import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
-import com.geeky7.rohit.location.activity.MainActivity;
 import com.geeky7.rohit.location.adapter.ManualRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -35,6 +34,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ManualRuleFragment extends Fragment {
+    private static final String TAG = CONSTANTS.MANUAL_RULE_FRAGMENT;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter<ManualRecyclerViewAdapter.ManualDataObjectHolder> mAdapter;
@@ -48,17 +48,21 @@ public class ManualRuleFragment extends Fragment {
     Drawable[] drawables = new Drawable[11];
     SharedPreferences preferences;
     LinearLayout layout,layout1;
+    Main m;
     public ManualRuleFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        m = new Main(getActivity());
+        m.calledMethodLog(TAG,m.getMethodName(2));
         super.onCreate(savedInstanceState);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         button = new Button(MyApplication.getAppContext());
     }
 
     private void addButton() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         button.setText("ADD");
         button.setTextColor(Color.WHITE);
         button.setBackgroundColor(Color.parseColor("#4997D0"));
@@ -86,6 +90,8 @@ public class ManualRuleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        m.calledMethodLog(TAG,m.getMethodName(2));
         View v = inflater.inflate(R.layout.manual_recycler_view, container, false);
         mRecyclerView = (RecyclerView)v.findViewById(R.id.my_recycler_view);
         layout = (LinearLayout) v.findViewById(R.id.linear);
@@ -103,6 +109,7 @@ public class ManualRuleFragment extends Fragment {
     }
     @Override
     public void onResume() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         super.onResume();
         ((ManualRecyclerViewAdapter) mAdapter).setOnItemClickListener(new ManualRecyclerViewAdapter
                 .MyClickListener() {
@@ -115,6 +122,7 @@ public class ManualRuleFragment extends Fragment {
         });
     }
     private ArrayList<DataObject> getDataSet() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         ArrayList<DataObject> results = new ArrayList<DataObject>();
         String lastApplied = preferences.getString(CONSTANTS.MANUAL_RULE_ADDED_TIME, "Never");
         String timePeriod = "This rule is applied for ALL DAY. No quiet Hours";
@@ -139,6 +147,7 @@ public class ManualRuleFragment extends Fragment {
     }
 
     private void addAppIcons() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         getAppIcon();
         for (int i = 0; i < 10; i++) {
             ImageView imageView = new ImageView(MyApplication.getAppContext());
@@ -155,6 +164,7 @@ public class ManualRuleFragment extends Fragment {
     }
 
     private void getAppIcon() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         for (int i = 0; i < listOfBlockedApps.size(); i++) {
             try {
                 drawables[i] = MyApplication.getAppContext().getPackageManager().getApplicationIcon(listOfBlockedApps.get(i));
@@ -165,14 +175,14 @@ public class ManualRuleFragment extends Fragment {
     }
 
     private void addValues(){
+        m.calledMethodLog(TAG,m.getMethodName(2));
         list.add("Last Applied");
         list.add("Time Period");
         list.add("Blocked Applications");
     }
 
     public void getListOfBlockedApplications(){
-        Log.i("CardView", "getListOf...method");
-//        Main.showToast("getListOf...method");
+        m.calledMethodLog(TAG,m.getMethodName(2));
         Set<String> apps = new HashSet<String>();
         apps = preferences.getStringSet("someStringSet",apps);
         for (String a:apps)
@@ -187,10 +197,12 @@ public class ManualRuleFragment extends Fragment {
     private class YourAsyncTask extends AsyncTask<Void, Void, Void> {
         private ProgressDialog dialog;
         public YourAsyncTask(Activity activity) {
+            m.calledMethodLog(TAG+".YourAsyncTask",m.getMethodName(2));
             dialog = new ProgressDialog(activity);
         }
         @Override
         protected void onPreExecute() {
+            m.calledMethodLog(TAG+".YourAsyncTask",m.getMethodName(2));
             String message = "Getting list of apps";
 
             dialog.setTitle("Please wait");
@@ -201,6 +213,7 @@ public class ManualRuleFragment extends Fragment {
             dialog.show();
         }
         protected Void doInBackground(Void... args) {
+            m.calledMethodLog(TAG+".YourAsyncTask",m.getMethodName(2));
             try {
                 Thread.sleep(2500);
                 InstalledAppsDialog dialogFrag = InstalledAppsDialog.newInstance(R.string.select_applications);
@@ -211,6 +224,7 @@ public class ManualRuleFragment extends Fragment {
             return null;
         }
         protected void onPostExecute(Void result) {
+            m.calledMethodLog(TAG+".YourAsyncTask",m.getMethodName(2));
             if (dialog.isShowing()) dialog.dismiss();
         }
     }
