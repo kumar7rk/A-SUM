@@ -23,6 +23,8 @@ public class CONSTANTS {
     public static final String DETECTED_WALKING_TIME = "DETECTED_WALKING_TIME";
 
     public static final String MAIN_ACTIVITY = "MAIN_ACTIVITY";
+    public static final String INSTALLED_APPS_DIALOG = "INSTALLED_APPS_DIALOG";
+
 
     public static final String APP_OPENED_FIRST_TIME = "APP_OPENED_FIRST_TIME";
 
