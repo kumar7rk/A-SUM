@@ -202,7 +202,7 @@ public class ManualRuleFragment extends Fragment {
         }
         protected Void doInBackground(Void... args) {
             try {
-                Thread.sleep(3000);
+                Thread.sleep(2500);
                 InstalledAppsDialog dialogFrag = InstalledAppsDialog.newInstance(R.string.select_applications);
                 dialogFrag.show(getActivity().getFragmentManager(), null);
             } catch (InterruptedException e) {
