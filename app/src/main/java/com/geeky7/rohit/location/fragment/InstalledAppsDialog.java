@@ -56,10 +56,11 @@ public class InstalledAppsDialog extends DialogFragment {
     private List<ApplicationInfo> applist = null;
 
     public InstalledAppsDialog(){
-
+        m.calledMethodLog(TAG,m.getMethodName(2));
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        m = new Main(MyApplication.getAppContext());
         m.calledMethodLog(TAG,m.getMethodName(2));
         packageManager = MyApplication.getAppContext().getPackageManager();
         super.onCreate(savedInstanceState);
