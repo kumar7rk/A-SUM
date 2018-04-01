@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
@@ -83,6 +84,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
         return getDelegate().getSupportActionBar();
     }
 
+    @NonNull
     @Override
     public MenuInflater getMenuInflater() {
         return getDelegate().getMenuInflater();
@@ -143,6 +145,7 @@ public class SelectScenarioActivity extends AppCompatActivity {
         getDelegate().invalidateOptionsMenu();
     }
 
+    @NonNull
     public AppCompatDelegate getDelegate() {
         if (mDelegate == null) {
             mDelegate = AppCompatDelegate.create(this, null);
