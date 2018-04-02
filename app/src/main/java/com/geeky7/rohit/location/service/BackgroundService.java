@@ -43,6 +43,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -52,7 +54,7 @@ import java.util.List;
 public class BackgroundService extends Service implements GoogleApiClient.OnConnectionFailedListener,
 GoogleApiClient.ConnectionCallbacks,LocationListener{
 
-    public static final String TAG = "Location";
+    public static final String TAG = CONSTANTS.BACKGROUND_SERVICE;
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = UPDATE_INTERVAL_IN_MILLISECONDS/2;
 
@@ -278,10 +280,10 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         // for demo- coordinates for jasmin restaurant 33 i
         double mLatitude = -34.923792;
         double mLongitude = 138.6047722;
-        int mRadius = 20;
+        int mRadius = 200;
 
-        mLatitude = mCurrentLocation.getLatitude();
-        mLongitude = mCurrentLocation.getLongitude();
+        /*mLatitude = mCurrentLocation.getLatitude();
+        mLongitude = mCurrentLocation.getLongitude();*/
 
         // keys- ideally should not be on Github
         String old = "AIzaSyC0ZdWHP1aun8cfHq9aXzOOztUaD1Fmw_I";
@@ -372,6 +374,20 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 SharedPreferences.Editor editor = preferences.edit();
                 String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
+                // *** note that it's "yyyy-MM-dd hh:mm:ss" not "yyyy-mm-dd hh:mm:ss"
+                SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                Date date = null;
+                try {
+                    date = dt.parse(currentDateTimeString);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+
+                //current   - 2 Apr. 2018 21:26:30
+                // required - 2 April 2018 9:26 PM
+                m.updateLog(TAG,currentDateTimeString + ", " +dt1.format(date));
                 Log.i("PlaceDetected", name);
 //                Main.showToast(getApplicationContext(),name);
 
