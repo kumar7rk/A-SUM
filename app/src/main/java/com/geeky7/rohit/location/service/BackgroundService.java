@@ -382,15 +382,15 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
                     if (type.contains("restaurant")){
                         editor.putString(CONSTANTS.DETECTED_SCENARIO,getResources().getString(R.string.restaurant));
-                        editor.putString(CONSTANTS.DETECTED_RESTAURNT_TIME,currentDateTimeString);
+                        editor.putString(CONSTANTS.DETECTED_RESTAURNT_TIME,dateAndTime+"");
                     }
                     if (type.contains("place_of_worship")){
                         editor.putString(CONSTANTS.DETECTED_SCENARIO,getResources().getString(R.string.religious_place));
-                        editor.putString(CONSTANTS.DETECTED_RELIGIOUSPLACE_TIME,currentDateTimeString);
+                        editor.putString(CONSTANTS.DETECTED_RELIGIOUSPLACE_TIME,dateAndTime+"");
                     }
                     if (type.contains("movie_theater")){
                         editor.putString(CONSTANTS.DETECTED_SCENARIO,getResources().getString(R.string.movie_theatre));
-                        editor.putString(CONSTANTS.DETECTED_MOVIETHEATRE_TIME,currentDateTimeString);
+                        editor.putString(CONSTANTS.DETECTED_MOVIETHEATRE_TIME,dateAndTime+"");
                     }
                     editor.apply();
 
