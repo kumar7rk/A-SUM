@@ -43,8 +43,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -372,47 +370,32 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 String name = hmPlace.get("place_name");
                 String type = hmPlace.get("types");
                 SharedPreferences.Editor editor = preferences.edit();
-                String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
-                // *** note that it's "yyyy-MM-dd hh:mm:ss" not "yyyy-mm-dd hh:mm:ss"
-                SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                Date date = null;
-                try {
-                    date = dt.parse(currentDateTimeString);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
 
-                SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy hh:mm");
+                CharSequence dateAndTime = android.text.format.DateFormat.format("dd MMM yyyy hh:mm a", new java.util.Date());
 
-                //current   - 2 Apr. 2018 21:26:30
-                // required - 2 April 2018 9:26 PM
-                m.updateLog(TAG,currentDateTimeString + ", " +dt1.format(date));
+                m.updateLog(TAG,dateAndTime+"");
+
                 Log.i("PlaceDetected", name);
-//                Main.showToast(getApplicationContext(),name);
 
                 if (!name.equals("Nothing")){
 
                     if (type.contains("restaurant")){
-                        editor.putString(CONSTANTS.DETECTED_SCENARIO,
-                                getResources().getString(R.string.restaurant));
+                        editor.putString(CONSTANTS.DETECTED_SCENARIO,getResources().getString(R.string.restaurant));
                         editor.putString(CONSTANTS.DETECTED_RESTAURNT_TIME,currentDateTimeString);
                     }
                     if (type.contains("place_of_worship")){
-                        editor.putString(CONSTANTS.DETECTED_SCENARIO,
-                                getResources().getString(R.string.religious_place));
+                        editor.putString(CONSTANTS.DETECTED_SCENARIO,getResources().getString(R.string.religious_place));
                         editor.putString(CONSTANTS.DETECTED_RELIGIOUSPLACE_TIME,currentDateTimeString);
                     }
                     if (type.contains("movie_theater")){
-                        editor.putString(CONSTANTS.DETECTED_SCENARIO,
-                                getResources().getString(R.string.movie_theatre));
+                        editor.putString(CONSTANTS.DETECTED_SCENARIO,getResources().getString(R.string.movie_theatre));
                         editor.putString(CONSTANTS.DETECTED_MOVIETHEATRE_TIME,currentDateTimeString);
                     }
-                    editor.commit();
+                    editor.apply();
 
                     String rule = "AA";
                     rule = preferences.getString(CONSTANTS.SELECTED_RULE, rule);
-//                    Main.showToast("RuleName: " + rule);
 
                     if (rule.equalsIgnoreCase("Automatic")){
                         startService(new Intent(BackgroundService.this, AutomaticService.class));
