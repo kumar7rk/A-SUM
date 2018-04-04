@@ -1,7 +1,5 @@
 package com.geeky7.rohit.location.service;
 
-import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.app.KeyguardManager;
 import android.app.Service;
 import android.content.Context;
@@ -40,7 +38,6 @@ public class BedAndDarkService extends Service implements SensorEventListener{
 
     private final float[] mRotationMatrix = new float[9];
     private final float[] mOrientationAngles = new float[3];
-    private AlertDialog dialog;
 
     @Override
     public void onCreate() {
@@ -50,6 +47,7 @@ public class BedAndDarkService extends Service implements SensorEventListener{
         keyguardManager = (KeyguardManager)getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE);
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
 
+        assert mSensorManager != null;
         mPhotometer = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
         mAccelerometer= mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mMagnetometer= mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
@@ -109,15 +107,6 @@ public class BedAndDarkService extends Service implements SensorEventListener{
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
-    }
-    private boolean isServiceRunning() {
-        ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if ("jp.ne.hardyinfinity.bluelightfilter.free.service.FilterService".equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
     }
 }
 
