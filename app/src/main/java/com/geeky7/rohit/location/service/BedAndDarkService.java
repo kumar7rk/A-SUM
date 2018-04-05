@@ -71,10 +71,10 @@ public class BedAndDarkService extends Service implements SensorEventListener{
     public void onDestroy() {
         m.calledMethodLog(TAG,m.getMethodName(2));
 
+        stopSelf();
         mSensorManager.unregisterListener(this,mPhotometer);
         mSensorManager.unregisterListener(this,mAccelerometer);
         mSensorManager.unregisterListener(this, mMagnetometer);
-        stopSelf();
         super.onDestroy();
     }
 
