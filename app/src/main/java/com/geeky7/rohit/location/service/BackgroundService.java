@@ -278,7 +278,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         // for demo- coordinates for jasmin restaurant 33 i
         double mLatitude = -34.923792;
         double mLongitude = 138.6047722;
-        int mRadius = 200;
+        int mRadius = 20;
 
         /*mLatitude = mCurrentLocation.getLatitude();
         mLongitude = mCurrentLocation.getLongitude();*/
@@ -372,6 +372,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 SharedPreferences.Editor editor = preferences.edit();
 
 
+                m.updateLog(TAG+ " type ",type);
                 CharSequence dateAndTime = android.text.format.DateFormat.format("dd MMM yyyy hh:mm a", new java.util.Date());
 
                 m.updateLog(TAG,dateAndTime+"");
@@ -381,6 +382,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
                 if (!name.equals("Nothing")){
 
                     if (type.contains("restaurant")){
+                        m.updateLog(TAG,"I'm here. In restaurant");
                         editor.putString(CONSTANTS.DETECTED_SCENARIO,getResources().getString(R.string.restaurant));
                         editor.putString(CONSTANTS.DETECTED_RESTAURNT_TIME,dateAndTime+"");
                     }
