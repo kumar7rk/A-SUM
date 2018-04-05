@@ -33,6 +33,7 @@ import java.util.TreeMap;
  * Created by Rohit on 9/08/2016.
  */
 public class Main {
+    public static final String TAG = CONSTANTS.MAIN;
 
     Context mContext;
     private int mInterval = 5000; // 5 seconds by default, can be changed later
@@ -221,8 +222,9 @@ public class Main {
         editor.putBoolean(mContext.getResources().getString(R.string.religious_place),religious_place);
         editor.putBoolean(mContext.getResources().getString(R.string.movie_theatre),movie_theatre);
         editor.putBoolean(mContext.getResources().getString(R.string.bed_dark),bedAndDark);
+        updateLog(TAG,"adding bed&dark value to be: "+bedAndDark);
         editor.putBoolean(mContext.getResources().getString(R.string.walking), walking);
-        editor.commit();
+        editor.apply();
     }
 
     //only start fetching place name regularly if at least one scenario is selected
