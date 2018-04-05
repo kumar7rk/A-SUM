@@ -70,6 +70,10 @@ public class BedAndDarkService extends Service implements SensorEventListener{
     @Override
     public void onDestroy() {
         m.calledMethodLog(TAG,m.getMethodName(2));
+
+        mSensorManager.unregisterListener(this,mPhotometer);
+        mSensorManager.unregisterListener(this,mAccelerometer);
+        mSensorManager.unregisterListener(this, mMagnetometer);
         stopSelf();
         super.onDestroy();
     }
@@ -94,10 +98,10 @@ public class BedAndDarkService extends Service implements SensorEventListener{
         else if (event.sensor==mMagnetometer) {
             System.arraycopy(event.values, 0, mMagnetometerReading,0,mMagnetometerReading.length);
         }
+
         SensorManager.getRotationMatrix(mRotationMatrix, null, mAccelerometerReading, mMagnetometerReading);
         SensorManager.getOrientation(mRotationMatrix, mOrientationAngles);
         String s = (int) Math.toDegrees(mOrientationAngles[0]) + " " + (int) Math.toDegrees(mOrientationAngles[1]) + " " + (int) Math.toDegrees(mOrientationAngles[2])+"";
-        m.updateLog(TAG,s);
     }
 
     @Override
