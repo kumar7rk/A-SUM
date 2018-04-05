@@ -70,6 +70,7 @@ public class BedAndDarkService extends Service implements SensorEventListener{
     @Override
     public void onDestroy() {
         m.calledMethodLog(TAG,m.getMethodName(2));
+        stopSelf();
         super.onDestroy();
     }
 
@@ -81,21 +82,10 @@ public class BedAndDarkService extends Service implements SensorEventListener{
     @Override
     public void onSensorChanged(SensorEvent event) {
         m.calledMethodLog(TAG,m.getMethodName(2));
-        Thread t= new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        t.start();
+
         if (event.sensor==mPhotometer) {
             int intValue = (int) event.values[0];
-            if (intValue==0)
-                Main.showToast("Stop using phone in darkness");
+//            if (intValue==0) Main.showToast("Using phone in darkness affects your vision");
             max = max < intValue ? intValue : max;
         }
         if (event.sensor==mAccelerometer){
