@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.AppOpsManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
@@ -180,7 +178,7 @@ public class Main {
                 android.os.Process.myUid(), mContext.getPackageName());
         return mode == AppOpsManager.MODE_ALLOWED;
     }
-    public int countSelectedScenarioForBadge() {
+    public void countSelectedScenarioForBadge() {
         int counter = 0;
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 
@@ -205,7 +203,6 @@ public class Main {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(CONSTANTS.NUMBER_OF_SCENARIOS_SELECTED,counter);
         editor.apply();
-        return counter;
     }
 
     public void initialValues(){
