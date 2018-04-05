@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
 
 /**
@@ -23,6 +24,8 @@ import com.geeky7.rohit.location.Main;
     10p8
   */
 public class BedAndDarkService extends Service implements SensorEventListener{
+
+    private static final String TAG = CONSTANTS.BED_AND_DARK_SERVICE;
 
     SensorManager mSensorManager;
     Sensor mPhotometer,mAccelerometer,mMagnetometer;
@@ -39,9 +42,11 @@ public class BedAndDarkService extends Service implements SensorEventListener{
     private final float[] mRotationMatrix = new float[9];
     private final float[] mOrientationAngles = new float[3];
 
+    Main m;
     @Override
     public void onCreate() {
-        Main.showToast(getApplicationContext(),"BedAndDarkService Service created");
+        m = new Main(getApplicationContext());
+        m.calledMethodLog(TAG,m.getMethodName(2));
         super.onCreate();
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
         keyguardManager = (KeyguardManager)getApplicationContext().getSystemService(Context.KEYGUARD_SERVICE);
@@ -59,22 +64,24 @@ public class BedAndDarkService extends Service implements SensorEventListener{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        Main.showToast(getApplicationContext(),"BedAndDarkServiceDestroyed");
+        m.calledMethodLog(TAG,m.getMethodName(2));
         super.onDestroy();
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-
+        m.calledMethodLog(TAG,m.getMethodName(2));
         return null;
     }
     @Override
     public void onSensorChanged(SensorEvent event) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         Thread t= new Thread(new Runnable() {
             @Override
             public void run() {
@@ -106,7 +113,7 @@ public class BedAndDarkService extends Service implements SensorEventListener{
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+        m.calledMethodLog(TAG,m.getMethodName(2));
     }
 }
 
