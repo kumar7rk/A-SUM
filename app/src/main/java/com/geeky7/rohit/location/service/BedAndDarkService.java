@@ -11,7 +11,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
@@ -108,7 +107,7 @@ public class BedAndDarkService extends Service implements SensorEventListener{
         SensorManager.getRotationMatrix(mRotationMatrix, null, mAccelerometerReading, mMagnetometerReading);
         SensorManager.getOrientation(mRotationMatrix, mOrientationAngles);
         String s = (int) Math.toDegrees(mOrientationAngles[0]) + " " + (int) Math.toDegrees(mOrientationAngles[1]) + " " + (int) Math.toDegrees(mOrientationAngles[2])+"";
-        Log.i("Angles",s);
+        m.updateLog(TAG,s);
     }
 
     @Override
