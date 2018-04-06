@@ -239,10 +239,9 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
     private void bedAndDark() {
         bedAndDark = preferences.getBoolean(getResources().getString(R.string.bed_dark), false);
         if (bedAndDark) {
-            Intent intent = new Intent(getApplicationContext(), BedAndDarkService.class);
-            startService(intent);
+            startService(new Intent(getApplicationContext(), BedAndDarkService.class));
         }
-        else if (!bedAndDark){
+        else{
             stopService(new Intent(getApplicationContext(), BedAndDarkService.class));
         }
     }
@@ -253,7 +252,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
     @Override
     public void onLocationChanged(Location location) {
-//        Main.showToast("I'm called- onLocationChaged");
+//        Main.showToast("I'm called- onLocationChanged");
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         updateToast();
@@ -539,24 +538,20 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         @Override
         public void run() {
             try {
-
                 //get the current foreground app
                 String currentApp = m.getForegroungApp();
                 Log.i("PlacesForegroundApp", currentApp);
 
                 //check if any scenarios is selected
                 // if yes then call the places code which afterwards every `mInterval` milliseconds
-                boolean mainSwitch = false;
-                mainSwitch = preferences.getBoolean(CONSTANTS.MAIN_SWITCH,mainSwitch);
+                boolean mainSwitch;
+                mainSwitch = preferences.getBoolean(CONSTANTS.MAIN_SWITCH,false);
                 if(m.isAnyScenarioSelected() && mainSwitch){
                     String sb = buildPlacesURL().toString();
                     new PlacesTask().execute(sb);
                 }
-                if(googleApiClientConnected)
-                    walking();
-
+                if(googleApiClientConnected) walking();
                 bedAndDark();
-
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } finally {
