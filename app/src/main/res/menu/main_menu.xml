@@ -5,7 +5,7 @@
         app:showAsAction="ifRoom" app:actionLayout="@layout/switch_for_actionbar"/>
 
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+        android:orderInCategory="100" app:showAsAction="ifRoom" />
 
     <!--<item android:id="@+id/action_tutorial" android:title="@string/action_tutorial"
         android:orderInCategory="100" app:showAsAction="never" />
