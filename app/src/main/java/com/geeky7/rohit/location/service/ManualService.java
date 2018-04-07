@@ -47,7 +47,7 @@ public class ManualService extends Service {
         Main.showToast(getApplicationContext(), "ManualServiceDestroyed");
     }
     private void blockAppLaunched() {
-        String currentApp = m.getForegroungApp();
+        String currentApp = m.getForegroundApp();
         getListOfBlockedApplications();
         if (listOfBlockedApps.contains(currentApp))
             m.showHomeScreen();

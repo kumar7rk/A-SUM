@@ -68,7 +68,7 @@ public class SemiAutomaticService extends Service {
     }
 
     private void blockAppLaunched() {
-        String currentApp = m.getForegroungApp();
+        String currentApp = m.getForegroundApp();
         getListOfBlockedApplications();
 
         ViolationDbHelper violationDbHelper = new ViolationDbHelper(getApplicationContext());

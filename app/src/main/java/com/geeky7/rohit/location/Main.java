@@ -60,7 +60,7 @@ public class Main {
         Toast.makeText(MyApplication.getAppContext(), text, Toast.LENGTH_SHORT).show();
     }
 
-    public String getForegroungApp() {
+    public String getForegroundApp() {
         String currentApp = "NULL";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             UsageStatsManager usm = (UsageStatsManager) this.mContext.getSystemService(Context.USAGE_STATS_SERVICE);

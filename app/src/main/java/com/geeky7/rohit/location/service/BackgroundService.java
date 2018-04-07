@@ -539,7 +539,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
         public void run() {
             try {
                 //get the current foreground app
-                String currentApp = m.getForegroungApp();
+                String currentApp = m.getForegroundApp();
                 Log.i("PlacesForegroundApp", currentApp);
 
                 //check if any scenarios is selected
