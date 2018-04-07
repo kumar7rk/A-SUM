@@ -570,7 +570,7 @@ GoogleApiClient.ConnectionCallbacks,LocationListener{
 
 
 //    *******************************Legacy methods below*****************************
-    // these answer led to my most upvoted answer on SO as of 7r4
+    // these methods led to me research and post my most upvoted answer on SO as of 7r4
     //A-SUM's activity name with package|| name of launcher with package name
     //http://stackoverflow.com/a/19852713/2900127 AmitGupta's
 
