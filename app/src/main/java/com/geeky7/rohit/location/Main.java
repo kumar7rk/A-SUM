@@ -36,11 +36,15 @@ public class Main {
     public static final String TAG = CONSTANTS.MAIN;
 
     Context mContext;
+
     private int mInterval = 5000; // 5 seconds by default, can be changed later
-    SharedPreferences preferences;
     boolean restaurant,religious_place,movie_theatre,bedAndDark,walking;
 
     private Handler mHandler;
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
     public Main(Context mContext) {
         this.mContext = mContext;
     }
@@ -89,6 +93,11 @@ public class Main {
         ArrayAdapter<String> adapter;
         ArrayList<String> list = new ArrayList<String>();
         List<PackageInfo> packList = mContext.getPackageManager().getInstalledPackages(0);
+
+        editor = preferences.edit();
+
+        editor.putInt(CONSTANT.NUMBER_OF_INSTALLED_APPS,packList.size()).apply();
+
 
         for (int i = 0; i < packList.size(); i++) {
             PackageInfo packInfo = packList.get(i);
