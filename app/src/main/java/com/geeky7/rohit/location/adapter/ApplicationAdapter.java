@@ -24,6 +24,8 @@ import java.util.Set;
 
 public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
 
+    private static final String TAG = CONSTANTS.APPLICATION_ADAPTER;
+
     private List<ApplicationInfo> appsList = null;
     private Context context;
     private PackageManager packageManager;
@@ -53,9 +55,8 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
 
         appsIndex = preferences.getStringSet("someStringSetIndex", appsIndex);
 
-        Main.showToast(getContext(),"ApplicationAdapter constructor");
         for (String s:appsIndex)
-            Log.i("AppsIndex",s);
+            m.updateLog(TAG,"SelectedAppsIndexes "+ s);
 
         for (int i = 0; i < appsList.size(); i++) {
             checkList.add(false);
