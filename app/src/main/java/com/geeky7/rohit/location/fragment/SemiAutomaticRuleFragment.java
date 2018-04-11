@@ -41,7 +41,7 @@ public class SemiAutomaticRuleFragment extends Fragment {
     ArrayList<String> listOfBlockedApps = new ArrayList<>();
     AlertDialog dialog;
 
-    Drawable[] drawables = new Drawable[11];
+    Drawable[] drawables = new Drawable[10];
     SharedPreferences preferences;
     LinearLayout layout, layout1, layout2;
     public SemiAutomaticRuleFragment() {
