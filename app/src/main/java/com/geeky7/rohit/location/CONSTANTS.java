@@ -23,9 +23,12 @@ public class CONSTANTS {
     public static final String DETECTED_WALKING_TIME = "DETECTED_WALKING_TIME";
 
     public static final String MAIN_ACTIVITY = "MAIN_ACTIVITY";
+
     public static final String INSTALLED_APPS_DIALOG = "INSTALLED_APPS_DIALOG";
     public static final String MANUAL_RULE_FRAGMENT = "MANUAL_RULE_FRAGMENT";
+
     public static final String BACKGROUND_SERVICE = "BACKGROUND_SERVICE";
+
     public static final String MAIN = "MAIN";
     public static final String BED_AND_DARK_SERVICE = "BED_AND_DARK_SERVICE";
 
@@ -34,6 +37,9 @@ public class CONSTANTS {
 
     public static final String NOTIFICATION_TEXT = "NOTIFICATION_TEXT";
     public static final String NOTIFICATION_TEXT_DEFAULT = MyApplication.getAppContext().getString(R.string.notification_text_default);
+
+    public static final String NUMBER_OF_INSTALLED_APPS = "NUMBER_OF_INSTALLED_APPS";
+
 
 
 }
