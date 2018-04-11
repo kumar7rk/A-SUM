@@ -53,21 +53,20 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
         Set<String> appsIndex = new HashSet<String>();
         ArrayList<String> appsIndexList = new ArrayList<>();
 
-        appsIndex = preferences.getStringSet("someStringSetIndex", appsIndex);
-
-        for (String s:appsIndex)
-            m.updateLog(TAG,"SelectedAppsIndexes "+ s);
+        appsIndex = preferences.getStringSet("someStringSetIndex", appsIndex);// set the default to empty string?
 
         for (int i = 0; i < appsList.size(); i++) {
             checkList.add(false);
         }
         for (String s: appsIndex){
+            m.updateLog(TAG,"SelectedAppsIndexes "+ s);
             appsIndexList.add(s);
         }
         for (int i = 0;i<appsIndexList.size();i++) {
             int index = Integer.parseInt(appsIndexList.get(i));
             checkList.add(index, true);
             selectedApps.append(index,true);
+            selectedAppsSetIndex.add(index+"");
         }
     }
 
