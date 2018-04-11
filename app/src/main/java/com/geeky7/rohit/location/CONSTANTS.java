@@ -28,9 +28,11 @@ public class CONSTANTS {
     public static final String MANUAL_RULE_FRAGMENT = "MANUAL_RULE_FRAGMENT";
 
     public static final String BACKGROUND_SERVICE = "BACKGROUND_SERVICE";
+    public static final String BED_AND_DARK_SERVICE = "BED_AND_DARK_SERVICE";
 
     public static final String MAIN = "MAIN";
-    public static final String BED_AND_DARK_SERVICE = "BED_AND_DARK_SERVICE";
+
+    public static final String APPLICATION_ADAPTER = "APPLICATION_ADAPTER";
 
 
     public static final String APP_OPENED_FIRST_TIME = "APP_OPENED_FIRST_TIME";
