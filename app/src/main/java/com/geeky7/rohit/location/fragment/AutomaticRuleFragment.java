@@ -36,15 +36,18 @@ public class AutomaticRuleFragment extends Fragment {
     ArrayList<String> appList = new ArrayList<String>();
     ArrayList<String> listOfBlockedApps = new ArrayList<>();
 
-    Drawable[] drawables = new Drawable[11];
+    Drawable[] drawables = new Drawable[10];
     SharedPreferences preferences;
     LinearLayout layout;
 
+    Main m;
     public AutomaticRuleFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        m = new Main(getActivity());
+        m.calledMethodLog(TAG,m.getMethodName(2));
         super.onCreate(savedInstanceState);
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         setbackArrow();
@@ -52,11 +55,13 @@ public class AutomaticRuleFragment extends Fragment {
 
     //trying to set up a backarrow - the roads so messy
     private void setbackArrow() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         //((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         switch (item.getItemId()) {
             case android.R.id.home:
                 return true;
@@ -67,8 +72,8 @@ public class AutomaticRuleFragment extends Fragment {
 
     //setting the adapter
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         View v = inflater.inflate(R.layout.automatic_recycler_view, container, false);
         mRecyclerView = (RecyclerView)v.findViewById(R.id.my_recycler_view);
         layout = (LinearLayout) v.findViewById(R.id.linear);
@@ -84,6 +89,7 @@ public class AutomaticRuleFragment extends Fragment {
     }
     @Override
     public void onResume() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         super.onResume();
         ((AutomaticRecyclerViewAdapter) mAdapter).setOnItemClickListener(new AutomaticRecyclerViewAdapter
                 .MyClickListener() {
@@ -96,6 +102,7 @@ public class AutomaticRuleFragment extends Fragment {
     }
     //Dealing with data sets and setting values for the titles
     private ArrayList<DataObject> getDataSet() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         ArrayList results = new ArrayList<DataObject>();
         String lastApplied = preferences.getString(CONSTANTS.AUTOMATIC_RULE_ADDED_TIME, "Never Applied");
         String timePeriod = "This rule is applied for ALL DAY. No quiet Hours";
@@ -123,6 +130,7 @@ public class AutomaticRuleFragment extends Fragment {
     // the for loop is running for like 10 apps
     // which could be fine because it's developer rule
     private void addAppIcons() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         getAppIcon();
         for (int i = 0; i < 10; i++) {
             ImageView imageView = new ImageView(MyApplication.getAppContext());
@@ -140,6 +148,7 @@ public class AutomaticRuleFragment extends Fragment {
 
     //fetching app icons for the blocked applications
     private void getAppIcon() {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         for (int i = 0; i < listOfBlockedApps.size(); i++) {
             try {
                 drawables[i] = MyApplication.getAppContext().getPackageManager().
@@ -152,6 +161,7 @@ public class AutomaticRuleFragment extends Fragment {
 
     //adding the card views titles
     private void addValues(){
+        m.calledMethodLog(TAG,m.getMethodName(2));
         list.add("Last Applied");
         list.add("Time Period");
         list.add("Blocked Applications");
@@ -159,6 +169,7 @@ public class AutomaticRuleFragment extends Fragment {
     //manually added list of the applications that I think (;)) should be blocked
     // it's actually developer rule not automatic rule :D
     public void getListOfBlockedApplications(){
+        m.calledMethodLog(TAG,m.getMethodName(2));
 
         if(appInstalledOrNot("com.whatsapp")) listOfBlockedApps.add("com.whatsapp");
         if(appInstalledOrNot("com.facebook.katana")) listOfBlockedApps.add("com.facebook.katana");
@@ -168,6 +179,7 @@ public class AutomaticRuleFragment extends Fragment {
     }
     //check if the manually inserted apps are installed or not for a user
     private boolean appInstalledOrNot(String uri) {
+        m.calledMethodLog(TAG,m.getMethodName(2));
         PackageManager pm = MyApplication.getAppContext().getPackageManager();
         try {
             pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
