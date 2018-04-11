@@ -57,6 +57,4 @@ public class CONSTANTS {
 
     //notification rule
     public static final String NOTIFICATION_TEXT_DEFAULT = MyApplication.getAppContext().getString(R.string.notification_text_default);
-
-    
 }

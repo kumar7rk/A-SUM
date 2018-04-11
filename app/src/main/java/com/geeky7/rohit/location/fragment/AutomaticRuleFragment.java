@@ -50,6 +50,7 @@ public class AutomaticRuleFragment extends Fragment {
         setbackArrow();
     }
 
+    //trying to set up a backarrow - the roads so messy
     private void setbackArrow() {
         //((MainActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -64,6 +65,7 @@ public class AutomaticRuleFragment extends Fragment {
         }
     }
 
+    //setting the adapter
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,6 +94,7 @@ public class AutomaticRuleFragment extends Fragment {
             }
         });
     }
+    //Dealing with data sets and setting values for the titles
     private ArrayList<DataObject> getDataSet() {
         ArrayList results = new ArrayList<DataObject>();
         String lastApplied = preferences.getString(CONSTANTS.AUTOMATIC_RULE_ADDED_TIME, "Never Applied");
@@ -116,6 +119,9 @@ public class AutomaticRuleFragment extends Fragment {
         return results;
     }
 
+    // formatting and adding the blocked apps icons in the layout
+    // the for loop is running for like 10 apps
+    // which could be fine because it's developer rule
     private void addAppIcons() {
         getAppIcon();
         for (int i = 0; i < 10; i++) {
@@ -132,6 +138,7 @@ public class AutomaticRuleFragment extends Fragment {
         }
     }
 
+    //fetching app icons for the blocked applications
     private void getAppIcon() {
         for (int i = 0; i < listOfBlockedApps.size(); i++) {
             try {
@@ -143,18 +150,23 @@ public class AutomaticRuleFragment extends Fragment {
         }
     }
 
+    //adding the card views titles
     private void addValues(){
         list.add("Last Applied");
         list.add("Time Period");
         list.add("Blocked Applications");
     }
+    //manually added list of the applications that I think (;)) should be blocked
+    // it's actually developer rule not automatic rule :D
     public void getListOfBlockedApplications(){
 
         if(appInstalledOrNot("com.whatsapp")) listOfBlockedApps.add("com.whatsapp");
         if(appInstalledOrNot("com.facebook.katana")) listOfBlockedApps.add("com.facebook.katana");
         if(appInstalledOrNot("com.instagram.android")) listOfBlockedApps.add("com.instagram.android");
         if(appInstalledOrNot("com.snapchat.android")) listOfBlockedApps.add("com.snapchat.android");
+        //chuck in more social networking apps here
     }
+    //check if the manually inserted apps are installed or not for a user
     private boolean appInstalledOrNot(String uri) {
         PackageManager pm = MyApplication.getAppContext().getPackageManager();
         try {
