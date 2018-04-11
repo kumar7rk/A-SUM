@@ -37,7 +37,9 @@ public class Main {
 
     Context mContext;
 
+    //this is the interval for running the background service code- to check if a user is in a social scenario
     private int mInterval = 5000; // 5 seconds by default, can be changed later
+
     boolean restaurant,religious_place,movie_theatre,bedAndDark,walking;
 
     private Handler mHandler;
@@ -64,6 +66,7 @@ public class Main {
         Toast.makeText(MyApplication.getAppContext(), text, Toast.LENGTH_SHORT).show();
     }
 
+    //get the foreground app - I think this is the code on SO
     public String getForegroundApp() {
         String currentApp = "NULL";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -88,6 +91,7 @@ public class Main {
         return currentApp;
     }
 
+    //get the list of installed applications and returns in an arrayAdapter
     public ArrayAdapter<String> getInstalledApplications() {
         ArrayAdapter<String> adapter;
         ArrayList<String> list = new ArrayList<String>();
@@ -113,6 +117,7 @@ public class Main {
                 android.R.layout.select_dialog_multichoice, list);
         return adapter;
     }
+    //Hey, I'm your cool runnable which runs every 5 seconds but only when required
     Runnable mStatusChecker = new Runnable() {
         @Override
         public void run() {
@@ -124,13 +129,18 @@ public class Main {
             }
         }
     };
+    // I start the above runnable
     public void startRepeatingTask() {
         mStatusChecker.run();
     }
 
+    //I stop the runnable
     public void stopRepeatingTask() {
         mHandler.removeCallbacks(mStatusChecker);
     }
+
+    //I block the app as they say it in English ;)
+    //how to do this bit was a mystery for some time
     public boolean showHomeScreen(){
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
@@ -147,6 +157,8 @@ public class Main {
             mContext.startActivity(intent);
         }
     }
+    //this is a second method to get a list of installed applications and return an arrayAdapter
+    //I'm ~40k ft above in the air so next time you see this comment get rid of one of them
     public ArrayAdapter<String> getInstalledApplicationsv2(){
         ArrayAdapter<String> adapter;
         ArrayList<String> list = new ArrayList<String>();
@@ -167,6 +179,7 @@ public class Main {
                 android.R.layout.select_dialog_multichoice, list);
         return adapter;
     }
+    //if the gps is not turned on, this method opens the location settings page
     public boolean openLocationSettings(LocationManager service) {
         boolean enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
@@ -177,6 +190,7 @@ public class Main {
         }
         return enabled;
     }
+    // checks usageAccessPermissions and return a boolean
     public boolean usageAccessPermission(){
         AppOpsManager appOps = (AppOpsManager) mContext
                 .getSystemService(Context.APP_OPS_SERVICE);
@@ -184,8 +198,10 @@ public class Main {
                 android.os.Process.myUid(), mContext.getPackageName());
         return mode == AppOpsManager.MODE_ALLOWED;
     }
+    //check how many scenarios are selected to show a badge on the bottombar monitoring fragment
     public void countSelectedScenarioForBadge() {
         int counter = 0;
+        //not sure why I'm using two differnet SP. Test this the next time you see this comment
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 
         boolean restaurant = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.restaurant), false);
@@ -194,16 +210,11 @@ public class Main {
         boolean bedAndDark= sharedPrefs.getBoolean(mContext.getResources().getString(R.string.bed_dark), false);
         boolean walking = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.walking), false);
 
-        if (restaurant)
-            counter++;
-        if (religious_place)
-            counter++;
-        if (movie_theatre)
-            counter++;
-        if (bedAndDark)
-            counter++;
-        if (walking)
-            counter++;
+        if (restaurant) counter++;
+        if (religious_place) counter++;
+        if (movie_theatre) counter++;
+        if (bedAndDark) counter++;
+        if (walking) counter++;
 
         preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = preferences.edit();
@@ -211,6 +222,8 @@ public class Main {
         editor.apply();
     }
 
+    //this method get the values of scenarios - whether selected or not
+    // used in the method below to check if any scenario is selected before running backgroundService code
     public void initialValues(){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
 
@@ -220,6 +233,8 @@ public class Main {
         bedAndDark= sharedPrefs.getBoolean(mContext.getResources().getString(R.string.bed_dark), false);
         walking = sharedPrefs.getBoolean(mContext.getResources().getString(R.string.walking), false);
     }
+    //when the cancel button is clicked on select scenario activity
+    //I think it's here to rollback when cancel button is clicked on the select scenario activity
     public void cancelOperation(){
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(MyApplication.getAppContext());
         SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -227,7 +242,6 @@ public class Main {
         editor.putBoolean(mContext.getResources().getString(R.string.religious_place),religious_place);
         editor.putBoolean(mContext.getResources().getString(R.string.movie_theatre),movie_theatre);
         editor.putBoolean(mContext.getResources().getString(R.string.bed_dark),bedAndDark);
-        updateLog(TAG,"adding bed&dark value to be: "+bedAndDark);
         editor.putBoolean(mContext.getResources().getString(R.string.walking), walking);
         editor.apply();
     }
@@ -248,6 +262,8 @@ public class Main {
         Log.i(className,text);
     }
 
+    //show user a dialog if there's a scenario selected but the usageAccessPermission is not granted
+    // this only runs when the app runs from the icon and doesn't run on press back button :thumbsup
     public void showUsageDataAccessDialog(Activity activity){
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -271,6 +287,8 @@ public class Main {
         builder.show();
     }
 
+    //this method checks if your service is running
+    // I think it's usage was removed (bed and dark) as the code runs delighfully even without this piece of code
     public boolean isServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
