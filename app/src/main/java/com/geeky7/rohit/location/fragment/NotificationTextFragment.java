@@ -29,7 +29,7 @@ public class NotificationTextFragment extends DialogFragment {
     AlertDialog.Builder alertDialog;
     Main m;
 
-    public static final String TAG = CONSTANTS.NOTIFICATION_TEXT;
+    public static final String TAG = CONSTANTS.NOTIFICATION_TEXT_FRAGMENT;
     public NotificationTextFragment() {
     }
 
