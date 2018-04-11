@@ -34,19 +34,26 @@ public class SemiAutomaticRuleFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
     TextView textView;
-    private int progress = 1;
+
     ArrayList<String> list = new ArrayList<String>();
     ArrayList<String> appList = new ArrayList<String>();
     ArrayList<String> listOfBlockedApps = new ArrayList<>();
+
     AlertDialog dialog;
 
     Drawable[] drawables = new Drawable[10];
+
     SharedPreferences preferences;
-    LinearLayout layout, layout1, layout2;
+
+    LinearLayout layout, layout1, layout2; // layout - icon, layout1,2 - off-time text and seekbar
+
     public SemiAutomaticRuleFragment() {
     }
 
+    //customising seekbar view
+    //setting the chosen off-time from the sharedPreferences
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +65,7 @@ public class SemiAutomaticRuleFragment extends Fragment {
         textView.setTextSize(20);
     }
 
+    //setting the adapter
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,6 +84,9 @@ public class SemiAutomaticRuleFragment extends Fragment {
         return v;
 
     }
+    //setting a dialog for seek bar view - not sure why
+    //maybe for conveying the meaning of off-time
+    //after all it's a developer rule ;)
     @Override
     public void onResume() {
         super.onResume();
@@ -108,6 +119,7 @@ public class SemiAutomaticRuleFragment extends Fragment {
             }
         });
     }
+    //Dealing with data sets and setting values for the titles
     private ArrayList<DataObject> getDataSet() {
         ArrayList results = new ArrayList<DataObject>();
         ArrayList<String> arrayList = new ArrayList<>();
@@ -137,6 +149,7 @@ public class SemiAutomaticRuleFragment extends Fragment {
         return results;
     }
 
+    //adding seekbar to choose an off-tine between 5 and 60 mins in increments of 5 mins
    public void addSeekBar(){
        SeekBar seekBar = new SeekBar(MyApplication.getAppContext());
        seekBar.setMax(12);
@@ -162,7 +175,7 @@ public class SemiAutomaticRuleFragment extends Fragment {
 
            public void onProgressChanged(SeekBar arg0, int arg1, boolean arg2) {
                int step = 5;
-               progress = arg1 * step;
+               int progress = arg1 * step;
                SharedPreferences.Editor editor = preferences.edit();
                editor.putString(CONSTANTS.SEMIAUTOMATIC_SEEKBAR_PROGRESS_OFF_TIME, progress + "").commit();
                textView.setText(progress + " mins");
@@ -172,6 +185,9 @@ public class SemiAutomaticRuleFragment extends Fragment {
        layout2.addView(textView);
        layout1.addView(seekBar);
     }
+    // formatting and adding the blocked apps icons in the layout
+    // the for loop is running for like 10 apps
+    // which could be fine because it's developer rule
     private void addAppIcons() {
         getAppIcon();
         for (int i = 0; i < 10; i++) {
@@ -188,6 +204,7 @@ public class SemiAutomaticRuleFragment extends Fragment {
         }
     }
 
+    //fetching app icons for the blocked applications
     private void getAppIcon() {
         for (int i = 0; i < listOfBlockedApps.size(); i++) {
             try {
@@ -198,7 +215,7 @@ public class SemiAutomaticRuleFragment extends Fragment {
             }
         }
     }
-
+    //adding the card views titles
     private void addValues(){
         list.add("Last Applied");
         list.add("Time Period");
@@ -206,6 +223,8 @@ public class SemiAutomaticRuleFragment extends Fragment {
         list.add("Blocked Applications");
 
     }
+    //manually added list of the applications that I think (;)) should be blocked
+    // it's actually developer rule not automatic rule :D
     public void getListOfBlockedApplications(){
 
         if(appInstalledOrNot("com.whatsapp")) listOfBlockedApps.add("com.whatsapp");
@@ -213,6 +232,7 @@ public class SemiAutomaticRuleFragment extends Fragment {
         if(appInstalledOrNot("com.instagram.android")) listOfBlockedApps.add("com.instagram.android");
         if(appInstalledOrNot("com.snapchat.android")) listOfBlockedApps.add("com.snapchat.android");
     }
+    //check if the manually inserted apps are installed or not for a user
     private boolean appInstalledOrNot(String uri) {
         PackageManager pm = MyApplication.getAppContext().getPackageManager();
         try {
