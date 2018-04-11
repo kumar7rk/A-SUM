@@ -71,7 +71,6 @@ public class Main {
             long time = System.currentTimeMillis();
             List<UsageStats> appList = usm.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000 * 1000, time);
             if (appList != null && appList.size() > 0) {
-                Log.i("Size", appList.size() + "");
                 SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>();
                 for (UsageStats usageStats : appList) {
                     mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
@@ -108,7 +107,6 @@ public class Main {
                 appIcon.setBounds(0, 0, 40, 40);
 
                 //holder.apkName.setCompoundDrawables(appIcon, null, null, null);
-                Log.i("AppName " + Integer.toString(i), appName);
             }
         }
         adapter = new ArrayAdapter<String>(mContext,
@@ -163,8 +161,6 @@ public class Main {
                 listHM.put(packageName, appName);
 //                list.add(packageName);
 //                list.add(appName);
-                Log.i("AppName ", packageName);
-                Log.i("AppNamess", appName);
             }
         }
         adapter = new ArrayAdapter<String>(mContext,
