@@ -44,7 +44,7 @@ public class ManualRuleFragment extends Fragment {
     ArrayList<String> listOfBlockedApps = new ArrayList<>();
 
     Button button;
-    Drawable[] drawables = new Drawable[11];
+    Drawable[] drawables;
     SharedPreferences preferences;
     LinearLayout layout,layout1;
     Main m;
@@ -56,8 +56,16 @@ public class ManualRuleFragment extends Fragment {
         m = new Main(getActivity());
         m.calledMethodLog(TAG,m.getMethodName(2));
         super.onCreate(savedInstanceState);
-        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
         button = new Button(MyApplication.getAppContext());
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        // number of installed apps
+        int size = preferences.getInt(CONSTANT.NUMBER_OF_INSTALLED_APPS,0);
+        //setting the size of icons on the screen to be equal to the number of installed apps
+        // just in case someone is trying to break the code.
+        // not in this lifetime mate ;)
+        drawables = new Drawable[size];
     }
 
     private void addButton() {
@@ -79,7 +87,7 @@ public class ManualRuleFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new YourAsyncTask(getActivity()).execute();// gps in on
+                new YourAsyncTask(getActivity()).execute();
                 /*InstalledAppsDialog dialogFrag = InstalledAppsDialog.newInstance(R.string.startService);
                 dialogFrag.show(getActivity().getFragmentManager(), null);*/
             }
