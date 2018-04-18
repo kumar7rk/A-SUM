@@ -28,6 +28,8 @@ import java.util.ArrayList;
 
 public class AutomaticRuleFragment extends Fragment {
 
+    private static final String TAG = CONSTANTS.AUTOMATIC_RULE_FRAGMENT;
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
