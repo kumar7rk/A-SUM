@@ -99,7 +99,7 @@ public class Main {
 
         editor = preferences.edit();
 
-        editor.putInt(CONSTANT.NUMBER_OF_INSTALLED_APPS,packList.size()).apply();
+        editor.putInt(CONSTANTS.NUMBER_OF_INSTALLED_APPS,packList.size()).apply();
 
 
         for (int i = 0; i < packList.size(); i++) {
