@@ -44,6 +44,7 @@ public class CONSTANTS {
     public static final String INSTALLED_APPS_DIALOG = "INSTALLED_APPS_DIALOG";
     public static final String MANUAL_RULE_FRAGMENT = "MANUAL_RULE_FRAGMENT";
     public static final String NOTIFICATION_TEXT_FRAGMENT = "NOTIFICATION_TEXT_FRAGMENT";
+    public static final String AUTOMATIC_RULE_FRAGMENT = "AUTOMATIC_RULE_FRAGMENT";
 
     //services
     public static final String BACKGROUND_SERVICE = "BACKGROUND_SERVICE";
