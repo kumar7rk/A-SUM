@@ -71,7 +71,7 @@ public class NotificationTextFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         String notificationTextS = notification_text_et.getText().toString().trim();
-                        editor.putString(CONSTANTS.NOTIFICATION_TEXT,notificationTextS);
+                        editor.putString(CONSTANTS.NOTIFICATION_TEXT_FRAGMENT,notificationTextS);
                         editor.apply();
                     }
                 })
@@ -129,7 +129,7 @@ public class NotificationTextFragment extends DialogFragment {
         }
         notification_text_et = (EditText) getDialog().findViewById(R.id.notification_text_et);
         // get the stored notification text
-        notification_text_et.setText(preferences.getString(CONSTANTS.NOTIFICATION_TEXT,CONSTANTS.NOTIFICATION_TEXT_DEFAULT));
+        notification_text_et.setText(preferences.getString(CONSTANTS.NOTIFICATION_TEXT_FRAGMENT,CONSTANTS.NOTIFICATION_TEXT_DEFAULT));
         // move the caret to the last of the text; front by default
         notification_text_et.setSelection(notification_text_et.getText().length());
     }
