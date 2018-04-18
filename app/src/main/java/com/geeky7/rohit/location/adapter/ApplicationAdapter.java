@@ -14,7 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 
+import com.geeky7.rohit.location.CONSTANTS;
 import com.geeky7.rohit.location.Main;
+import com.geeky7.rohit.location.MyApplication;
 import com.geeky7.rohit.location.R;
 
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
     private SparseBooleanArray selectedApps =   new SparseBooleanArray();
     SharedPreferences.Editor editor;
 
+    Main m;
     public ApplicationAdapter(Context context, int textViewResourceId,
                               List<ApplicationInfo> appsList) {
         super(context, textViewResourceId, appsList);
@@ -47,6 +50,7 @@ public class ApplicationAdapter extends ArrayAdapter<ApplicationInfo> {
         this.appsList = appsList;
         packageManager = context.getPackageManager();
 
+        m = new Main(MyApplication.getAppContext());
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
         editor = preferences.edit();
 
