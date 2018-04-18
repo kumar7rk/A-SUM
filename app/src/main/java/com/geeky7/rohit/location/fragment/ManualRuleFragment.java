@@ -61,7 +61,7 @@ public class ManualRuleFragment extends Fragment {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         // number of installed apps
-        int size = preferences.getInt(CONSTANT.NUMBER_OF_INSTALLED_APPS,0);
+        int size = preferences.getInt(CONSTANTS.NUMBER_OF_INSTALLED_APPS,0);
         //setting the size of icons on the screen to be equal to the number of installed apps
         // just in case someone is trying to break the code.
         // not in this lifetime mate ;)
