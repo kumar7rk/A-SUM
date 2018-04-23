@@ -44,7 +44,7 @@ public class ManualRuleFragment extends Fragment {
     ArrayList<String> listOfBlockedApps = new ArrayList<>();
 
     Button button;
-    Drawable[] drawables;
+    Drawable[] drawables = new Drawable[11];
     SharedPreferences preferences;
     LinearLayout layout,layout1;
     Main m;
@@ -132,7 +132,7 @@ public class ManualRuleFragment extends Fragment {
         m.calledMethodLog(TAG,m.getMethodName(2));
         ArrayList<DataObject> results = new ArrayList<DataObject>();
         String lastApplied = preferences.getString(CONSTANTS.MANUAL_RULE_ADDED_TIME, "Never");
-        String timePeriod = "This rule is applied for ALL DAY. No quiet Hours";
+        String timePeriod = "The rule is applied for the whole day. No quiet Hours";
         String apps = "someApps";
         addValues();
         getListOfBlockedApplications();
@@ -160,6 +160,7 @@ public class ManualRuleFragment extends Fragment {
             ImageView imageView = new ImageView(MyApplication.getAppContext());
             imageView.setId(i);
             imageView.setPadding(2, 2, 2, 2);
+
             imageView.setImageDrawable(drawables[i]);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(120,120);
