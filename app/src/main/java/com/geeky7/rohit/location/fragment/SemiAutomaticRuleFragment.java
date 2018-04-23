@@ -125,7 +125,7 @@ public class SemiAutomaticRuleFragment extends Fragment {
         ArrayList<String> arrayList = new ArrayList<>();
 
         String lastApplied = preferences.getString(CONSTANTS.SEMIAUTOMATIC_RULE_ADDED_TIME, "Never");
-        String timePeriod = "This rule is applied for ALL DAY. No quiet Hours";
+        String timePeriod = getResources().getString(R.string.rule_time_period);
 
         addValues();
         getListOfBlockedApplications();

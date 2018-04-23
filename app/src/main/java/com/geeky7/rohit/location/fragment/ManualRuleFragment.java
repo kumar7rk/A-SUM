@@ -132,7 +132,7 @@ public class ManualRuleFragment extends Fragment {
         m.calledMethodLog(TAG,m.getMethodName(2));
         ArrayList<DataObject> results = new ArrayList<DataObject>();
         String lastApplied = preferences.getString(CONSTANTS.MANUAL_RULE_ADDED_TIME, "Never");
-        String timePeriod = "The rule is applied for the whole day. No quiet Hours";
+        String timePeriod = getResources().getString(R.string.rule_time_period);
         String apps = "someApps";
         addValues();
         getListOfBlockedApplications();

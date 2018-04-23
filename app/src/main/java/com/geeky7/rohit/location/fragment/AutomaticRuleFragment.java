@@ -107,7 +107,7 @@ public class AutomaticRuleFragment extends Fragment {
         m.calledMethodLog(TAG,m.getMethodName(2));
         ArrayList results = new ArrayList<DataObject>();
         String lastApplied = preferences.getString(CONSTANTS.AUTOMATIC_RULE_ADDED_TIME, "Never Applied");
-        String timePeriod = "This rule is applied for ALL DAY. No quiet Hours";
+        String timePeriod = getResources().getString(R.string.rule_time_period);
         String apps = "someApps";
         addValues();
         getListOfBlockedApplications();
