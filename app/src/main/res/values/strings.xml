@@ -52,6 +52,7 @@
     <string name="notification_text_default">A reminder. Hey! You\'ve been detected in a social place. Let\'s just not use the phone and enjoy the moment.</string>
     <string name="coming_soon">Coming Soon!</string>
     <string name="select_applications">Select Application(s)</string>
+    <string name="rule_time_period">The rule is applied for the whole day. No quiet Hours</string>
 
     <!--Preferences-->
     <string name="pref_title_sound">Sound</string>
