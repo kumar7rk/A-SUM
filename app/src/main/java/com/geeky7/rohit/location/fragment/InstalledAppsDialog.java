@@ -193,6 +193,10 @@ public class InstalledAppsDialog extends DialogFragment {
             }
         });
     }
+    /*
+    * AsyncTask class to load the items in the background.
+    * just so that there isn't any lag between progress dialog and loading dialog with application list
+    * */
     private class YourAsyncTask extends AsyncTask<Void, Void, Void> {
         public YourAsyncTask() {
         }
